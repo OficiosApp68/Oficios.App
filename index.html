@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OFICIOS APP | Profesionales cerca tuyo</title>
+    <meta
+      name="description"
+      content="Encontrá profesionales de confianza cerca tuyo por oficio, categoría o palabra clave."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav-shell" aria-label="Navegacion principal">
+        <a class="brand" href="#home" aria-label="OFICIOS APP inicio">
+          <span class="brand-mark">OA</span>
+          <span class="brand-name">OFICIOS APP</span>
+        </a>
+        <button class="menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <div class="nav-links" data-nav-links>
+          <a href="#categorias">Categorias</a>
+          <a href="#profesionales">Profesionales</a>
+          <a href="#ficha">Ficha</a>
+          <a href="#admin">Admin</a>
+        </div>
+        <div class="nav-actions">
+          <a class="button ghost" href="#login">Iniciar sesion</a>
+          <a class="button primary" href="#registro">Registrarse</a>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero-section" id="home">
+        <div class="hero-content">
+          <div class="hero-copy">
+            <span class="eyebrow">Servicios locales verificados</span>
+            <h1>OFICIOS APP</h1>
+            <p class="hero-lead">Encontrá profesionales de confianza cerca tuyo.</p>
+            <form class="search-panel" aria-label="Buscador principal">
+              <label>
+                <span>Que necesitas</span>
+                <input type="search" placeholder="Electricista, limpieza, aire acondicionado..." />
+              </label>
+              <label>
+                <span>Categoria</span>
+                <select>
+                  <option>Todas las categorias</option>
+                  <option>Carpintero</option>
+                  <option>Electricista</option>
+                  <option>Plomero</option>
+                  <option>Gasista</option>
+                  <option>Refrigeracion</option>
+                </select>
+              </label>
+              <label>
+                <span>Zona</span>
+                <input type="text" placeholder="Barrio, ciudad o localidad" />
+              </label>
+              <button class="button search-button" type="button">Buscar</button>
+            </form>
+            <div class="hero-actions">
+              <a class="button primary large" href="#registro">Registrarse</a>
+              <a class="button secondary large" href="#login">Iniciar sesion</a>
+            </div>
+          </div>
+          <aside class="hero-preview" aria-label="Resumen destacado">
+            <div class="trust-card premium-glow">
+              <div>
+                <span class="status premium">Premium</span>
+                <h2>Profesionales destacados</h2>
+                <p>Perfiles con fotos, zona de trabajo, calificaciones y contacto directo por WhatsApp.</p>
+              </div>
+              <div class="metric-row">
+                <span><strong>4.9</strong> promedio</span>
+                <span><strong>24 h</strong> respuesta</span>
+              </div>
+            </div>
+            <div class="quick-card">
+              <span class="avatar-stack">
+                <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=160&q=80" alt="Profesional destacado" />
+                <img src="https://images.unsplash.com/photo-1581092795360-fd1ca04f0952?auto=format&fit=crop&w=160&q=80" alt="Tecnica electricista" />
+                <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=160&q=80" alt="Equipo de trabajo" />
+              </span>
+              <p>Listo para crecer con nuevas funciones sin romper la estructura.</p>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="section-block" id="categorias">
+        <div class="section-heading">
+          <span class="eyebrow">Explorar servicios</span>
+          <h2>Categorias principales</h2>
+          <p>Tarjetas preparadas para sumar nuevos rubros a medida que la plataforma crezca.</p>
+        </div>
+        <div class="category-grid" data-category-grid></div>
+      </section>
+
+      <section class="section-block tinted" id="profesionales">
+        <div class="section-heading">
+          <span class="eyebrow">Perfiles de ejemplo</span>
+          <h2>Profesionales disponibles</h2>
+          <p>Listado inicial con estados gratuito y premium para validar la experiencia visual.</p>
+        </div>
+        <div class="professionals-grid" data-professionals-grid></div>
+      </section>
+
+      <section class="section-block profile-section" id="ficha">
+        <div class="section-heading">
+          <span class="eyebrow">Ficha individual</span>
+          <h2>Pagina del profesional</h2>
+          <p>Modelo base para mostrar detalle, trabajos realizados, zona de cobertura y opiniones.</p>
+        </div>
+        <article class="profile-detail">
+          <div class="profile-hero">
+            <img
+              src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=900&q=80"
+              alt="Profesional trabajando"
+            />
+          </div>
+          <div class="profile-info">
+            <span class="status premium">Premium</span>
+            <h3>Lucas Fernandez</h3>
+            <p class="profession-line">Electricista matriculado - Zona Norte</p>
+            <p>
+              Atencion residencial y comercial. Instalaciones, tableros, diagnostico de fallas,
+              mantenimiento preventivo y urgencias coordinadas.
+            </p>
+            <div class="rating" aria-label="Calificacion simulada">5/5 <strong>4.9</strong></div>
+            <div class="tag-list" aria-label="Especialidades">
+              <span>Instalaciones</span>
+              <span>Tableros</span>
+              <span>Urgencias</span>
+              <span>Certificaciones</span>
+            </div>
+            <div class="coverage">
+              <strong>Zona de cobertura:</strong>
+              Vicente Lopez, San Isidro, Olivos, Martinez y alrededores.
+            </div>
+            <a class="button whatsapp" href="https://wa.me/5491100000000" target="_blank" rel="noreferrer">
+              WhatsApp
+            </a>
+          </div>
+          <div class="work-gallery" aria-label="Galeria de trabajos">
+            <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=500&q=80" alt="Trabajo electrico terminado" />
+            <img src="https://images.unsplash.com/photo-1621905252507-b35492cc74b4?auto=format&fit=crop&w=500&q=80" alt="Herramientas electricas" />
+            <img src="https://images.unsplash.com/photo-1581092921461-39b9d08a9b21?auto=format&fit=crop&w=500&q=80" alt="Mantenimiento tecnico" />
+          </div>
+          <div class="reviews">
+            <h4>Opiniones</h4>
+            <blockquote>
+              "Muy prolijo y puntual. Resolvio el problema del tablero en el dia."
+              <cite>Mariana G.</cite>
+            </blockquote>
+            <blockquote>
+              "Excelente atencion, explico todo con claridad y dejo la instalacion impecable."
+              <cite>Federico R.</cite>
+            </blockquote>
+          </div>
+        </article>
+      </section>
+
+      <section class="section-block admin-section" id="admin">
+        <div class="section-heading">
+          <span class="eyebrow">Panel administrador</span>
+          <h2>Gestion de profesionales</h2>
+          <p>Interfaz inicial para administrar perfiles cuando se conecte la logica real.</p>
+        </div>
+        <div class="admin-layout">
+          <aside class="admin-sidebar">
+            <button type="button" class="admin-link active">Agregar profesional</button>
+            <button type="button" class="admin-link">Editar profesional</button>
+            <button type="button" class="admin-link">Eliminar profesional</button>
+            <button type="button" class="admin-link">Marcar como Premium</button>
+            <button type="button" class="admin-link">Activar / desactivar</button>
+          </aside>
+          <div class="admin-panel">
+            <div class="admin-toolbar">
+              <h3>Profesionales cargados</h3>
+              <button class="button primary" type="button">Nuevo profesional</button>
+            </div>
+            <div class="admin-table" role="table" aria-label="Tabla administradora simulada">
+              <div class="admin-row admin-head" role="row">
+                <span>Nombre</span>
+                <span>Oficio</span>
+                <span>Estado</span>
+                <span>Acciones</span>
+              </div>
+              <div class="admin-row" role="row">
+                <span>Lucas Fernandez</span>
+                <span>Electricista</span>
+                <span class="status premium">Premium</span>
+                <span class="table-actions">Editar / Pausar</span>
+              </div>
+              <div class="admin-row" role="row">
+                <span>Camila Rios</span>
+                <span>Limpieza</span>
+                <span class="status free">Gratuito</span>
+                <span class="table-actions">Editar / Activar premium</span>
+              </div>
+              <div class="admin-row" role="row">
+                <span>Martin Suarez</span>
+                <span>Plomero</span>
+                <span class="status free">Gratuito</span>
+                <span class="table-actions">Editar / Eliminar</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span class="brand-mark">OA</span>
+      <p>OFICIOS APP - Plataforma preparada para crecer por etapas.</p>
+    </footer>
+
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
