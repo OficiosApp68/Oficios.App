@@ -6,7 +6,7 @@
     <title>OFICIOS APP | Profesionales cerca tuyo</title>
     <meta
       name="description"
-      content="Encontrá profesionales de confianza cerca tuyo por oficio, categoría o palabra clave."
+      content="Encontra profesionales de confianza cerca tuyo por oficio, categoria o palabra clave."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -47,7 +47,7 @@
           <div class="hero-copy">
             <span class="eyebrow">Servicios locales verificados</span>
             <h1>OFICIOS APP</h1>
-            <p class="hero-lead">Encontrá profesionales de confianza cerca tuyo.</p>
+            <p class="hero-lead">Encontra profesionales de confianza cerca tuyo.</p>
             <form class="search-panel" aria-label="Buscador principal">
               <label>
                 <span>Que necesitas</span>
@@ -123,53 +123,7 @@
           <h2>Pagina del profesional</h2>
           <p>Modelo base para mostrar detalle, trabajos realizados, zona de cobertura y opiniones.</p>
         </div>
-        <article class="profile-detail">
-          <div class="profile-hero">
-            <img
-              src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=900&q=80"
-              alt="Profesional trabajando"
-            />
-          </div>
-          <div class="profile-info">
-            <span class="status premium">Premium</span>
-            <h3>Lucas Fernandez</h3>
-            <p class="profession-line">Electricista matriculado - Zona Norte</p>
-            <p>
-              Atencion residencial y comercial. Instalaciones, tableros, diagnostico de fallas,
-              mantenimiento preventivo y urgencias coordinadas.
-            </p>
-            <div class="rating" aria-label="Calificacion simulada">5/5 <strong>4.9</strong></div>
-            <div class="tag-list" aria-label="Especialidades">
-              <span>Instalaciones</span>
-              <span>Tableros</span>
-              <span>Urgencias</span>
-              <span>Certificaciones</span>
-            </div>
-            <div class="coverage">
-              <strong>Zona de cobertura:</strong>
-              Vicente Lopez, San Isidro, Olivos, Martinez y alrededores.
-            </div>
-            <a class="button whatsapp" href="https://wa.me/5491100000000" target="_blank" rel="noreferrer">
-              WhatsApp
-            </a>
-          </div>
-          <div class="work-gallery" aria-label="Galeria de trabajos">
-            <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=500&q=80" alt="Trabajo electrico terminado" />
-            <img src="https://images.unsplash.com/photo-1621905252507-b35492cc74b4?auto=format&fit=crop&w=500&q=80" alt="Herramientas electricas" />
-            <img src="https://images.unsplash.com/photo-1581092921461-39b9d08a9b21?auto=format&fit=crop&w=500&q=80" alt="Mantenimiento tecnico" />
-          </div>
-          <div class="reviews">
-            <h4>Opiniones</h4>
-            <blockquote>
-              "Muy prolijo y puntual. Resolvio el problema del tablero en el dia."
-              <cite>Mariana G.</cite>
-            </blockquote>
-            <blockquote>
-              "Excelente atencion, explico todo con claridad y dejo la instalacion impecable."
-              <cite>Federico R.</cite>
-            </blockquote>
-          </div>
-        </article>
+        <article class="profile-detail" data-profile-detail></article>
       </section>
 
       <section class="section-block admin-section" id="admin">
@@ -191,32 +145,7 @@
               <h3>Profesionales cargados</h3>
               <button class="button primary" type="button">Nuevo profesional</button>
             </div>
-            <div class="admin-table" role="table" aria-label="Tabla administradora simulada">
-              <div class="admin-row admin-head" role="row">
-                <span>Nombre</span>
-                <span>Oficio</span>
-                <span>Estado</span>
-                <span>Acciones</span>
-              </div>
-              <div class="admin-row" role="row">
-                <span>Lucas Fernandez</span>
-                <span>Electricista</span>
-                <span class="status premium">Premium</span>
-                <span class="table-actions">Editar / Pausar</span>
-              </div>
-              <div class="admin-row" role="row">
-                <span>Camila Rios</span>
-                <span>Limpieza</span>
-                <span class="status free">Gratuito</span>
-                <span class="table-actions">Editar / Activar premium</span>
-              </div>
-              <div class="admin-row" role="row">
-                <span>Martin Suarez</span>
-                <span>Plomero</span>
-                <span class="status free">Gratuito</span>
-                <span class="table-actions">Editar / Eliminar</span>
-              </div>
-            </div>
+            <div class="admin-table" role="table" aria-label="Tabla administradora simulada" data-admin-table></div>
           </div>
         </div>
       </section>
@@ -227,7 +156,15 @@
       <p>OFICIOS APP - Plataforma preparada para crecer por etapas.</p>
     </footer>
 
-    <script src="js/data.js"></script>
+    <script src="js/data/catalog.js"></script>
+    <script src="js/data/directory.js"></script>
+    <script src="js/services/directory-service.js"></script>
+    <script src="js/renderers/render-helpers.js"></script>
+    <script src="js/renderers/category-renderer.js"></script>
+    <script src="js/renderers/professional-renderer.js"></script>
+    <script src="js/renderers/profile-renderer.js"></script>
+    <script src="js/renderers/admin-renderer.js"></script>
+    <script src="js/ui/navigation.js"></script>
     <script src="js/app.js"></script>
   </body>
 </html>

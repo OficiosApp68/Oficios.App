@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="700" viewBox="0 0 900 700" role="img" aria-labelledby="title desc">
+  <title id="title">Foto pendiente</title>
+  <desc id="desc">Imagen provisoria para perfiles profesionales sin fotografia cargada.</desc>
+  <rect width="900" height="700" fill="#e6f5f3"/>
+  <circle cx="450" cy="285" r="105" fill="#0f766e" opacity="0.18"/>
+  <path d="M260 585c31-102 104-158 190-158s159 56 190 158" fill="#0f766e" opacity="0.18"/>
+  <text x="450" y="620" text-anchor="middle" font-family="Arial, sans-serif" font-size="42" font-weight="700" fill="#115e59">OFICIOS APP</text>
+</svg>

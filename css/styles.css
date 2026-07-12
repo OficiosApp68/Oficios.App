@@ -445,7 +445,8 @@ h3 {
   box-shadow: 0 18px 42px rgba(245, 158, 11, 0.16);
 }
 
-.professional-card img {
+.professional-card img,
+.professional-photo {
   width: 100%;
   height: 220px;
   object-fit: cover;
@@ -493,6 +494,27 @@ h3 {
   background: var(--success);
 }
 
+.contact-disabled {
+  cursor: not-allowed;
+  color: #475569;
+  background: #e2e8f0;
+  box-shadow: none;
+}
+
+.contact-disabled:hover {
+  transform: none;
+}
+
+.photo-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-dark);
+  background: linear-gradient(145deg, #dbeafe, #e6f5f3);
+  font-weight: 800;
+  font-size: 2rem;
+}
+
 .profile-detail {
   display: grid;
   grid-template-columns: 0.9fr 1.1fr;
@@ -500,7 +522,8 @@ h3 {
   padding: 22px;
 }
 
-.profile-hero img {
+.profile-hero img,
+.profile-photo {
   width: 100%;
   height: 100%;
   min-height: 430px;
@@ -569,6 +592,15 @@ blockquote {
   padding: 18px;
   border-left: 4px solid var(--primary);
   border-radius: var(--radius);
+  background: var(--surface-strong);
+}
+
+.empty-state {
+  margin: 0;
+  padding: 18px;
+  border: 1px dashed var(--line);
+  border-radius: var(--radius);
+  color: var(--muted);
   background: var(--surface-strong);
 }
 
