@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Perfil profesional | OFICIOS APP</title>
+    <meta name="description" content="Ficha publica de profesional en OFICIOS APP." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav-shell" aria-label="Navegacion principal">
+        <a class="brand" href="index.html#home" aria-label="OFICIOS APP inicio">
+          <span class="brand-mark">OA</span>
+          <span class="brand-name">OFICIOS APP</span>
+        </a>
+        <div class="nav-actions profile-nav-actions">
+          <a class="button ghost" href="index.html#profesionales">Directorio</a>
+          <a class="button primary" href="index.html#home">Buscar servicios</a>
+        </div>
+      </nav>
+    </header>
+
+    <div data-professional-page></div>
+
+    <footer class="site-footer">
+      <span class="brand-mark">OA</span>
+      <p>OFICIOS APP - Plataforma preparada para crecer por etapas.</p>
+    </footer>
+
+    <script src="js/data/catalog.js"></script>
+    <script src="js/data/directory.js"></script>
+    <script src="js/services/directory-service.js"></script>
+    <script src="js/renderers/render-helpers.js"></script>
+    <script src="js/renderers/professional-detail-renderer.js"></script>
+    <script src="js/pages/professional-page.js"></script>
+  </body>
+</html>

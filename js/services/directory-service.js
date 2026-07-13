@@ -38,22 +38,36 @@
 
   function normalizeProfessional(professional) {
     const safeTradeIds = Array.isArray(professional.tradeIds) ? professional.tradeIds : [];
+    const experience = normalizeText(professional.experience, "");
+    const serviceArea = normalizeText(professional.serviceArea, "");
+    const coverage = normalizeText(professional.coverage, "");
+    const workingHours = normalizeText(professional.workingHours, "");
 
     return {
       id: professional.id,
       userId: normalizeText(professional.userId, ""),
       primaryTradeId: normalizeText(professional.primaryTradeId, ""),
       tradeIds: safeTradeIds,
-      experience: normalizeText(professional.experience, "Experiencia pendiente de carga"),
-      serviceArea: normalizeText(professional.serviceArea, "Zona a confirmar"),
-      coverage: normalizeText(professional.coverage, "Zona de cobertura pendiente de carga."),
-      workingHours: normalizeText(professional.workingHours, "Horarios a confirmar"),
+      experience: experience || "Experiencia pendiente de carga",
+      serviceArea: serviceArea || "Zona a confirmar",
+      coverage: coverage || "Zona de cobertura pendiente de carga.",
+      workingHours: workingHours || "Horarios a confirmar",
       isActive: professional.isActive !== false,
+      hasExperience: Boolean(experience),
+      hasServiceArea: Boolean(serviceArea),
+      hasCoverage: Boolean(coverage),
+      hasWorkingHours: Boolean(workingHours),
     };
   }
 
   function normalizePublicProfile(publicProfile, professional) {
     const primaryTrade = getTradeName(professional.primaryTradeId);
+    const title = normalizeText(publicProfile && publicProfile.title, "");
+    const summary = normalizeText(publicProfile && publicProfile.summary, "");
+    const longDescription = normalizeText(publicProfile && publicProfile.longDescription, "");
+    const specialties = Array.isArray(publicProfile && publicProfile.specialties)
+      ? publicProfile.specialties.filter((specialty) => normalizeText(specialty, ""))
+      : [];
     const gallery = Array.isArray(publicProfile && publicProfile.gallery)
       ? publicProfile.gallery
           .filter((item) => item && normalizeText(item.src, ""))
@@ -66,10 +80,10 @@
     return {
       id: publicProfile ? publicProfile.id : null,
       professionalId: professional.id,
-      title: normalizeText(publicProfile && publicProfile.title, primaryTrade),
-      summary: normalizeText(publicProfile && publicProfile.summary, "Descripcion pendiente de carga."),
-      longDescription: normalizeText(publicProfile && publicProfile.longDescription, "Descripcion profesional pendiente de carga."),
-      specialties: Array.isArray(publicProfile && publicProfile.specialties) ? publicProfile.specialties : [],
+      title: title || primaryTrade,
+      summary: summary || "Descripcion pendiente de carga.",
+      longDescription: longDescription || "Descripcion profesional pendiente de carga.",
+      specialties,
       rating: typeof (publicProfile && publicProfile.rating) === "number" ? publicProfile.rating : null,
       ratingLabel: typeof (publicProfile && publicProfile.rating) === "number" ? publicProfile.rating.toFixed(1) : "Sin calificacion",
       whatsapp: normalizeText(publicProfile && publicProfile.whatsapp, ""),
@@ -78,6 +92,11 @@
       gallery,
       reviews: Array.isArray(publicProfile && publicProfile.reviews) ? publicProfile.reviews : [],
       hasValidReference: Boolean(publicProfile),
+      hasTitle: Boolean(title),
+      hasSummary: Boolean(summary),
+      hasLongDescription: Boolean(longDescription),
+      hasSpecialties: specialties.length > 0,
+      hasRating: typeof (publicProfile && publicProfile.rating) === "number",
     };
   }
 
@@ -91,35 +110,44 @@
     };
   }
 
-  function getProfileViewModels() {
-    return app.directory.professionals
-      .filter((professional) => professional.isActive)
-      .map((professional) => {
-        const normalizedProfessional = normalizeProfessional(professional);
-        const user = normalizeUser(findById(app.directory.users, normalizedProfessional.userId), normalizedProfessional);
-        const publicProfile = normalizePublicProfile(
-          app.directory.publicProfiles.find((profile) => profile.professionalId === normalizedProfessional.id),
-          normalizedProfessional
-        );
-        const subscription = normalizeSubscription(getSubscription(normalizedProfessional.id));
-        const hasPremiumPlan = subscription.plan === "premium" && subscription.status === "active";
+  function buildProfileViewModel(professional) {
+    if (!professional) return null;
 
-        return {
-          id: normalizedProfessional.id,
-          user,
-          professional: normalizedProfessional,
-          publicProfile,
-          primaryTrade: getTradeName(normalizedProfessional.primaryTradeId),
-          trades: normalizedProfessional.tradeIds.map(getTradeName),
-          subscription,
-          statusLabel: hasPremiumPlan ? "Premium" : "Gratuito",
-          canContactByWhatsapp: Boolean(publicProfile.whatsapp),
-        };
-      });
+    const normalizedProfessional = normalizeProfessional(professional);
+    const user = normalizeUser(findById(app.directory.users, normalizedProfessional.userId), normalizedProfessional);
+    const publicProfile = normalizePublicProfile(
+      app.directory.publicProfiles.find((profile) => profile.professionalId === normalizedProfessional.id),
+      normalizedProfessional
+    );
+    const subscription = normalizeSubscription(getSubscription(normalizedProfessional.id));
+    const hasPremiumPlan = subscription.plan === "premium" && subscription.status === "active";
+
+    return {
+      id: normalizedProfessional.id,
+      user,
+      professional: normalizedProfessional,
+      publicProfile,
+      primaryTrade: getTradeName(normalizedProfessional.primaryTradeId),
+      trades: normalizedProfessional.tradeIds.map(getTradeName),
+      subscription,
+      statusLabel: hasPremiumPlan ? "Premium" : "Gratuito",
+      canContactByWhatsapp: Boolean(publicProfile.whatsapp),
+      canContactByPhone: Boolean(user.phone),
+    };
+  }
+
+  function getProfileViewModels() {
+    return app.directory.professionals.filter((professional) => professional.isActive).map(buildProfileViewModel);
+  }
+
+  function getProfessionalById(professionalId) {
+    const professional = findById(app.directory.professionals, professionalId);
+    return buildProfileViewModel(professional);
   }
 
   app.directoryService = {
     getProfileViewModels,
+    getProfessionalById,
     getFeaturedProfile: function () {
       return getProfileViewModels()[0];
     },

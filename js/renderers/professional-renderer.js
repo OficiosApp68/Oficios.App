@@ -20,7 +20,10 @@
               <h3>${profile.user.displayName}</h3>
               <p class="profession-line">${profile.publicProfile.title}</p>
               <p>${profile.publicProfile.summary}</p>
-              ${helpers.renderWhatsapp(profile)}
+              <div class="professional-actions">
+                <a class="button secondary" href="${helpers.getProfessionalUrl(profile)}">Ver perfil</a>
+                ${helpers.renderWhatsapp(profile)}
+              </div>
             </div>
           </article>
         `;

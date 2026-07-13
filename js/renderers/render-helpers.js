@@ -25,9 +25,26 @@
     `;
   }
 
+  function renderPhone(profile) {
+    if (!profile.canContactByPhone) return "";
+    const phoneHref = profile.user.phone.replace(/[^\d+]/g, "");
+
+    return `
+      <a class="button secondary" href="tel:${phoneHref}" aria-label="Llamar a ${profile.user.displayName}">
+        ${profile.user.phone}
+      </a>
+    `;
+  }
+
+  function getProfessionalUrl(profile) {
+    return `profesional.html?id=${encodeURIComponent(profile.id)}`;
+  }
+
   window.OficiosApp.renderHelpers = {
     getStatusClass,
+    getProfessionalUrl,
     renderPhoto,
+    renderPhone,
     renderWhatsapp,
   };
 })();
