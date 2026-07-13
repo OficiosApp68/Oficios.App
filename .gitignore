@@ -5,11 +5,18 @@ Thumbs.db
 # Editor / entorno local
 .vscode/
 .idea/
+.vscode-test/
 
-# Archivos temporales
+# Archivos temporales y logs
+logs/
 *.log
 *.tmp
 *.bak
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
 # Carpetas locales de Codex/agentes
 .agents/
@@ -17,8 +24,51 @@ Thumbs.db
 
 # Dependencias futuras
 node_modules/
+jspm_packages/
+web_modules/
+bower_components/
 
 # Variables de entorno futuras
 .env
 .env.*
 !.env.example
+
+# Salidas de build y caches futuras
+dist/
+out/
+build/
+coverage/
+*.lcov
+.nyc_output/
+.cache/
+.parcel-cache/
+.vite/
+.next/
+.nuxt/
+.output/
+.svelte-kit/
+.temp/
+.docusaurus/
+.firebase/
+.serverless/
+.fusebox/
+.dynamodb/
+
+# Tooling futuro
+*.tsbuildinfo
+.eslintcache
+.stylelintcache
+.npm/
+.pnpm-store/
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+*.tgz
+.yarn-integrity
+.node_repl_history
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*

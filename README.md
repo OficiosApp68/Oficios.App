@@ -1,6 +1,6 @@
 # OFICIOS APP
 
-OFICIOS APP es una plataforma web para conectar clientes con profesionales, tecnicos y oficios. El objetivo del proyecto es construir un directorio claro, confiable y preparado para crecer hacia registro real de profesionales, panel privado y publicacion automatica de perfiles.
+OFICIOS APP es un marketplace de oficios y servicios para conectar clientes con profesionales, tecnicos y oficios. El objetivo del proyecto es construir un directorio claro, confiable y preparado para crecer hacia registro real de profesionales, panel privado y publicacion automatica de perfiles.
 
 ## Estado actual
 
