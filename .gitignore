@@ -1,0 +1,24 @@
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Editor / entorno local
+.vscode/
+.idea/
+
+# Archivos temporales
+*.log
+*.tmp
+*.bak
+
+# Carpetas locales de Codex/agentes
+.agents/
+.codex/
+
+# Dependencias futuras
+node_modules/
+
+# Variables de entorno futuras
+.env
+.env.*
+!.env.example
