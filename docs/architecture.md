@@ -4,7 +4,7 @@ Este documento describe la organizacion actual del MVP y las decisiones tomadas 
 
 ## Objetivo de esta etapa
 
-La prioridad es sostener un directorio inicial de profesionales cargados de forma gratuita o administrada, con una base ordenada para crecer. No se implementan todavia registro, login, base de datos, pagos, geolocalizacion, chat ni panel completo de autogestion.
+La prioridad es sostener un directorio inicial de profesionales cargados de forma gratuita o administrada, con una base ordenada para crecer. El formulario `registro.html` ya guarda perfiles basicos en Supabase. Ya existe autenticacion basica con Supabase Auth. No se implementan todavia pagos, geolocalizacion, chat ni panel completo de autogestion.
 
 ## Estructura de archivos
 
@@ -13,6 +13,8 @@ La prioridad es sostener un directorio inicial de profesionales cargados de form
 - `js/data/catalog.js`: catalogo de categorias/oficios.
 - `js/data/directory.js`: datos iniciales del directorio separados por entidad.
 - `js/services/directory-service.js`: arma modelos de vista sin duplicar datos.
+- `js/config/supabase-config.js`: configuracion publica de Supabase para el navegador.
+- `js/services/supabase-service.js`: carga `supabase-js` desde CDN con version fija y consulta la tabla online de perfiles.
 - `js/renderers/render-helpers.js`: helpers visuales compartidos para estado, foto y contacto.
 - `js/renderers/*.js`: renderizado de categorias, listado, ficha publica y panel admin.
 - `js/renderers/professional-detail-renderer.js`: renderizado de la ficha publica individual.
@@ -25,6 +27,20 @@ La prioridad es sostener un directorio inicial de profesionales cargados de form
 La informacion esta separada en entidades para que en una etapa posterior pueda moverse a una API o base de datos sin cambiar toda la interfaz.
 
 `directory-service.js` es el punto de normalizacion antes de renderizar. Si faltan relaciones o datos opcionales, entrega valores seguros para evitar textos visibles como `undefined` o `null`, enlaces vacios e imagenes rotas.
+
+`supabase-service.js` transforma los perfiles cargados online al mismo modelo visual que usan las tarjetas y la ficha publica. De esa forma los profesionales creados desde el formulario se muestran junto al directorio existente sin reescribir los renderizadores.
+
+`auth-service.js` encapsula registro, login, acceso con Google, cierre de sesion y recuperacion de contrasena. Las paginas visibles no llaman directamente a Supabase Auth.
+
+El acceso con Google usa OAuth de Supabase. El frontend solo inicia el flujo con el SDK oficial; el `Client Secret` de Google queda guardado dentro de Supabase y nunca en archivos JavaScript del navegador. Para pruebas locales se deben autorizar URLs de redireccion como `http://127.0.0.1:8000/index.html` y `http://127.0.0.1:8000/registro.html`.
+
+## Conexion Supabase actual
+
+La integracion actual usa una `Publishable key` publica de Supabase. Esta clave puede vivir en el navegador porque no es una clave administrativa. La seguridad de lectura y escritura depende de las politicas de la tabla y de Row Level Security.
+
+Nunca se debe incluir en JavaScript del navegador una `Secret key`, `service_role`, contrasena de base de datos ni credenciales privadas.
+
+El archivo real `js/config/supabase-config.js` esta ignorado por Git para evitar subir configuraciones locales por accidente. El repositorio conserva solo `js/config/supabase-config.example.js` con valores ficticios.
 
 ### Usuario
 

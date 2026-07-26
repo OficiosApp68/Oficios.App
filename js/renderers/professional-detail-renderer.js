@@ -107,7 +107,6 @@
               ${description}
               ${renderTrades(profile)}
               <div class="profile-contact-actions">
-                ${helpers.renderPhone(profile)}
                 ${helpers.renderWhatsapp(profile)}
               </div>
             </div>

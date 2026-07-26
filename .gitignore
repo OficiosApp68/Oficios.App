@@ -21,6 +21,7 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 # Carpetas locales de Codex/agentes
 .agents/
 .codex/
+oficios app Claude/
 
 # Dependencias futuras
 node_modules/
@@ -32,6 +33,7 @@ bower_components/
 .env
 .env.*
 !.env.example
+js/config/supabase-config.js
 
 # Salidas de build y caches futuras
 dist/

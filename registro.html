@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registrarme como profesional | OFICIOS APP</title>
+    <meta
+      name="description"
+      content="Formulario de prueba para registrar un perfil profesional en OFICIOS APP."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/styles.css?v=profile-contact-20260720a" />
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav-shell" aria-label="Navegacion principal">
+        <a class="brand" href="index.html" aria-label="OFICIOS APP inicio">
+          <span class="brand-mark">OA</span>
+          <span class="brand-name">OFICIOS APP</span>
+        </a>
+        <div class="nav-actions profile-nav-actions auth-page-nav">
+          <a class="button ghost" href="index.html">Volver al inicio</a>
+          <div class="session-actions" data-session-status>
+            <a class="button ghost" href="login.html">Iniciar sesion</a>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="form-page-main">
+      <section class="form-page-shell" aria-labelledby="register-title">
+        <div class="form-intro">
+          <span class="eyebrow">Perfil de prueba</span>
+          <h1 id="register-title">Registrarme como profesional</h1>
+          <p>
+            Crea tu cuenta gratuita y carga los datos basicos para aparecer en el directorio.
+            Despues vas a poder volver a entrar con tu email y contrasena.
+          </p>
+        </div>
+
+        <form class="professional-form" data-register-form novalidate>
+          <div class="auth-provider-actions">
+            <button class="button google large" type="button" data-google-register>
+              Continuar con Google
+            </button>
+          </div>
+
+          <p class="form-message auth-session-note" data-auth-session-note role="status" aria-live="polite"></p>
+
+          <div class="auth-divider" data-auth-divider aria-hidden="true">
+            <span>o crea tu cuenta con email</span>
+          </div>
+
+          <div class="account-fields" data-account-fields>
+            <div class="form-field">
+              <label for="professional-email">Email</label>
+              <input
+                id="professional-email"
+                name="email"
+                type="email"
+                autocomplete="email"
+                required
+                placeholder="tuemail@ejemplo.com"
+              />
+            </div>
+
+            <div class="form-field">
+              <label for="professional-password">Contrasena</label>
+              <input
+                id="professional-password"
+                name="password"
+                type="password"
+                autocomplete="new-password"
+                required
+                minlength="6"
+                placeholder="Minimo 6 caracteres"
+              />
+            </div>
+
+            <div class="form-field full">
+              <label for="professional-password-confirmation">Confirmar contrasena</label>
+              <input
+                id="professional-password-confirmation"
+                name="passwordConfirmation"
+                type="password"
+                autocomplete="new-password"
+                required
+                minlength="6"
+                placeholder="Repeti la contrasena"
+              />
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="professional-name">Nombre</label>
+            <input
+              id="professional-name"
+              name="name"
+              type="text"
+              autocomplete="name"
+              required
+              placeholder="Ejemplo: Lucas Fernandez"
+            />
+          </div>
+
+          <div class="form-field">
+            <label for="professional-occupation">Oficio</label>
+            <input
+              id="professional-occupation"
+              name="occupation"
+              type="text"
+              required
+              placeholder="Ejemplo: Electricista"
+            />
+          </div>
+
+          <div class="form-field">
+            <label for="professional-phone">Telefono</label>
+            <input
+              id="professional-phone"
+              name="phone"
+              type="tel"
+              autocomplete="tel"
+              required
+              placeholder="Ejemplo: 11 5555 5555"
+            />
+          </div>
+
+          <div class="form-field">
+            <label for="professional-zone">Zona</label>
+            <input
+              id="professional-zone"
+              name="zone"
+              type="text"
+              required
+              placeholder="Ejemplo: Palermo, CABA"
+            />
+          </div>
+
+          <div class="form-field full">
+            <label for="professional-description">Descripcion</label>
+            <textarea
+              id="professional-description"
+              name="description"
+              rows="5"
+              required
+              placeholder="Contanos brevemente que servicios ofreces."
+            ></textarea>
+          </div>
+
+          <div class="form-actions">
+            <button class="button primary large" type="submit">Crear cuenta y guardar perfil</button>
+            <a class="button secondary large" href="index.html">Volver al inicio</a>
+            <a class="button ghost large" href="login.html">Ya tengo cuenta</a>
+          </div>
+
+          <p class="form-message" data-form-message role="status" aria-live="polite"></p>
+        </form>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span class="brand-mark">OA</span>
+      <p>OFICIOS APP - Plataforma preparada para crecer por etapas.</p>
+    </footer>
+
+    <script src="js/config/supabase-config.js"></script>
+    <script src="js/services/supabase-service.js?v=google-session-20260726a"></script>
+    <script src="js/services/auth-service.js?v=google-session-20260726a"></script>
+    <script src="js/ui/session-status.js?v=profile-edit-20260726a"></script>
+    <script src="js/pages/register-page.js?v=google-session-20260726a"></script>
+  </body>
+</html>
+

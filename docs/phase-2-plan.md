@@ -46,11 +46,10 @@ Motivos:
 
 ### Sistema de autenticacion
 
-Supabase Auth con email y password para la primera version.
+Supabase Auth con email y password para la primera version. Tambien se prepara acceso con Google para reducir problemas de contrasenas durante la validacion del MVP.
 
 Mas adelante:
 
-- Inicio con Google.
 - Verificacion de email.
 - Recuperacion de contraseña.
 - Roles internos para administradores.
@@ -362,10 +361,10 @@ Futuras mejoras:
 
 ### Tarea 1: Preparacion tecnica
 
-- Crear proyecto Supabase.
-- Configurar `.env.example`.
-- Agregar cliente Supabase.
-- Crear repositorios base.
+- Crear proyecto Supabase. Completado para el MVP inicial.
+- Configurar clave publica de navegador. Completado con `Publishable key`.
+- Agregar cliente Supabase. Completado con importacion ESM desde CDN y version fija.
+- Crear repositorios base. Iniciado con `supabase-service.js`.
 - Validar conexion desde entorno local.
 
 ### Tarea 2: Base de datos inicial
@@ -377,10 +376,12 @@ Futuras mejoras:
 
 ### Tarea 3: Registro e inicio de sesion
 
-- Crear pantalla de registro.
-- Crear pantalla de login.
-- Crear logout.
-- Mostrar estado de sesion.
+- Crear pantalla de registro. Implementado en la primera version visible.
+- Crear pantalla de login. Implementado en la primera version visible.
+- Crear logout. Implementado en la primera version visible.
+- Mostrar estado de sesion. Implementado en la primera version visible.
+- Recuperacion basica de contrasena. Implementado con email de Supabase y pagina para nueva contrasena.
+- Acceso con Google. Interfaz y llamada OAuth preparadas; requiere configurar Google Cloud y el proveedor Google dentro de Supabase.
 
 ### Tarea 4: Panel privado minimo
 

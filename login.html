@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Iniciar sesion | OFICIOS APP</title>
+    <meta name="description" content="Iniciar sesion en OFICIOS APP." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/styles.css?v=profile-contact-20260720a" />
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav-shell" aria-label="Navegacion principal">
+        <a class="brand" href="index.html" aria-label="OFICIOS APP inicio">
+          <span class="brand-mark">OA</span>
+          <span class="brand-name">OFICIOS APP</span>
+        </a>
+        <div class="nav-actions profile-nav-actions auth-page-nav">
+          <a class="button ghost" href="index.html">Volver al inicio</a>
+          <div class="session-actions" data-session-status>
+            <a class="button primary" href="registro.html">Registrarse</a>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="form-page-main">
+      <section class="form-page-shell" aria-labelledby="login-title">
+        <div class="form-intro">
+          <span class="eyebrow">Acceso profesional</span>
+          <h1 id="login-title">Iniciar sesion</h1>
+          <p>
+            Entra con el email y la contrasena que usaste al registrar tu perfil profesional.
+          </p>
+        </div>
+
+        <div class="signed-session-panel is-hidden" data-login-session-panel role="status" aria-live="polite"></div>
+
+        <form class="professional-form auth-form" data-login-form novalidate>
+          <div class="auth-provider-actions">
+            <button class="button google large" type="button" data-google-login>
+              Continuar con Google
+            </button>
+          </div>
+
+          <div class="auth-divider" aria-hidden="true">
+            <span>o entra con email</span>
+          </div>
+
+          <div class="form-field full">
+            <label for="login-email">Email</label>
+            <input
+              id="login-email"
+              name="email"
+              type="email"
+              autocomplete="email"
+              required
+              placeholder="tuemail@ejemplo.com"
+            />
+          </div>
+
+          <div class="form-field full">
+            <label for="login-password">Contrasena</label>
+            <input
+              id="login-password"
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              required
+              placeholder="Tu contrasena"
+            />
+          </div>
+
+          <div class="form-actions">
+            <button class="button primary large" type="submit">Iniciar sesion</button>
+            <a class="button secondary large" href="registro.html">Crear cuenta</a>
+          </div>
+
+          <p class="form-help">
+            <a class="inline-link" href="recuperar-password.html">Olvide mi contrasena</a>
+          </p>
+
+          <p class="form-message" data-form-message role="status" aria-live="polite"></p>
+        </form>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span class="brand-mark">OA</span>
+      <p>OFICIOS APP - Plataforma preparada para crecer por etapas.</p>
+    </footer>
+
+    <script src="js/config/supabase-config.js"></script>
+    <script src="js/services/supabase-service.js?v=google-session-20260726a"></script>
+    <script src="js/services/auth-service.js?v=google-session-20260726a"></script>
+    <script src="js/ui/session-status.js?v=profile-edit-20260726a"></script>
+    <script src="js/pages/login-page.js?v=google-session-20260726a"></script>
+  </body>
+</html>
+

@@ -2,7 +2,6 @@
   const app = window.OficiosApp;
   const params = new URLSearchParams(window.location.search);
   const professionalId = params.get("id");
-  const profile = professionalId ? app.directoryService.getProfessionalById(professionalId) : null;
 
   function updatePageMeta(profileModel) {
     if (!profileModel) {
@@ -21,6 +20,38 @@
     metaDescription.setAttribute("content", description);
   }
 
-  updatePageMeta(profile);
-  app.renderProfessionalDetailPage(profile, document.querySelector("[data-professional-page]"));
+  function renderProfile(profile) {
+    updatePageMeta(profile);
+    app.renderProfessionalDetailPage(profile, document.querySelector("[data-professional-page]"));
+  }
+
+  async function initProfessionalPage() {
+    app.initSessionStatus();
+
+    if (!professionalId) {
+      renderProfile(null);
+      return;
+    }
+
+    const localProfile = app.directoryService.getProfessionalById(professionalId);
+
+    if (localProfile) {
+      renderProfile(localProfile);
+      return;
+    }
+
+    if (!app.supabaseService) {
+      renderProfile(null);
+      return;
+    }
+
+    try {
+      const onlineProfile = await app.supabaseService.getProfessionalProfileById(professionalId);
+      renderProfile(onlineProfile);
+    } catch (error) {
+      renderProfile(null);
+    }
+  }
+
+  initProfessionalPage();
 })();

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mi perfil | OFICIOS APP</title>
+    <meta name="description" content="Editar perfil profesional en OFICIOS APP." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/styles.css?v=profile-edit-20260726a" />
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav-shell" aria-label="Navegacion principal">
+        <a class="brand" href="index.html" aria-label="OFICIOS APP inicio">
+          <span class="brand-mark">OA</span>
+          <span class="brand-name">OFICIOS APP</span>
+        </a>
+        <div class="nav-actions profile-nav-actions">
+          <a class="button ghost" href="index.html#profesionales">Directorio</a>
+          <div class="session-actions" data-session-status>
+            <a class="button ghost" href="login.html">Iniciar sesion</a>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="form-page-main">
+      <section class="form-page-shell" aria-labelledby="profile-edit-title">
+        <div class="form-intro">
+          <span class="eyebrow">Panel profesional</span>
+          <h1 id="profile-edit-title">Mi perfil</h1>
+          <p>Edita tus datos, actualiza tu foto y mantené tu perfil publicado en el directorio.</p>
+        </div>
+
+        <form class="professional-form" data-my-profile-form novalidate>
+          <div class="profile-edit-preview full">
+            <div class="profile-edit-photo photo-placeholder" data-profile-photo-preview role="img" aria-label="Foto de perfil">OA</div>
+            <div>
+              <strong data-profile-preview-name>Tu perfil profesional</strong>
+              <span data-profile-preview-detail>Los cambios guardados se veran en el directorio.</span>
+            </div>
+          </div>
+
+          <div class="form-field full">
+            <label for="profile-photo">Foto de perfil</label>
+            <input id="profile-photo" name="photo" type="file" accept="image/*" data-profile-photo-input />
+            <small class="field-help">Usá una foto clara. Si no cargás foto, se mantiene el logo provisorio.</small>
+          </div>
+
+          <div class="form-field">
+            <label for="profile-name">Nombre</label>
+            <input id="profile-name" name="name" type="text" required />
+          </div>
+
+          <div class="form-field">
+            <label for="profile-occupation">Oficio</label>
+            <input id="profile-occupation" name="occupation" type="text" required />
+          </div>
+
+          <div class="form-field">
+            <label for="profile-phone">Telefono</label>
+            <input id="profile-phone" name="phone" type="tel" required />
+          </div>
+
+          <div class="form-field">
+            <label for="profile-zone">Zona</label>
+            <input id="profile-zone" name="zone" type="text" required />
+          </div>
+
+          <div class="form-field full">
+            <label for="profile-description">Descripcion</label>
+            <textarea id="profile-description" name="description" rows="5" required></textarea>
+          </div>
+
+          <div class="form-actions">
+            <button class="button primary large" type="submit">Guardar cambios</button>
+            <a class="button secondary large" href="index.html#profesionales">Ver directorio</a>
+            <button class="button ghost large" type="button" data-save-and-logout>Guardar y cerrar sesion</button>
+          </div>
+
+          <p class="form-message" data-form-message role="status" aria-live="polite"></p>
+        </form>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span class="brand-mark">OA</span>
+      <p>OFICIOS APP - Plataforma preparada para crecer por etapas.</p>
+    </footer>
+
+    <script src="js/config/supabase-config.js"></script>
+    <script src="js/services/supabase-service.js?v=profile-edit-20260726a"></script>
+    <script src="js/services/auth-service.js?v=profile-edit-20260726a"></script>
+    <script src="js/ui/session-status.js?v=profile-edit-20260726a"></script>
+    <script src="js/pages/my-profile-page.js?v=profile-edit-20260726b"></script>
+  </body>
+</html>

@@ -11,7 +11,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/styles.css?v=profile-contact-20260720a" />
   </head>
   <body>
     <header class="site-header">
@@ -23,6 +23,10 @@
         <div class="nav-actions profile-nav-actions">
           <a class="button ghost" href="index.html#profesionales">Directorio</a>
           <a class="button primary" href="index.html#home">Buscar servicios</a>
+          <div class="session-actions" data-session-status>
+            <a class="button ghost" href="login.html">Iniciar sesion</a>
+            <a class="button primary" href="registro.html">Registrarse</a>
+          </div>
         </div>
       </nav>
     </header>
@@ -37,9 +41,13 @@
 
     <script src="js/data/catalog.js"></script>
     <script src="js/data/directory.js"></script>
+    <script src="js/config/supabase-config.js"></script>
+    <script src="js/services/supabase-service.js?v=google-session-20260726a"></script>
+    <script src="js/services/auth-service.js?v=google-session-20260726a"></script>
     <script src="js/services/directory-service.js"></script>
     <script src="js/renderers/render-helpers.js"></script>
-    <script src="js/renderers/professional-detail-renderer.js"></script>
-    <script src="js/pages/professional-page.js"></script>
+    <script src="js/renderers/professional-detail-renderer.js?v=profile-contact-20260720a"></script>
+    <script src="js/ui/session-status.js?v=profile-edit-20260726a"></script>
+    <script src="js/pages/professional-page.js?v=profile-edit-20260726a"></script>
   </body>
 </html>
