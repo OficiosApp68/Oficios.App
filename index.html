@@ -48,27 +48,34 @@
             <span class="eyebrow">Servicios locales verificados</span>
             <h1>OFICIOS APP</h1>
             <p class="hero-lead">Encontra profesionales de confianza cerca tuyo.</p>
-            <form class="search-panel" aria-label="Buscador principal">
-              <label>
+            <form class="search-panel" aria-label="Buscador principal" data-directory-search-form>
+              <label for="directory-query">
                 <span>Que necesitas</span>
-                <input type="search" placeholder="Electricista, limpieza, aire acondicionado..." />
+                <input
+                  id="directory-query"
+                  name="query"
+                  type="search"
+                  placeholder="Nombre, oficio o zona"
+                  autocomplete="off"
+                  list="directory-search-suggestions"
+                  data-search-query
+                />
+                <datalist id="directory-search-suggestions" data-search-suggestions></datalist>
               </label>
-              <label>
-                <span>Categoria</span>
-                <select>
-                  <option>Todas las categorias</option>
-                  <option>Carpintero</option>
-                  <option>Electricista</option>
-                  <option>Plomero</option>
-                  <option>Gasista</option>
-                  <option>Refrigeracion</option>
+              <label for="directory-occupation">
+                <span>Oficio</span>
+                <select id="directory-occupation" name="occupation" data-search-occupation>
+                  <option value="">Todos los oficios</option>
                 </select>
               </label>
-              <label>
+              <label for="directory-location">
                 <span>Zona</span>
-                <input type="text" placeholder="Barrio, ciudad o localidad" />
+                <select id="directory-location" name="location" data-search-location>
+                  <option value="">Todas las zonas</option>
+                </select>
               </label>
-              <button class="button search-button" type="button">Buscar</button>
+              <button class="button search-button" type="submit">Buscar</button>
+              <button class="button secondary search-clear-button" type="button" data-clear-search>Limpiar</button>
             </form>
             <div class="hero-actions">
               <a class="button primary large" href="registro.html">Registrarse</a>
@@ -117,6 +124,10 @@
         <p class="directory-status" data-directory-status role="status" aria-live="polite">
           Cargando profesionales registrados...
         </p>
+        <div class="directory-empty-state" data-directory-empty hidden>
+          <p>No encontramos profesionales con esos criterios.</p>
+          <button class="button secondary" type="button" data-clear-search>Limpiar filtros</button>
+        </div>
         <div class="professionals-grid" data-professionals-grid></div>
       </section>
 
@@ -160,19 +171,20 @@
       <small>Version de revision: ficha publica individual</small>
     </footer>
 
-    <script src="js/data/catalog.js"></script>
+    <script src="js/data/catalog.js?v=smart-search-20260731a"></script>
     <script src="js/data/directory.js"></script>
     <script src="js/config/supabase-config.js"></script>
     <script src="js/services/supabase-service.js?v=google-session-20260726a"></script>
     <script src="js/services/auth-service.js?v=google-session-20260726a"></script>
     <script src="js/services/directory-service.js"></script>
-    <script src="js/renderers/render-helpers.js"></script>
-    <script src="js/renderers/category-renderer.js"></script>
+    <script src="js/services/search-service.js?v=smart-search-20260731a"></script>
+    <script src="js/renderers/render-helpers.js?v=category-actions-20260731a"></script>
+    <script src="js/renderers/category-renderer.js?v=category-actions-20260731a"></script>
     <script src="js/renderers/professional-renderer.js"></script>
     <script src="js/renderers/profile-renderer.js"></script>
     <script src="js/renderers/admin-renderer.js"></script>
     <script src="js/ui/navigation.js"></script>
-    <script src="js/ui/session-status.js?v=profile-edit-20260726a"></script>
-    <script src="js/app.js?v=profile-edit-20260726a"></script>
+    <script src="js/ui/session-status.js?v=edit-profile-cta-20260729a"></script>
+    <script src="js/app.js?v=smart-search-20260731a"></script>
   </body>
 </html>

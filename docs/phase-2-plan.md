@@ -53,6 +53,7 @@ Mas adelante:
 - Verificacion de email.
 - Recuperacion de contraseña.
 - Roles internos para administradores.
+- Aviso de nuevo profesional registrado para revision inicial.
 
 ### Almacenamiento de imagenes
 
@@ -297,6 +298,8 @@ Reglas:
    - `publication_status` es `published`.
 13. Puede volver al panel y editar sus datos.
 
+Para reforzar seguridad y confianza, una etapa cercana debe agregar un aviso cuando se registre un profesional nuevo. La primera version recomendada es simple: el perfil queda cargado, se muestra un mensaje claro al profesional y la administracion recibe una notificacion para revisar datos basicos antes de validar o destacar el registro. No conviene prometer validacion manual completa hasta tener una pantalla interna preparada para hacerlo.
+
 ## Seguridad
 
 ### Permisos
@@ -424,5 +427,7 @@ Futuras mejoras:
 
 - Crear perfiles piloto.
 - Revisar facilidad de carga.
+- Agregar aviso interno cuando se registra un profesional nuevo.
+- Definir si los perfiles nuevos se publican automaticamente o quedan pendientes de revision.
 - Medir contactos.
 - Ajustar campos y textos antes de escalar.

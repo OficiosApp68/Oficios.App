@@ -107,6 +107,7 @@
               ${description}
               ${renderTrades(profile)}
               <div class="profile-contact-actions">
+                ${profile.canEditOwnProfile ? '<a class="button secondary" href="mi-perfil.html">Editar mi perfil</a>' : ""}
                 ${helpers.renderWhatsapp(profile)}
               </div>
             </div>

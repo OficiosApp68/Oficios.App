@@ -7,13 +7,13 @@
     target.innerHTML = categories
       .map(
         (category) => `
-          <article class="category-card" data-category-id="${category.id}">
+          <button class="category-card" type="button" data-category-id="${category.id}" data-category-query="${category.query || category.name}">
             <span class="category-icon" aria-hidden="true">${category.icon}</span>
             <div>
               <strong>${category.name}</strong>
-              <small>${category.count}</small>
+              <small>Buscar rubro</small>
             </div>
-          </article>
+          </button>
         `
       )
       .join("");

@@ -26,7 +26,7 @@
     return {
       id: row.id,
       user: {
-        id: null,
+        id: normalizeText(row && row.user_id, ""),
         role: "professional",
         displayName: name,
         email: "",
@@ -36,7 +36,7 @@
       },
       professional: {
         id: row.id,
-        userId: "",
+        userId: normalizeText(row && row.user_id, ""),
         primaryTradeId: "",
         tradeIds: [],
         experience: "Experiencia pendiente de carga",

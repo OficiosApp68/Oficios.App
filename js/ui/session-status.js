@@ -26,7 +26,7 @@
 
     target.innerHTML = `
       <span class="session-label">Sesion iniciada como ${email}</span>
-      <a class="button secondary" href="mi-perfil.html">Mi perfil</a>
+      <a class="button secondary" href="mi-perfil.html">Editar mi perfil</a>
       <button class="button ghost" type="button" data-logout-button>Cerrar sesion</button>
     `;
 

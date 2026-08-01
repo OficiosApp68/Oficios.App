@@ -18,8 +18,12 @@
       return '<span class="button whatsapp contact-disabled" aria-disabled="true">WhatsApp no disponible</span>';
     }
 
+    const message = `Hola ${profile.user.displayName}, vengo de OFICIOS APP y quiero consultarte por un presupuesto.`;
+    const separator = profile.publicProfile.whatsapp.includes("?") ? "&" : "?";
+    const whatsappUrl = `${profile.publicProfile.whatsapp}${separator}text=${encodeURIComponent(message)}`;
+
     return `
-      <a class="button whatsapp" href="${profile.publicProfile.whatsapp}" target="_blank" rel="noreferrer">
+      <a class="button whatsapp" href="${whatsappUrl}" target="_blank" rel="noreferrer">
         WhatsApp
       </a>
     `;

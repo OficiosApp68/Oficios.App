@@ -25,6 +25,22 @@
     app.renderProfessionalDetailPage(profile, document.querySelector("[data-professional-page]"));
   }
 
+  async function markOwnProfile(profile) {
+    if (!profile || profile.source !== "supabase" || !app.authService) {
+      return profile;
+    }
+
+    try {
+      const session = await app.authService.getSession();
+      const sessionUserId = session && session.user ? session.user.id : "";
+      profile.canEditOwnProfile = Boolean(sessionUserId && profile.user.id === sessionUserId);
+    } catch (error) {
+      profile.canEditOwnProfile = false;
+    }
+
+    return profile;
+  }
+
   async function initProfessionalPage() {
     app.initSessionStatus();
 
@@ -47,7 +63,7 @@
 
     try {
       const onlineProfile = await app.supabaseService.getProfessionalProfileById(professionalId);
-      renderProfile(onlineProfile);
+      renderProfile(await markOwnProfile(onlineProfile));
     } catch (error) {
       renderProfile(null);
     }
