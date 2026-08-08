@@ -102,6 +102,7 @@
               <span class="status ${statusClass}">${profile.statusLabel}</span>
               <h1 id="profile-title">${profile.user.displayName}</h1>
               <p class="profession-line">${profile.publicProfile.title}</p>
+              <p class="trust-label">Registrado en OFICIOS APP</p>
               ${profile.professional.hasServiceArea ? `<p class="profile-location">${profile.professional.serviceArea}</p>` : ""}
               ${renderRating(profile)}
               ${description}

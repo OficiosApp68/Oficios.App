@@ -19,6 +19,7 @@
               </div>
               <h3>${profile.user.displayName}</h3>
               <p class="profession-line">${profile.publicProfile.title}</p>
+              <p class="trust-label">Registrado en OFICIOS APP</p>
               <p>${profile.publicProfile.summary}</p>
               <div class="professional-actions">
                 <a class="button secondary" href="${helpers.getProfessionalUrl(profile)}">Ver perfil</a>
