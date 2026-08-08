@@ -68,6 +68,10 @@ python -m http.server 8000
 - Recuperar contrasena: `http://localhost:8000/recuperar-password.html`
 - Cambiar contrasena: `http://localhost:8000/cambiar-password.html`
 
+Cuando GitHub Pages este activo, la URL publica esperada sera:
+
+- `https://oficiosapp68.github.io/Oficios.App/`
+
 ## Tecnologias actuales
 
 - HTML.
@@ -79,6 +83,8 @@ python -m http.server 8000
 La web usa una `Publishable key` publica de Supabase, apta para navegador. No se debe usar ni pegar en archivos JavaScript ninguna clave secreta, `service_role` ni credencial administrativa.
 
 Para configurar el proyecto en otra computadora, copiar `js/config/supabase-config.example.js` como `js/config/supabase-config.js` y completar la URL publica y la Publishable key del proyecto Supabase.
+
+Para GitHub Pages, el workflow copia `js/config/supabase-config.production.js` como `js/config/supabase-config.js` durante la publicacion. Ese archivo solo contiene datos publicos de navegador.
 
 Para que funcione `Continuar con Google`, hay que activar el proveedor Google dentro de Supabase Auth y cargar alli el Client ID y Client Secret generados en Google Cloud. El Client Secret de Google no debe guardarse en este repositorio ni en archivos JavaScript del navegador.
 
