@@ -1,6 +1,20 @@
 (function () {
   window.OficiosApp = window.OficiosApp || {};
 
+  const searchSynonyms = {
+    canillita: ["diario", "diarios", "revista", "revistas", "periodico", "periodicos"],
+    diario: ["diarios", "canillita", "revista", "revistas"],
+    diarios: ["diario", "canillita", "revista", "revistas"],
+    revista: ["revistas", "canillita", "diario", "diarios"],
+    revistas: ["revista", "canillita", "diario", "diarios"],
+    periodico: ["periodicos", "canillita", "diario", "diarios"],
+    periodicos: ["periodico", "canillita", "diario", "diarios"],
+    disenador: ["diseno", "informatica", "informatico"],
+    diseno: ["disenador", "informatica", "informatico"],
+    informatica: ["informatico", "computacion", "sistemas", "diseno"],
+    informatico: ["informatica", "computacion", "sistemas", "diseno"],
+  };
+
   function normalizeSearchText(value) {
     return String(value || "")
       .normalize("NFD")
@@ -30,12 +44,13 @@
   function getTokenVariants(token) {
     const variants = [token];
     const stem = token.length > 4 ? token.replace(/[aeiou]$/, "") : "";
+    const synonyms = searchSynonyms[token] || [];
 
     if (stem && stem !== token) {
       variants.push(stem);
     }
 
-    return variants;
+    return [...new Set([...variants, ...synonyms])];
   }
 
   function matchesQuery(profile, query) {
