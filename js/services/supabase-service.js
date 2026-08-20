@@ -10,8 +10,55 @@
     return typeof value === "string" && value.trim() ? value.trim() : fallback;
   }
 
+  function removeArgentinaMobilePrefix(digits) {
+    if (digits.startsWith("15") && digits.length === 10) {
+      return `11${digits.slice(2)}`;
+    }
+
+    if (digits.startsWith("1115") && digits.length === 12) {
+      return `11${digits.slice(4)}`;
+    }
+
+    if (digits.length >= 11 && digits.length <= 13) {
+      return digits.replace(/^(\d{2,4})15(\d{6,8})$/, "$1$2");
+    }
+
+    return digits;
+  }
+
+  function normalizeWhatsappDigits(phone) {
+    let digits = normalizeText(phone, "").replace(/[^\d]/g, "");
+
+    if (!digits) return "";
+
+    if (digits.startsWith("00")) {
+      digits = digits.slice(2);
+    }
+
+    if (digits.startsWith("549")) {
+      return digits;
+    }
+
+    if (digits.startsWith("54")) {
+      const nationalDigits = removeArgentinaMobilePrefix(digits.slice(2).replace(/^9/, ""));
+      return nationalDigits ? `549${nationalDigits}` : "";
+    }
+
+    digits = removeArgentinaMobilePrefix(digits.replace(/^0+/, ""));
+
+    if (digits.length === 8) {
+      return `54911${digits}`;
+    }
+
+    if (digits.length >= 10 && digits.length <= 11) {
+      return `549${digits}`;
+    }
+
+    return digits;
+  }
+
   function buildWhatsappUrl(phone) {
-    const digits = normalizeText(phone, "").replace(/[^\d]/g, "");
+    const digits = normalizeWhatsappDigits(phone);
     return digits ? `https://wa.me/${digits}` : "";
   }
 
