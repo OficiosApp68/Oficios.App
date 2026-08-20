@@ -1036,12 +1036,19 @@ cite {
 .auth-provider-actions,
 .auth-divider,
 .auth-session-note,
-.account-fields {
+.account-fields,
+.profile-fields {
   grid-column: 1 / -1;
 }
 
-.account-fields {
+.account-fields,
+.profile-fields {
   display: contents;
+}
+
+.profile-fields.is-hidden,
+.account-fields.is-hidden {
+  display: none;
 }
 
 .auth-divider {

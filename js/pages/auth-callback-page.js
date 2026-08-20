@@ -62,12 +62,12 @@
 
   async function initAuthCallback() {
     if (!app.authService) {
-      setMessage("No pudimos cargar el inicio con Google. Volve a intentar.", "error");
+      setMessage("No pudimos cargar la confirmacion de cuenta. Volve a intentar.", "error");
       return;
     }
 
     try {
-      setMessage("Estamos confirmando tu sesion con Google...", "");
+      setMessage("Estamos confirmando tu sesion...", "");
 
       const session = await waitForSession();
 
@@ -76,14 +76,14 @@
         const readableError = getReadableAuthError(authError);
         setMessage(
           readableError
-            ? `Google no pudo completar el inicio de sesion. Motivo: ${readableError}`
-            : "Google no devolvio una sesion activa. Volve a iniciar sesion.",
+            ? `No pudimos completar el inicio de sesion. Motivo: ${readableError}`
+            : "No encontramos una sesion activa. Volve a iniciar sesion.",
           "error"
         );
         return;
       }
 
-      const email = session.user && session.user.email ? session.user.email : "tu cuenta de Google";
+      const email = session.user && session.user.email ? session.user.email : "tu cuenta";
       setMessage(`Sesion iniciada como ${email}. Volviendo a OFICIOS APP...`, "success");
 
       window.setTimeout(() => {
@@ -93,8 +93,8 @@
       const readableError = getReadableAuthError(error && error.message);
       setMessage(
         readableError
-          ? `No pudimos completar Google. Motivo: ${readableError}`
-          : "No pudimos completar el inicio con Google. Volve a intentar.",
+          ? `No pudimos completar el inicio. Motivo: ${readableError}`
+          : "No pudimos completar el inicio. Volve a intentar.",
         "error"
       );
     }

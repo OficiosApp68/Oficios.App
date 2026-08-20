@@ -124,7 +124,13 @@
 
   async function signUp(email, password) {
     const auth = await getAuth();
-    const { data, error } = await auth.signUp({ email, password });
+    const { data, error } = await auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: getAuthCallbackUrl("registro.html"),
+      },
+    });
 
     if (error) {
       throw error;

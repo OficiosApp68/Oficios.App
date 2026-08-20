@@ -14,7 +14,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="css/styles.css?v=profile-contact-20260720a" />
+    <link rel="stylesheet" href="css/styles.css?v=email-confirmation-20260820a" />
   </head>
   <body>
     <header class="site-header">
@@ -38,8 +38,8 @@
           <span class="eyebrow">Perfil de prueba</span>
           <h1 id="register-title">Registrarme como profesional</h1>
           <p>
-            Crea tu cuenta gratuita y carga los datos basicos para aparecer en el directorio.
-            Despues vas a poder volver a entrar con tu email y contrasena.
+            Crea tu cuenta gratuita, confirma tu email y despues completa los datos para aparecer en el directorio.
+            Esta validacion ayuda a proteger tu perfil.
           </p>
         </div>
 
@@ -96,65 +96,67 @@
             </div>
           </div>
 
-          <div class="form-field">
-            <label for="professional-name">Nombre</label>
-            <input
-              id="professional-name"
-              name="name"
-              type="text"
-              autocomplete="name"
-              required
-              placeholder="Ejemplo: Lucas Fernandez"
-            />
-          </div>
+          <div class="profile-fields is-hidden" data-profile-fields>
+            <div class="form-field">
+              <label for="professional-name">Nombre</label>
+              <input
+                id="professional-name"
+                name="name"
+                type="text"
+                autocomplete="name"
+                required
+                placeholder="Ejemplo: Lucas Fernandez"
+              />
+            </div>
 
-          <div class="form-field">
-            <label for="professional-occupation">Oficio</label>
-            <input
-              id="professional-occupation"
-              name="occupation"
-              type="text"
-              required
-              placeholder="Ejemplo: Electricista"
-            />
-          </div>
+            <div class="form-field">
+              <label for="professional-occupation">Oficio</label>
+              <input
+                id="professional-occupation"
+                name="occupation"
+                type="text"
+                required
+                placeholder="Ejemplo: Electricista"
+              />
+            </div>
 
-          <div class="form-field">
-            <label for="professional-phone">Telefono</label>
-            <input
-              id="professional-phone"
-              name="phone"
-              type="tel"
-              autocomplete="tel"
-              required
-              placeholder="Ejemplo: 11 5555 5555"
-            />
-          </div>
+            <div class="form-field">
+              <label for="professional-phone">Telefono</label>
+              <input
+                id="professional-phone"
+                name="phone"
+                type="tel"
+                autocomplete="tel"
+                required
+                placeholder="Ejemplo: 11 5555 5555"
+              />
+            </div>
 
-          <div class="form-field">
-            <label for="professional-zone">Zona</label>
-            <input
-              id="professional-zone"
-              name="zone"
-              type="text"
-              required
-              placeholder="Ejemplo: Palermo, CABA"
-            />
-          </div>
+            <div class="form-field">
+              <label for="professional-zone">Zona</label>
+              <input
+                id="professional-zone"
+                name="zone"
+                type="text"
+                required
+                placeholder="Ejemplo: Palermo, CABA"
+              />
+            </div>
 
-          <div class="form-field full">
-            <label for="professional-description">Descripcion</label>
-            <textarea
-              id="professional-description"
-              name="description"
-              rows="5"
-              required
-              placeholder="Contanos brevemente que servicios ofreces."
-            ></textarea>
+            <div class="form-field full">
+              <label for="professional-description">Descripcion</label>
+              <textarea
+                id="professional-description"
+                name="description"
+                rows="5"
+                required
+                placeholder="Contanos brevemente que servicios ofreces."
+              ></textarea>
+            </div>
           </div>
 
           <div class="form-actions">
-            <button class="button primary large" type="submit">Crear cuenta y guardar perfil</button>
+            <button class="button primary large" type="submit" data-register-submit>Crear cuenta</button>
             <a class="button secondary large" href="index.html">Volver al inicio</a>
             <a class="button ghost large" href="login.html">Ya tengo cuenta</a>
           </div>
@@ -170,10 +172,10 @@
     </footer>
 
     <script src="js/config/supabase-config.js"></script>
-    <script src="js/services/supabase-service.js?v=google-session-20260726a"></script>
-    <script src="js/services/auth-service.js?v=google-session-20260726a"></script>
+    <script src="js/services/supabase-service.js?v=email-confirmation-20260820a"></script>
+    <script src="js/services/auth-service.js?v=email-confirmation-20260820a"></script>
     <script src="js/ui/session-status.js?v=edit-profile-cta-20260729a"></script>
-    <script src="js/pages/register-page.js?v=google-session-20260726a"></script>
+    <script src="js/pages/register-page.js?v=email-confirmation-20260820a"></script>
   </body>
 </html>
 

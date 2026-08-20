@@ -2,10 +2,12 @@
   const app = window.OficiosApp || {};
   const form = document.querySelector("[data-register-form]");
   const accountFields = document.querySelector("[data-account-fields]");
+  const profileFields = document.querySelector("[data-profile-fields]");
   const authDivider = document.querySelector("[data-auth-divider]");
   const googleButton = document.querySelector("[data-google-register]");
   const sessionNote = document.querySelector("[data-auth-session-note]");
   const message = document.querySelector("[data-form-message]");
+  const submitButton = document.querySelector("[data-register-submit]");
 
   function setMessage(text, type) {
     if (!message) {
@@ -35,6 +37,29 @@
     if (authDivider) {
       authDivider.classList.toggle("is-hidden", !isVisible);
     }
+
+    if (googleButton) {
+      googleButton.parentElement.classList.toggle("is-hidden", !isVisible);
+    }
+  }
+
+  function setProfileFieldsVisible(isVisible) {
+    if (!profileFields) {
+      return;
+    }
+
+    profileFields.classList.toggle("is-hidden", !isVisible);
+    profileFields.querySelectorAll("input, textarea").forEach((field) => {
+      field.disabled = !isVisible;
+    });
+  }
+
+  function setSubmitLabel(hasSession) {
+    if (!submitButton) {
+      return;
+    }
+
+    submitButton.textContent = hasSession ? "Guardar perfil" : "Crear cuenta";
   }
 
   function setSessionNote(session) {
@@ -54,21 +79,23 @@
     sessionNote.className = "form-message auth-session-note success";
   }
 
-  function validateProfile(profile, hasSession) {
-    if (!hasSession) {
-      if (!isValidEmail(profile.email)) {
-        return "Escribi un email valido.";
-      }
-
-      if (profile.password.length < 6) {
-        return "La contrasena debe tener al menos 6 caracteres.";
-      }
-
-      if (profile.password !== profile.passwordConfirmation) {
-        return "Las contrasenas no coinciden.";
-      }
+  function validateAccount(profile) {
+    if (!isValidEmail(profile.email)) {
+      return "Escribi un email valido.";
     }
 
+    if (profile.password.length < 6) {
+      return "La contrasena debe tener al menos 6 caracteres.";
+    }
+
+    if (profile.password !== profile.passwordConfirmation) {
+      return "Las contrasenas no coinciden.";
+    }
+
+    return "";
+  }
+
+  function validateProfile(profile) {
     const requiredFields = [
       ["name", "Completa tu nombre."],
       ["occupation", "Completa tu oficio."],
@@ -78,6 +105,14 @@
     ];
 
     return requiredFields.find(([fieldName]) => !profile[fieldName])?.[1] || "";
+  }
+
+  function validateForm(profile, hasSession) {
+    if (!hasSession) {
+      return validateAccount(profile);
+    }
+
+    return validateProfile(profile);
   }
 
   async function getCurrentSession() {
@@ -96,6 +131,8 @@
     const session = await getCurrentSession();
 
     setAccountFieldsVisible(!session);
+    setProfileFieldsVisible(Boolean(session));
+    setSubmitLabel(Boolean(session));
     setSessionNote(session);
 
     return session;
@@ -121,7 +158,7 @@
   async function handleSubmit(event) {
     event.preventDefault();
 
-    const submitButton = form.querySelector('button[type="submit"]');
+    const activeSubmitButton = submitButton || form.querySelector('button[type="submit"]');
     const formData = new FormData(form);
     const currentSession = await getCurrentSession();
     const profile = {
@@ -135,15 +172,15 @@
       description: getTrimmedValue(formData, "description"),
       savedAt: new Date().toISOString()
     };
-    const validationMessage = validateProfile(profile, Boolean(currentSession));
+    const validationMessage = validateForm(profile, Boolean(currentSession));
 
     if (validationMessage) {
       setMessage(validationMessage, "error");
       return;
     }
 
-    submitButton.disabled = true;
-    setMessage(currentSession ? "Guardando perfil..." : "Creando cuenta y guardando perfil...", "");
+    activeSubmitButton.disabled = true;
+    setMessage(currentSession ? "Guardando perfil..." : "Creando cuenta...", "");
 
     try {
       let session = currentSession;
@@ -151,14 +188,19 @@
       if (!session) {
         const authData = await app.authService.signUp(profile.email, profile.password);
         session = authData.session;
-      }
 
-      if (!session) {
-        setMessage(
-          "Cuenta creada. Supabase pide confirmar el email antes de guardar el perfil. Revisa tu correo y despues inicia sesion.",
-          "success"
-        );
-        message.insertAdjacentHTML("beforeend", ' <a class="inline-link" href="login.html">Ir a iniciar sesion</a>');
+        if (!session) {
+          setMessage(
+            "Cuenta creada. Te enviamos un correo para confirmar tu email. Abri ese correo y toca el enlace para volver a OFICIOS APP.",
+            "success"
+          );
+          message.insertAdjacentHTML("beforeend", ' <a class="inline-link" href="login.html">Ir a iniciar sesion</a>');
+          form.reset();
+          return;
+        }
+
+        await refreshSessionState();
+        setMessage("Cuenta creada y sesion iniciada. Ahora completa tu perfil profesional.", "success");
         return;
       }
 
@@ -171,6 +213,7 @@
       setMessage("Cuenta creada y sesion iniciada. Tu perfil ya esta publicado en el directorio.", "success");
       form.reset();
       setAccountFieldsVisible(false);
+      setProfileFieldsVisible(true);
       setSessionNote(session);
 
       const profileUrl = `profesional.html?id=${encodeURIComponent(savedProfile.id)}`;
@@ -179,9 +222,9 @@
         ` <a class="inline-link" href="index.html#profesionales">Ver directorio</a> · <a class="inline-link" href="${profileUrl}">Abrir ficha</a>`
       );
     } catch (error) {
-      setMessage("No pudimos guardar el perfil. Revisa la conexion e intentalo nuevamente.", "error");
+      setMessage(currentSession ? "No pudimos guardar el perfil. Revisa la conexion e intentalo nuevamente." : "No pudimos crear la cuenta. Revisa el email e intentalo nuevamente.", "error");
     } finally {
-      submitButton.disabled = false;
+      activeSubmitButton.disabled = false;
     }
   }
 

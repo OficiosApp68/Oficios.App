@@ -47,7 +47,13 @@
       setMessage(`Sesion iniciada como ${accountEmail}.`, "success");
       message.insertAdjacentHTML("beforeend", ' <a class="inline-link" href="index.html">Volver al inicio</a>');
     } catch (error) {
-      setMessage("No pudimos iniciar sesion. Revisa el email y la contrasena.", "error");
+      const errorText = error && error.message ? error.message : "";
+      setMessage(
+        /confirm|verified|email/i.test(errorText)
+          ? "Antes de iniciar sesion tenes que confirmar tu email. Revisa tu correo y toca el enlace de OFICIOS APP."
+          : "No pudimos iniciar sesion. Revisa el email y la contrasena.",
+        "error"
+      );
     } finally {
       submitButton.disabled = false;
     }
