@@ -975,6 +975,16 @@ cite {
   line-height: 1.65;
 }
 
+.form-intro .register-info-note {
+  margin-top: 18px;
+  padding: 14px 16px;
+  border: 1px solid rgba(15, 128, 118, 0.22);
+  border-radius: 12px;
+  background: #e8f6f4;
+  color: var(--text);
+  font-weight: 700;
+}
+
 .signed-session-panel {
   padding: 22px;
   color: var(--muted);
