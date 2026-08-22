@@ -156,7 +156,7 @@
   app.renderCategories(app.categories, document.querySelector("[data-category-grid]"));
   updateFilterOptions(allProfiles);
   updateSearchSuggestions(allProfiles);
-  renderDirectory(allProfiles);
+  app.renderProfessionals(allProfiles, professionalsGrid);
   initDirectorySearch();
   initCategorySearch();
   app.renderProfileDetail(app.directoryService.getFeaturedProfile(), document.querySelector("[data-profile-detail]"));
@@ -170,12 +170,14 @@
   app.supabaseService
     .getProfessionalProfiles()
     .then((onlineProfiles) => {
-      allProfiles = [...onlineProfiles, ...profiles];
+      allProfiles = onlineProfiles;
       updateFilterOptions(allProfiles);
       updateSearchSuggestions(allProfiles);
+      app.renderProfileDetail(allProfiles[0], document.querySelector("[data-profile-detail]"));
+      app.renderAdminTable(allProfiles, document.querySelector("[data-admin-table]"));
       applySearch();
     })
     .catch(() => {
-      updateDirectoryStatus("No pudimos cargar los profesionales online. El directorio de ejemplo sigue disponible.", "error");
+      updateDirectoryStatus("No pudimos cargar los profesionales registrados. Intenta actualizar la pagina.", "error");
     });
 })();

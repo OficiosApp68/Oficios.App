@@ -49,13 +49,6 @@
       return;
     }
 
-    const localProfile = app.directoryService.getProfessionalById(professionalId);
-
-    if (localProfile) {
-      renderProfile(localProfile);
-      return;
-    }
-
     if (!app.supabaseService) {
       renderProfile(null);
       return;
