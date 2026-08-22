@@ -45,7 +45,10 @@
       const data = await app.authService.signIn(email, password);
       const accountEmail = data.session && data.session.user ? data.session.user.email : email;
       setMessage(`Sesion iniciada como ${accountEmail}.`, "success");
-      message.insertAdjacentHTML("beforeend", ' <a class="inline-link" href="index.html">Volver al inicio</a>');
+      message.insertAdjacentHTML(
+        "beforeend",
+        ' <a class="inline-link" href="mi-perfil.html">Completar o editar mi perfil</a> · <a class="inline-link" href="index.html">Volver al inicio</a>'
+      );
     } catch (error) {
       const errorText = error && error.message ? error.message : "";
       setMessage(
@@ -94,25 +97,11 @@
       <strong>Ya tenes sesion iniciada</strong>
       <span>Estas entrando como ${email}.</span>
       <div class="form-actions">
+        <a class="button primary large" href="mi-perfil.html">Completar / editar mi perfil</a>
         <a class="button primary large" href="index.html">Volver al inicio</a>
-        <button class="button ghost large" type="button" data-login-logout>Cerrar sesion</button>
+        <a class="button ghost large" href="cerrar-sesion.html">Cerrar sesion</a>
       </div>
     `;
-
-    const logoutButton = sessionPanel.querySelector("[data-login-logout]");
-
-    if (logoutButton) {
-      logoutButton.addEventListener("click", async () => {
-        logoutButton.disabled = true;
-
-        try {
-          await app.authService.signOut();
-          renderSessionPanel(null);
-        } catch (error) {
-          logoutButton.disabled = false;
-        }
-      });
-    }
   }
 
   async function initLoginSessionPanel() {

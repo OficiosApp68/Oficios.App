@@ -169,7 +169,7 @@
 
   async function signOut() {
     const auth = await getAuth();
-    const { error } = await auth.signOut();
+    const { error } = await auth.signOut({ scope: "local" });
 
     if (error) {
       throw error;

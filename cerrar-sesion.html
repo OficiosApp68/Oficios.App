@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cerrar sesion | OFICIOS APP</title>
+    <meta name="description" content="Cerrar sesion en OFICIOS APP." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/styles.css?v=profile-create-from-edit-20260822a" />
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav-shell" aria-label="Navegacion principal">
+        <a class="brand" href="index.html" aria-label="OFICIOS APP inicio">
+          <span class="brand-mark">OA</span>
+          <span class="brand-name">OFICIOS APP</span>
+        </a>
+      </nav>
+    </header>
+
+    <main class="form-page-main">
+      <section class="form-page-shell" aria-labelledby="logout-title">
+        <div class="form-intro">
+          <span class="eyebrow">Sesion</span>
+          <h1 id="logout-title">Cerrando sesion</h1>
+          <p data-logout-message role="status" aria-live="polite">
+            Estamos cerrando tu sesion. En unos segundos vas a volver al inicio.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span class="brand-mark">OA</span>
+      <p>OFICIOS APP - Plataforma preparada para crecer por etapas.</p>
+    </footer>
+
+    <script src="js/config/supabase-config.js"></script>
+    <script src="js/services/supabase-service.js?v=google-session-20260726a"></script>
+    <script src="js/services/auth-service.js?v=logout-page-20260822a"></script>
+    <script src="js/pages/logout-page.js?v=logout-page-20260822a"></script>
+  </body>
+</html>

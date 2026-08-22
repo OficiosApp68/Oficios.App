@@ -27,22 +27,8 @@
     target.innerHTML = `
       <span class="session-label">Sesion iniciada como ${email}</span>
       <a class="button secondary" href="mi-perfil.html">Editar mi perfil</a>
-      <button class="button ghost" type="button" data-logout-button>Cerrar sesion</button>
+      <a class="button ghost" href="cerrar-sesion.html">Cerrar sesion</a>
     `;
-
-    const logoutButton = target.querySelector("[data-logout-button]");
-
-    if (logoutButton) {
-      logoutButton.addEventListener("click", async () => {
-        logoutButton.disabled = true;
-
-        try {
-          await app.authService.signOut();
-        } catch (error) {
-          logoutButton.disabled = false;
-        }
-      });
-    }
   }
 
   async function initSessionStatus() {

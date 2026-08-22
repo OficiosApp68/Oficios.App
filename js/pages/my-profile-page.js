@@ -10,6 +10,10 @@
   let currentProfile = null;
   let shouldLogoutAfterSave = false;
 
+  function getSubmitButton() {
+    return form ? form.querySelector('button[type="submit"]') : null;
+  }
+
   function setMessage(text, type) {
     if (!message) return;
 
@@ -73,6 +77,21 @@
     renderPhotoPreview(profile && profile.publicProfile.hasPhoto ? profile.publicProfile.photo : "");
   }
 
+  function prepareNewProfile() {
+    currentProfile = null;
+    setFieldValue("name", "");
+    setFieldValue("occupation", "");
+    setFieldValue("phone", "");
+    setFieldValue("zone", "");
+    setFieldValue("description", "");
+    renderPreview(null);
+
+    const submitButton = getSubmitButton();
+    if (submitButton) {
+      submitButton.textContent = "Crear perfil";
+    }
+  }
+
   function fillForm(profile) {
     setFieldValue("name", profile.user.displayName);
     setFieldValue("occupation", profile.publicProfile.title);
@@ -80,6 +99,11 @@
     setFieldValue("zone", profile.professional.serviceArea);
     setFieldValue("description", profile.publicProfile.summary);
     renderPreview(profile);
+
+    const submitButton = getSubmitButton();
+    if (submitButton) {
+      submitButton.textContent = "Guardar cambios";
+    }
   }
 
   function setFormDisabled(isDisabled) {
@@ -116,8 +140,8 @@
     currentProfile = await app.supabaseService.getCurrentUserProfile();
 
     if (!currentProfile) {
-      setMessage("Todavia no encontramos un perfil profesional para esta cuenta. Crea tu perfil desde Registrarse.", "error");
-      setFormDisabled(true);
+      prepareNewProfile();
+      setMessage("Tu cuenta ya esta confirmada. Completa estos datos para publicar tu perfil.", "success");
       return;
     }
 
@@ -161,12 +185,24 @@
       profile.photoUrl = await app.supabaseService.uploadCurrentUserProfilePhoto(file);
     }
 
-    setMessage("Guardando cambios...", "");
-    const updatedProfile = await app.supabaseService.updateCurrentUserProfile(profile);
+    const isNewProfile = !currentProfile;
+
+    setMessage(isNewProfile ? "Creando perfil..." : "Guardando cambios...", "");
+    let updatedProfile = currentProfile
+      ? await app.supabaseService.updateCurrentUserProfile(profile)
+      : await app.supabaseService.createProfessionalProfile(profile);
+
+    if (isNewProfile && profile.photoUrl) {
+      updatedProfile = await app.supabaseService.updateCurrentUserProfile(profile);
+    }
+
     currentProfile = updatedProfile;
     fillForm(updatedProfile);
     if (photoInput) photoInput.value = "";
-    setMessage("Cambios guardados. Tu perfil ya esta actualizado.", "success");
+    setMessage(
+      isNewProfile ? "Perfil creado. Ya apareces en el directorio." : "Cambios guardados. Tu perfil ya esta actualizado.",
+      "success"
+    );
 
     return updatedProfile;
   }
@@ -180,8 +216,7 @@
 
       if (updatedProfile && shouldLogoutAfterSave) {
         setMessage("Cambios guardados. Cerrando sesion...", "success");
-        await app.authService.signOut();
-        window.location.href = "index.html";
+        window.location.href = "cerrar-sesion.html";
       }
     } catch (error) {
       setMessage(
