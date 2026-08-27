@@ -1195,6 +1195,30 @@ cite {
   color: #b91c1c;
 }
 
+.admin-pending-alert {
+  width: min(1120px, calc(100% - 40px));
+  margin: 18px auto 0;
+  padding: 14px 16px;
+  border: 1px solid rgba(245, 158, 11, 0.45);
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  color: #7c4a03;
+  background: #fff7ed;
+  box-shadow: var(--shadow);
+}
+
+.admin-pending-alert.is-hidden {
+  display: none;
+}
+
+.form-intro .admin-pending-alert {
+  width: 100%;
+  margin: 20px 0 0;
+}
+
 .moderation-panel {
   align-items: end;
 }
@@ -1291,6 +1315,15 @@ cite {
 }
 
 @media (max-width: 980px) {
+  .admin-pending-alert {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .admin-pending-alert .button {
+    width: 100%;
+  }
+
   .nav-shell {
     grid-template-columns: auto auto;
     justify-content: space-between;

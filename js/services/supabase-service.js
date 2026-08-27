@@ -321,6 +321,11 @@
     return Array.isArray(data) ? data.map(createProfileModel) : [];
   }
 
+  async function getPendingModerationCount() {
+    const profiles = await getModerationProfiles("pending");
+    return profiles.length;
+  }
+
   async function approveProfessionalProfile(id) {
     const client = await getClient();
     const { data, error } = await client.rpc("approve_professional_profile", {
@@ -353,6 +358,7 @@
     getClient,
     getCurrentUserProfile,
     getModerationProfiles,
+    getPendingModerationCount,
     getProfessionalProfileById,
     getProfessionalProfiles,
     rejectProfessionalProfile,

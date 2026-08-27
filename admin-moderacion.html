@@ -42,6 +42,7 @@
             Los perfiles nuevos quedan pendientes hasta que los apruebes. Solo los perfiles aprobados aparecen en el
             directorio publico.
           </p>
+          <div class="admin-pending-alert is-hidden" data-admin-pending-alert hidden aria-live="polite"></div>
         </div>
 
         <section class="professional-form moderation-panel" aria-label="Filtros de moderacion">
@@ -71,9 +72,10 @@
     </footer>
 
     <script src="js/config/supabase-config.js"></script>
-    <script src="js/services/supabase-service.js?v=moderation-20260827a"></script>
+    <script src="js/services/supabase-service.js?v=pending-alert-20260827a"></script>
     <script src="js/services/auth-service.js?v=logout-page-20260822a"></script>
     <script src="js/ui/session-status.js?v=logout-page-20260822a"></script>
-    <script src="js/pages/admin-moderation-page.js?v=moderation-20260827a"></script>
+    <script src="js/ui/admin-pending-alert.js?v=pending-alert-20260827a"></script>
+    <script src="js/pages/admin-moderation-page.js?v=pending-alert-20260827a"></script>
   </body>
 </html>

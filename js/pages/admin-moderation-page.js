@@ -98,6 +98,12 @@
       .join("");
   }
 
+  async function refreshPendingAlert() {
+    if (app.initAdminPendingAlert) {
+      await app.initAdminPendingAlert();
+    }
+  }
+
   async function loadProfiles() {
     if (!app.authService || !app.supabaseService) {
       setMessage("No pudimos cargar la conexion con Supabase.", "error");
@@ -128,6 +134,7 @@
       const profiles = await app.supabaseService.getModerationProfiles(status);
       renderProfiles(profiles, status);
       setMessage(`${profiles.length} perfil(es) ${statusCopy[status] || "cargados"}.`, "success");
+      await refreshPendingAlert();
     } catch (error) {
       setMessage("No pudimos cargar la moderacion. Revisa que tu usuario este como administrador en Supabase.", "error");
       renderEmpty(status);
