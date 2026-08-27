@@ -14,7 +14,7 @@ La prioridad es sostener un directorio inicial de profesionales cargados de form
 - `js/data/directory.js`: datos iniciales del directorio separados por entidad.
 - `js/services/directory-service.js`: arma modelos de vista sin duplicar datos.
 - `js/config/supabase-config.js`: configuracion publica de Supabase para el navegador.
-- `js/services/supabase-service.js`: carga `supabase-js` desde CDN con version fija y consulta la tabla online de perfiles.
+- `js/services/supabase-service.js`: carga `supabase-js` desde CDN con version fija, consulta perfiles aprobados y expone acciones de moderacion.
 - `js/renderers/render-helpers.js`: helpers visuales compartidos para estado, foto y contacto.
 - `js/renderers/*.js`: renderizado de categorias, listado, ficha publica y panel admin.
 - `js/renderers/professional-detail-renderer.js`: renderizado de la ficha publica individual.
@@ -28,7 +28,11 @@ La informacion esta separada en entidades para que en una etapa posterior pueda 
 
 `directory-service.js` es el punto de normalizacion antes de renderizar. Si faltan relaciones o datos opcionales, entrega valores seguros para evitar textos visibles como `undefined` o `null`, enlaces vacios e imagenes rotas.
 
-`supabase-service.js` transforma los perfiles cargados online al mismo modelo visual que usan las tarjetas y la ficha publica. De esa forma los profesionales creados desde el formulario se muestran junto al directorio existente sin reescribir los renderizadores.
+`supabase-service.js` transforma los perfiles cargados online al mismo modelo visual que usan las tarjetas y la ficha publica. Desde la moderacion inicial, el directorio publico solo consulta perfiles con `moderation_status = approved` e `is_active = true`.
+
+Los perfiles creados o editados por profesionales quedan con `moderation_status = pending`. Esto permite revisar el contenido antes de mostrarlo publicamente y evita que un perfil aprobado pueda cambiarse despues sin pasar por una nueva revision.
+
+La pantalla `admin-moderacion.html` usa funciones seguras de Supabase para listar perfiles pendientes, aprobarlos o rechazarlos. La autorizacion de administradores se define en la tabla `app_admins`; no se usa ninguna clave privada en el navegador.
 
 `auth-service.js` encapsula registro, login, acceso con Google, cierre de sesion y recuperacion de contrasena. Las paginas visibles no llaman directamente a Supabase Auth.
 
@@ -41,6 +45,8 @@ La integracion actual usa una `Publishable key` publica de Supabase. Esta clave 
 Nunca se debe incluir en JavaScript del navegador una `Secret key`, `service_role`, contrasena de base de datos ni credenciales privadas.
 
 El archivo real `js/config/supabase-config.js` esta ignorado por Git para evitar subir configuraciones locales por accidente. El repositorio conserva solo `js/config/supabase-config.example.js` con valores ficticios.
+
+El archivo `docs/supabase-moderation.sql` contiene la configuracion de base necesaria para revisar perfiles antes de publicarlos.
 
 ### Usuario
 

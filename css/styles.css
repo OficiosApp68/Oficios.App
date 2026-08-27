@@ -164,6 +164,15 @@ textarea {
   background: #e6f5f3;
 }
 
+.button.danger {
+  color: #ffffff;
+  background: #b91c1c;
+}
+
+.button.danger:hover {
+  background: #991b1b;
+}
+
 .button.google {
   width: 100%;
   border: 1px solid var(--line);
@@ -608,6 +617,21 @@ h3 {
   background: #edf2f7;
 }
 
+.status.pending {
+  color: #8a5200;
+  background: var(--accent-soft);
+}
+
+.status.rejected {
+  color: #991b1b;
+  background: #fee2e2;
+}
+
+.status.approved {
+  color: var(--primary-dark);
+  background: #e6f5f3;
+}
+
 .whatsapp {
   width: 100%;
   margin-top: 12px;
@@ -750,6 +774,8 @@ cite {
   min-height: 44px;
   border: 0;
   border-radius: var(--radius);
+  display: flex;
+  align-items: center;
   padding: 0 14px;
   color: #dbeafe;
   background: transparent;
@@ -1169,6 +1195,95 @@ cite {
   color: #b91c1c;
 }
 
+.moderation-panel {
+  align-items: end;
+}
+
+.moderation-actions {
+  align-self: end;
+}
+
+.moderation-list {
+  display: grid;
+  gap: 16px;
+}
+
+.moderation-card,
+.moderation-empty {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.moderation-card {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 18px;
+  padding: 18px;
+}
+
+.moderation-photo img,
+.moderation-photo-placeholder {
+  width: 100%;
+  height: 220px;
+  border-radius: var(--radius);
+  object-fit: cover;
+}
+
+.moderation-photo-placeholder {
+  font-size: 2rem;
+}
+
+.moderation-content h2 {
+  margin-bottom: 6px;
+  font-size: 1.8rem;
+}
+
+.moderation-content p {
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.moderation-details {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 14px 0 0;
+}
+
+.moderation-details div {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface-strong);
+}
+
+.moderation-details dt {
+  margin-bottom: 4px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.moderation-details dd {
+  margin: 0;
+  font-weight: 700;
+}
+
+.moderation-card-actions {
+  margin-top: 16px;
+}
+
+.moderation-empty {
+  padding: 26px;
+}
+
+.moderation-empty h2 {
+  font-size: 1.6rem;
+}
+
 .button:disabled {
   cursor: not-allowed;
   opacity: 0.65;
@@ -1277,6 +1392,8 @@ cite {
   .detail-list,
   .profile-contact-actions,
   .professional-form,
+  .moderation-card,
+  .moderation-details,
   .admin-row,
   .admin-sidebar {
     grid-template-columns: 1fr;

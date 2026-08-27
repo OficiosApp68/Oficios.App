@@ -69,6 +69,13 @@
     const zone = normalizeText(row && row.zone, "Zona a confirmar");
     const description = normalizeText(row && row.description, "Descripcion pendiente de carga.");
     const photoUrl = normalizeText(row && (row.photo_url || row.profile_photo_url), "");
+    const moderationStatus = normalizeText(row && row.moderation_status, "approved");
+    const moderationLabels = {
+      approved: "Aprobado",
+      pending: "Pendiente",
+      rejected: "Rechazado",
+    };
+    const moderationLabel = moderationLabels[moderationStatus] || "Pendiente";
 
     return {
       id: row.id,
@@ -126,7 +133,9 @@
         status: "inactive",
         hasValidReference: false,
       },
-      statusLabel: "Gratuito",
+      moderationStatus,
+      moderationLabel,
+      statusLabel: moderationStatus === "approved" ? "Gratuito" : moderationLabel,
       canContactByWhatsapp: Boolean(phone),
       canContactByPhone: Boolean(phone),
       source: "supabase",
@@ -178,6 +187,7 @@
       .from(tableName)
       .select("*")
       .eq("is_active", true)
+      .eq("moderation_status", "approved")
       .order("created_at", { ascending: false });
 
     if (error) {
@@ -194,6 +204,7 @@
       .select("*")
       .eq("id", id)
       .eq("is_active", true)
+      .eq("moderation_status", "approved")
       .maybeSingle();
 
     if (error) {
@@ -221,7 +232,6 @@
       .from(tableName)
       .select("*")
       .eq("user_id", userId)
-      .eq("is_active", true)
       .order("created_at", { ascending: false })
       .limit(1)
       .maybeSingle();
@@ -248,23 +258,15 @@
     }
 
     const payload = {
-      name: normalizeText(profile.name, ""),
-      occupation: normalizeText(profile.occupation, ""),
-      phone: normalizeText(profile.phone, ""),
-      zone: normalizeText(profile.zone, ""),
-      description: normalizeText(profile.description, ""),
+      p_name: normalizeText(profile.name, ""),
+      p_occupation: normalizeText(profile.occupation, ""),
+      p_phone: normalizeText(profile.phone, ""),
+      p_zone: normalizeText(profile.zone, ""),
+      p_description: normalizeText(profile.description, ""),
+      p_photo_url: normalizeText(profile.photoUrl, ""),
     };
 
-    if (profile.photoUrl) {
-      payload.photo_url = profile.photoUrl;
-    }
-
-    const { data, error } = await client
-      .from(tableName)
-      .update(payload)
-      .eq("user_id", userId)
-      .select("*")
-      .maybeSingle();
+    const { data, error } = await client.rpc("update_current_professional_profile", payload);
 
     if (error) {
       throw error;
@@ -306,12 +308,54 @@
     return data.publicUrl;
   }
 
+  async function getModerationProfiles(status) {
+    const client = await getClient();
+    const { data, error } = await client.rpc("list_moderation_professional_profiles", {
+      p_status: normalizeText(status, "pending"),
+    });
+
+    if (error) {
+      throw error;
+    }
+
+    return Array.isArray(data) ? data.map(createProfileModel) : [];
+  }
+
+  async function approveProfessionalProfile(id) {
+    const client = await getClient();
+    const { data, error } = await client.rpc("approve_professional_profile", {
+      p_profile_id: id,
+    });
+
+    if (error) {
+      throw error;
+    }
+
+    return data ? createProfileModel(data) : null;
+  }
+
+  async function rejectProfessionalProfile(id) {
+    const client = await getClient();
+    const { data, error } = await client.rpc("reject_professional_profile", {
+      p_profile_id: id,
+    });
+
+    if (error) {
+      throw error;
+    }
+
+    return data ? createProfileModel(data) : null;
+  }
+
   app.supabaseService = {
+    approveProfessionalProfile,
     createProfessionalProfile,
     getClient,
     getCurrentUserProfile,
+    getModerationProfiles,
     getProfessionalProfileById,
     getProfessionalProfiles,
+    rejectProfessionalProfile,
     updateCurrentUserProfile,
     uploadCurrentUserProfilePhoto,
   };

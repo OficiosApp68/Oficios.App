@@ -32,7 +32,7 @@
           <a href="#categorias">Categorias</a>
           <a href="#profesionales">Profesionales</a>
           <a href="#ficha">Ficha</a>
-          <a href="#admin">Admin</a>
+          <a href="admin-moderacion.html">Admin</a>
         </div>
         <div class="nav-actions" data-session-status>
           <a class="button ghost" href="login.html">Iniciar sesion</a>
@@ -144,20 +144,20 @@
         <div class="section-heading">
           <span class="eyebrow">Panel administrador</span>
           <h2>Gestion de profesionales</h2>
-          <p>Interfaz inicial para administrar perfiles cuando se conecte la logica real.</p>
+          <p>Revisa perfiles nuevos antes de publicarlos en el directorio.</p>
         </div>
         <div class="admin-layout">
           <aside class="admin-sidebar">
-            <button type="button" class="admin-link active">Agregar profesional</button>
-            <button type="button" class="admin-link">Editar profesional</button>
-            <button type="button" class="admin-link">Eliminar profesional</button>
-            <button type="button" class="admin-link">Marcar como Premium</button>
-            <button type="button" class="admin-link">Activar / desactivar</button>
+            <a class="admin-link active" href="admin-moderacion.html">Revisar pendientes</a>
+            <a class="admin-link" href="admin-moderacion.html">Aprobar perfil</a>
+            <a class="admin-link" href="admin-moderacion.html">Rechazar perfil</a>
+            <a class="admin-link" href="admin-moderacion.html">Ver aprobados</a>
+            <a class="admin-link" href="admin-moderacion.html">Ver rechazados</a>
           </aside>
           <div class="admin-panel">
             <div class="admin-toolbar">
-              <h3>Profesionales cargados</h3>
-              <button class="button primary" type="button">Nuevo profesional</button>
+              <h3>Moderacion de perfiles</h3>
+              <a class="button primary" href="admin-moderacion.html">Abrir panel</a>
             </div>
             <div class="admin-table" role="table" aria-label="Tabla administradora simulada" data-admin-table></div>
           </div>
@@ -174,13 +174,13 @@
     <script src="js/data/catalog.js?v=smart-search-20260731a"></script>
     <script src="js/data/directory.js?v=real-profiles-only-20260821a"></script>
     <script src="js/config/supabase-config.js"></script>
-    <script src="js/services/supabase-service.js?v=google-session-20260726a"></script>
+    <script src="js/services/supabase-service.js?v=moderation-20260827a"></script>
     <script src="js/services/auth-service.js?v=logout-page-20260822a"></script>
     <script src="js/services/directory-service.js"></script>
     <script src="js/services/search-service.js?v=smart-search-20260731a"></script>
-    <script src="js/renderers/render-helpers.js?v=category-actions-20260731a"></script>
+    <script src="js/renderers/render-helpers.js?v=moderation-20260827a"></script>
     <script src="js/renderers/category-renderer.js?v=category-actions-20260731a"></script>
-    <script src="js/renderers/professional-renderer.js?v=registered-label-20260801a"></script>
+    <script src="js/renderers/professional-renderer.js?v=compact-cards-20260827a"></script>
     <script src="js/renderers/profile-renderer.js"></script>
     <script src="js/renderers/admin-renderer.js"></script>
     <script src="js/ui/navigation.js"></script>

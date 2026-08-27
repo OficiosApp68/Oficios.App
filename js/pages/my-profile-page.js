@@ -70,8 +70,8 @@
 
     if (previewDetail) {
       previewDetail.textContent = profile
-        ? `${profile.publicProfile.title} - ${profile.professional.serviceArea}`
-        : "Los cambios guardados se veran en el directorio.";
+        ? `${profile.publicProfile.title} - ${profile.professional.serviceArea} - ${profile.moderationLabel}`
+        : "Los cambios guardados quedaran pendientes de revision.";
     }
 
     renderPhotoPreview(profile && profile.publicProfile.hasPhoto ? profile.publicProfile.photo : "");
@@ -120,6 +120,20 @@
     form.querySelectorAll("button").forEach((button) => {
       button.disabled = isSaving;
     });
+  }
+
+  function getFriendlySaveError(error) {
+    const errorText = error && error.message ? error.message : "";
+
+    if (/profile-photos|storage|bucket|row-level security|storage\.objects|object/i.test(errorText)) {
+      return "No pudimos guardar la foto. Falta revisar la configuracion de fotos en Supabase.";
+    }
+
+    if (/function|schema cache|p_photo_url|photo_url|moderation_status|column/i.test(errorText)) {
+      return "No pudimos guardar porque falta actualizar la configuracion de la base en Supabase.";
+    }
+
+    return "No pudimos guardar los cambios. Revisa los datos e intentalo nuevamente.";
   }
 
   async function loadProfile() {
@@ -179,12 +193,6 @@
     }
 
     const file = photoInput && photoInput.files ? photoInput.files[0] : null;
-
-    if (file) {
-      setMessage("Subiendo foto...", "");
-      profile.photoUrl = await app.supabaseService.uploadCurrentUserProfilePhoto(file);
-    }
-
     const isNewProfile = !currentProfile;
 
     setMessage(isNewProfile ? "Creando perfil..." : "Guardando cambios...", "");
@@ -192,15 +200,28 @@
       ? await app.supabaseService.updateCurrentUserProfile(profile)
       : await app.supabaseService.createProfessionalProfile(profile);
 
-    if (isNewProfile && profile.photoUrl) {
-      updatedProfile = await app.supabaseService.updateCurrentUserProfile(profile);
+    currentProfile = updatedProfile;
+
+    if (file) {
+      try {
+        setMessage("Datos guardados. Subiendo foto...", "");
+        profile.photoUrl = await app.supabaseService.uploadCurrentUserProfilePhoto(file);
+        updatedProfile = await app.supabaseService.updateCurrentUserProfile(profile);
+        currentProfile = updatedProfile;
+      } catch (photoError) {
+        fillForm(currentProfile);
+        if (photoInput) photoInput.value = "";
+        setMessage("Guardamos los datos del perfil, pero no pudimos guardar la foto. Podemos revisar esa configuracion despues.", "error");
+        return currentProfile;
+      }
     }
 
-    currentProfile = updatedProfile;
     fillForm(updatedProfile);
     if (photoInput) photoInput.value = "";
     setMessage(
-      isNewProfile ? "Perfil creado. Ya apareces en el directorio." : "Cambios guardados. Tu perfil ya esta actualizado.",
+      isNewProfile
+        ? "Perfil creado. Queda pendiente de revision antes de aparecer en el directorio."
+        : "Cambios guardados. Tu perfil queda pendiente de revision antes de publicarse.",
       "success"
     );
 
@@ -219,12 +240,7 @@
         window.location.href = "cerrar-sesion.html";
       }
     } catch (error) {
-      setMessage(
-        error && /profile-photos|storage|bucket/i.test(error.message)
-          ? "No pudimos guardar la foto. Falta configurar el espacio de fotos en Supabase."
-          : "No pudimos guardar los cambios. Revisa los datos e intentalo nuevamente.",
-        "error"
-      );
+      setMessage(getFriendlySaveError(error), "error");
     } finally {
       shouldLogoutAfterSave = false;
       setSavingState(false);

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Moderacion de perfiles | OFICIOS APP</title>
+    <meta
+      name="description"
+      content="Panel simple para revisar perfiles profesionales antes de publicarlos en OFICIOS APP."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/styles.css?v=moderation-20260827a" />
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav-shell" aria-label="Navegacion principal">
+        <a class="brand" href="index.html#home" aria-label="OFICIOS APP inicio">
+          <span class="brand-mark">OA</span>
+          <span class="brand-name">OFICIOS APP</span>
+        </a>
+        <div class="nav-links profile-nav-actions">
+          <a href="index.html#profesionales">Directorio</a>
+          <a href="admin-moderacion.html">Moderacion</a>
+        </div>
+        <div class="nav-actions profile-nav-actions" data-session-status>
+          <a class="button ghost" href="login.html">Iniciar sesion</a>
+        </div>
+      </nav>
+    </header>
+
+    <main class="form-page-main">
+      <section class="form-page-shell" aria-labelledby="moderation-title">
+        <div class="form-intro">
+          <span class="eyebrow">Panel administrador</span>
+          <h1 id="moderation-title">Revisar perfiles</h1>
+          <p>
+            Los perfiles nuevos quedan pendientes hasta que los apruebes. Solo los perfiles aprobados aparecen en el
+            directorio publico.
+          </p>
+        </div>
+
+        <section class="professional-form moderation-panel" aria-label="Filtros de moderacion">
+          <div class="form-field">
+            <label for="moderation-status">Ver perfiles</label>
+            <select id="moderation-status" data-moderation-status>
+              <option value="pending">Pendientes</option>
+              <option value="approved">Aprobados</option>
+              <option value="rejected">Rechazados</option>
+            </select>
+          </div>
+          <div class="form-actions moderation-actions">
+            <button class="button secondary" type="button" data-refresh-moderation>Actualizar</button>
+          </div>
+          <p class="form-message" data-moderation-message role="status" aria-live="polite">
+            Cargando perfiles para revisar...
+          </p>
+        </section>
+
+        <section class="moderation-list" data-moderation-list aria-label="Perfiles para revisar"></section>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span class="brand-mark">OA</span>
+      <p>OFICIOS APP - Revision manual para cuidar la calidad del directorio.</p>
+    </footer>
+
+    <script src="js/config/supabase-config.js"></script>
+    <script src="js/services/supabase-service.js?v=moderation-20260827a"></script>
+    <script src="js/services/auth-service.js?v=logout-page-20260822a"></script>
+    <script src="js/ui/session-status.js?v=logout-page-20260822a"></script>
+    <script src="js/pages/admin-moderation-page.js?v=moderation-20260827a"></script>
+  </body>
+</html>

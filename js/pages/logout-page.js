@@ -11,8 +11,30 @@
 
   function goHome() {
     window.setTimeout(() => {
-      window.location.href = "index.html";
+      window.location.replace("index.html?sesion=cerrada");
     }, 700);
+  }
+
+  function getSupabaseStoragePrefix() {
+    const config = app.supabaseConfig || {};
+    const match = String(config.url || "").match(/^https:\/\/([^.]+)\.supabase\.co/i);
+    return match ? `sb-${match[1]}` : "";
+  }
+
+  function clearStoredAuthSession() {
+    const prefix = getSupabaseStoragePrefix();
+    const storages = [window.localStorage, window.sessionStorage].filter(Boolean);
+
+    storages.forEach((storage) => {
+      Object.keys(storage).forEach((key) => {
+        const isCurrentProjectSession = prefix && key.startsWith(prefix);
+        const isLegacySupabaseSession = key === "supabase.auth.token";
+
+        if (isCurrentProjectSession || isLegacySupabaseSession) {
+          storage.removeItem(key);
+        }
+      });
+    });
   }
 
   async function initLogoutPage() {
@@ -24,9 +46,11 @@
 
     try {
       await app.authService.signOut();
+      clearStoredAuthSession();
       setMessage("Sesion cerrada. Volviendo al inicio...", "success");
     } catch (error) {
-      setMessage("La sesion local se va a limpiar al volver al inicio.", "error");
+      clearStoredAuthSession();
+      setMessage("Sesion cerrada en este navegador. Volviendo al inicio...", "success");
     } finally {
       goHome();
     }

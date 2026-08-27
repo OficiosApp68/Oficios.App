@@ -2,6 +2,8 @@
   window.OficiosApp = window.OficiosApp || {};
 
   function getStatusClass(profile) {
+    if (profile.moderationStatus === "pending") return "pending";
+    if (profile.moderationStatus === "rejected") return "rejected";
     return profile.statusLabel === "Premium" ? "premium" : "free";
   }
 

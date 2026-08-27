@@ -75,7 +75,7 @@
       return;
     }
 
-    sessionNote.textContent = `Sesion iniciada como ${email}. Completa tus datos profesionales para publicar el perfil.`;
+    sessionNote.textContent = `Ya hay una sesion iniciada como ${email}. Este formulario va a guardar el perfil de esa cuenta. Si queres probar otro registro, primero cerra sesion.`;
     sessionNote.className = "form-message auth-session-note success";
   }
 
@@ -205,21 +205,20 @@
       }
 
       const userId = session.user ? session.user.id : "";
-      const savedProfile = await app.supabaseService.createProfessionalProfile({
+      await app.supabaseService.createProfessionalProfile({
         ...profile,
         userId,
       });
 
-      setMessage("Cuenta creada y sesion iniciada. Tu perfil ya esta publicado en el directorio.", "success");
+      setMessage("Perfil enviado correctamente. Queda pendiente de revision antes de aparecer en el directorio.", "success");
       form.reset();
       setAccountFieldsVisible(false);
       setProfileFieldsVisible(true);
       setSessionNote(session);
 
-      const profileUrl = `profesional.html?id=${encodeURIComponent(savedProfile.id)}`;
       message.insertAdjacentHTML(
         "beforeend",
-        ` <a class="inline-link" href="index.html#profesionales">Ver directorio</a> · <a class="inline-link" href="${profileUrl}">Abrir ficha</a>`
+        ' <a class="inline-link" href="index.html#profesionales">Volver al directorio</a>'
       );
     } catch (error) {
       setMessage(currentSession ? "No pudimos guardar el perfil. Revisa la conexion e intentalo nuevamente." : "No pudimos crear la cuenta. Revisa el email e intentalo nuevamente.", "error");
