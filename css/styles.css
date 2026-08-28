@@ -1011,6 +1011,14 @@ cite {
   font-weight: 700;
 }
 
+.form-intro .secondary-note {
+  margin-top: 10px;
+  border-color: var(--line);
+  background: var(--surface-strong);
+  color: var(--muted);
+  font-weight: 600;
+}
+
 .signed-session-panel {
   padding: 22px;
   color: var(--muted);
