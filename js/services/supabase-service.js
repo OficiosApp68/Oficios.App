@@ -4,6 +4,7 @@
   const app = window.OficiosApp;
   const tableName = "professional_profiles";
   const supabaseJsUrl = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.53.0/+esm";
+  const termsVersion = "2026-08-28-mvp";
   let clientPromise = null;
 
   function normalizeText(value, fallback) {
@@ -70,6 +71,8 @@
     const description = normalizeText(row && row.description, "Descripcion pendiente de carga.");
     const photoUrl = normalizeText(row && (row.photo_url || row.profile_photo_url), "");
     const moderationStatus = normalizeText(row && row.moderation_status, "approved");
+    const termsAcceptedAt = normalizeText(row && row.terms_accepted_at, "");
+    const privacyAcceptedAt = normalizeText(row && row.privacy_accepted_at, "");
     const moderationLabels = {
       approved: "Aprobado",
       pending: "Pendiente",
@@ -135,6 +138,12 @@
       },
       moderationStatus,
       moderationLabel,
+      compliance: {
+        termsVersion: normalizeText(row && row.terms_version, termsVersion),
+        termsAcceptedAt,
+        privacyAcceptedAt,
+        hasTermsAcceptance: Boolean(termsAcceptedAt && privacyAcceptedAt),
+      },
       statusLabel: moderationStatus === "approved" ? "Gratuito" : moderationLabel,
       canContactByWhatsapp: Boolean(phone),
       canContactByPhone: Boolean(phone),
@@ -170,6 +179,7 @@
       p_phone: normalizeText(profile.phone, ""),
       p_zone: normalizeText(profile.zone, ""),
       p_description: normalizeText(profile.description, ""),
+      p_terms_accepted: profile.termsAccepted === true,
     };
 
     const { data, error } = await client.rpc("create_professional_profile", payload);
@@ -264,6 +274,7 @@
       p_zone: normalizeText(profile.zone, ""),
       p_description: normalizeText(profile.description, ""),
       p_photo_url: normalizeText(profile.photoUrl, ""),
+      p_terms_accepted: profile.termsAccepted === true,
     };
 
     const { data, error } = await client.rpc("update_current_professional_profile", payload);

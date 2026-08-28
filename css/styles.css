@@ -851,6 +851,42 @@ cite {
   flex: 0 0 auto;
 }
 
+.footer-links {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.footer-links a {
+  color: #d6f4ef;
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.legal-page {
+  width: min(980px, calc(100% - 32px));
+}
+
+.legal-content {
+  display: block;
+}
+
+.legal-content h2 {
+  margin: 22px 0 8px;
+  font-size: 1.25rem;
+}
+
+.legal-content h2:first-child {
+  margin-top: 0;
+}
+
+.legal-content p {
+  margin: 0 0 14px;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
 .profile-page-main {
   width: min(1180px, calc(100% - 32px));
   margin: 0 auto;
@@ -899,6 +935,16 @@ cite {
 .profile-page-summary h1 {
   margin-top: 18px;
   font-size: clamp(2.4rem, 7vw, 4.6rem);
+}
+
+.profile-contact-note {
+  margin-top: 18px;
+  padding: 12px 14px;
+  border: 1px solid rgba(15, 128, 118, 0.2);
+  border-radius: var(--radius);
+  color: var(--muted);
+  background: #eef8f6;
+  line-height: 1.55;
 }
 
 .profile-location {
@@ -1156,6 +1202,36 @@ cite {
   border-color: var(--primary);
 }
 
+.legal-acceptance {
+  padding: 14px 16px;
+  border: 1px solid rgba(15, 128, 118, 0.22);
+  border-radius: var(--radius);
+  background: #f0faf8;
+}
+
+.legal-acceptance label {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.legal-acceptance input {
+  width: 18px;
+  min-width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  accent-color: var(--primary);
+}
+
+.legal-acceptance a {
+  color: var(--primary-dark);
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 .form-actions {
   display: flex;
   flex-wrap: wrap;
@@ -1203,6 +1279,17 @@ cite {
   color: #b91c1c;
 }
 
+.directory-safety-note {
+  max-width: 780px;
+  margin: -8px 0 20px;
+  padding: 12px 14px;
+  border: 1px solid rgba(15, 128, 118, 0.2);
+  border-radius: var(--radius);
+  color: var(--muted);
+  background: #eef8f6;
+  line-height: 1.55;
+}
+
 .admin-pending-alert {
   width: min(1120px, calc(100% - 40px));
   margin: 18px auto 0;
@@ -1229,6 +1316,13 @@ cite {
 
 .moderation-panel {
   align-items: end;
+}
+
+.moderation-helper {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.55;
 }
 
 .moderation-actions {
@@ -1478,6 +1572,48 @@ cite {
 
   .profile-page-photo .profile-photo {
     min-height: 280px;
+  }
+
+  .form-page-main {
+    width: min(100% - 20px, 980px);
+    padding-top: 24px;
+  }
+
+  .form-intro,
+  .professional-form {
+    padding: 18px;
+  }
+
+  .form-intro h1 {
+    font-size: clamp(2.1rem, 13vw, 3.4rem);
+  }
+
+  .moderation-card {
+    gap: 14px;
+    padding: 14px;
+  }
+
+  .moderation-photo img,
+  .moderation-photo-placeholder {
+    height: 170px;
+  }
+
+  .moderation-content h2 {
+    font-size: 1.45rem;
+  }
+
+  .moderation-content p {
+    font-size: 0.95rem;
+  }
+
+  .moderation-card-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .moderation-card-actions .button,
+  .moderation-actions .button {
+    width: 100%;
+    min-height: 48px;
   }
 
   .admin-toolbar {

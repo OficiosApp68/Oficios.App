@@ -48,6 +48,22 @@ El archivo real `js/config/supabase-config.js` esta ignorado por Git para evitar
 
 El archivo `docs/supabase-moderation.sql` contiene la configuracion de base necesaria para revisar perfiles antes de publicarlos.
 
+## Terminos, privacidad y responsabilidad
+
+El registro profesional exige aceptar `terminos.html` y `privacidad.html` antes de crear una cuenta, iniciar el registro con Google o guardar el perfil. La edicion desde `mi-perfil.html` tambien pide confirmar que la informacion publicada es real.
+
+La aceptacion no queda solo en la interfaz. El archivo `docs/supabase-moderation.sql` agrega campos de control en `professional_profiles`:
+
+- `terms_accepted_at`
+- `privacy_accepted_at`
+- `terms_version`
+
+Las funciones `create_professional_profile` y `update_current_professional_profile` reciben `p_terms_accepted`. Si no llega aceptado, Supabase rechaza la creacion o actualizacion del perfil.
+
+Por ahora no se obliga a las personas que buscan profesionales a registrarse. La decision es mantener baja la barrera de entrada para validar el directorio. Para proteger la experiencia, el directorio y la ficha publica muestran avisos claros: OFICIOS APP conecta a las partes, pero cada acuerdo, presupuesto, pago y trabajo se define directamente entre cliente y profesional.
+
+Antes de una expansion mayor, estos textos deberian ser revisados por asesoramiento legal para ajustar responsabilidades, proteccion de datos y condiciones comerciales.
+
 ### Usuario
 
 Representa la cuenta o identidad base. Guarda datos transversales como nombre visible, email, telefono, rol y estado de cuenta.

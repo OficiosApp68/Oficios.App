@@ -7,6 +7,7 @@
   const previewName = document.querySelector("[data-profile-preview-name]");
   const previewDetail = document.querySelector("[data-profile-preview-detail]");
   const saveAndLogoutButton = document.querySelector("[data-save-and-logout]");
+  const termsCheckbox = document.querySelector("[data-profile-terms-acceptance]");
   let currentProfile = null;
   let shouldLogoutAfterSave = false;
 
@@ -37,6 +38,10 @@
   }
 
   function getValidationMessage(profile) {
+    if (!profile.termsAccepted) {
+      return "Para guardar, confirma que aceptas las condiciones y que los datos son reales.";
+    }
+
     const requiredFields = [
       ["name", "Completa tu nombre."],
       ["occupation", "Completa tu oficio."],
@@ -84,6 +89,7 @@
     setFieldValue("phone", "");
     setFieldValue("zone", "");
     setFieldValue("description", "");
+    if (termsCheckbox) termsCheckbox.checked = false;
     renderPreview(null);
 
     const submitButton = getSubmitButton();
@@ -98,6 +104,9 @@
     setFieldValue("phone", profile.user.phone);
     setFieldValue("zone", profile.professional.serviceArea);
     setFieldValue("description", profile.publicProfile.summary);
+    if (termsCheckbox) {
+      termsCheckbox.checked = Boolean(profile.compliance && profile.compliance.hasTermsAcceptance);
+    }
     renderPreview(profile);
 
     const submitButton = getSubmitButton();
@@ -184,6 +193,7 @@
       phone: getTrimmedValue(formData, "phone"),
       zone: getTrimmedValue(formData, "zone"),
       description: getTrimmedValue(formData, "description"),
+      termsAccepted: Boolean(termsCheckbox && termsCheckbox.checked),
     };
     const validationMessage = getValidationMessage(profile);
 

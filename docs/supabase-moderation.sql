@@ -16,7 +16,14 @@ alter table public.professional_profiles
   add column if not exists moderation_status text,
   add column if not exists rejection_reason text,
   add column if not exists reviewed_at timestamptz,
-  add column if not exists reviewed_by uuid;
+  add column if not exists reviewed_by uuid,
+  add column if not exists terms_accepted_at timestamptz,
+  add column if not exists privacy_accepted_at timestamptz,
+  add column if not exists terms_version text;
+
+update public.professional_profiles
+set terms_version = '2026-08-28-mvp'
+where terms_version is null;
 
 update public.professional_profiles
 set moderation_status = 'approved'
@@ -54,12 +61,16 @@ as $$
   );
 $$;
 
+drop function if exists public.create_professional_profile(text, text, text, text, text);
+drop function if exists public.create_professional_profile(text, text, text, text, text, boolean);
+
 create or replace function public.create_professional_profile(
   p_name text,
   p_occupation text,
   p_phone text,
   p_zone text,
-  p_description text
+  p_description text,
+  p_terms_accepted boolean default false
 )
 returns public.professional_profiles
 language plpgsql
@@ -71,6 +82,10 @@ declare
 begin
   if auth.uid() is null then
     raise exception 'Debes iniciar sesion para crear un perfil.';
+  end if;
+
+  if p_terms_accepted is not true then
+    raise exception 'Debes aceptar los terminos y la politica de privacidad para crear un perfil.';
   end if;
 
   if length(trim(coalesce(p_name, ''))) = 0
@@ -89,7 +104,10 @@ begin
     zone,
     description,
     is_active,
-    moderation_status
+    moderation_status,
+    terms_accepted_at,
+    privacy_accepted_at,
+    terms_version
   )
   values (
     auth.uid(),
@@ -99,7 +117,10 @@ begin
     trim(p_zone),
     trim(p_description),
     true,
-    'pending'
+    'pending',
+    now(),
+    now(),
+    '2026-08-28-mvp'
   )
   returning * into new_profile;
 
@@ -107,13 +128,17 @@ begin
 end;
 $$;
 
+drop function if exists public.update_current_professional_profile(text, text, text, text, text, text);
+drop function if exists public.update_current_professional_profile(text, text, text, text, text, text, boolean);
+
 create or replace function public.update_current_professional_profile(
   p_name text,
   p_occupation text,
   p_phone text,
   p_zone text,
   p_description text,
-  p_photo_url text default ''
+  p_photo_url text default '',
+  p_terms_accepted boolean default false
 )
 returns public.professional_profiles
 language plpgsql
@@ -125,6 +150,10 @@ declare
 begin
   if auth.uid() is null then
     raise exception 'Debes iniciar sesion para editar tu perfil.';
+  end if;
+
+  if p_terms_accepted is not true then
+    raise exception 'Debes aceptar los terminos para guardar cambios.';
   end if;
 
   if length(trim(coalesce(p_name, ''))) = 0
@@ -147,7 +176,10 @@ begin
     moderation_status = 'pending',
     rejection_reason = null,
     reviewed_at = null,
-    reviewed_by = null
+    reviewed_by = null,
+    terms_accepted_at = coalesce(terms_accepted_at, now()),
+    privacy_accepted_at = coalesce(privacy_accepted_at, now()),
+    terms_version = coalesce(nullif(terms_version, ''), '2026-08-28-mvp')
   where id = (
     select id
     from public.professional_profiles
@@ -241,7 +273,9 @@ alter table public.professional_profiles enable row level security;
 alter table public.app_admins enable row level security;
 
 drop policy if exists "Public can read active professional profiles" on public.professional_profiles;
+drop policy if exists "Public can read approved professional profiles" on public.professional_profiles;
 drop policy if exists "Authenticated users can read active professional profiles" on public.professional_profiles;
+drop policy if exists "Authenticated users can read approved or own professional profiles" on public.professional_profiles;
 drop policy if exists "Authenticated users can read own professional profiles" on public.professional_profiles;
 drop policy if exists "Authenticated users can update own professional profiles" on public.professional_profiles;
 drop policy if exists "Authenticated users can create professional profiles" on public.professional_profiles;
@@ -266,8 +300,8 @@ using (
 grant usage on schema public to anon, authenticated;
 grant select on public.professional_profiles to anon, authenticated;
 grant execute on function public.is_app_admin() to authenticated;
-grant execute on function public.create_professional_profile(text, text, text, text, text) to authenticated;
-grant execute on function public.update_current_professional_profile(text, text, text, text, text, text) to authenticated;
+grant execute on function public.create_professional_profile(text, text, text, text, text, boolean) to authenticated;
+grant execute on function public.update_current_professional_profile(text, text, text, text, text, text, boolean) to authenticated;
 grant execute on function public.list_moderation_professional_profiles(text) to authenticated;
 grant execute on function public.approve_professional_profile(uuid) to authenticated;
 grant execute on function public.reject_professional_profile(uuid) to authenticated;

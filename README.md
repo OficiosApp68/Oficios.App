@@ -67,6 +67,8 @@ python -m http.server 8000
 - Login: `http://localhost:8000/login.html`
 - Recuperar contrasena: `http://localhost:8000/recuperar-password.html`
 - Cambiar contrasena: `http://localhost:8000/cambiar-password.html`
+- Terminos: `http://localhost:8000/terminos.html`
+- Privacidad: `http://localhost:8000/privacidad.html`
 
 Cuando GitHub Pages este activo, la URL publica esperada sera:
 
@@ -87,6 +89,8 @@ Para configurar el proyecto en otra computadora, copiar `js/config/supabase-conf
 Para GitHub Pages, el workflow copia `js/config/supabase-config.production.js` como `js/config/supabase-config.js` durante la publicacion. Ese archivo solo contiene datos publicos de navegador.
 
 Para que funcione `Continuar con Google`, hay que activar el proveedor Google dentro de Supabase Auth y cargar alli el Client ID y Client Secret generados en Google Cloud. El Client Secret de Google no debe guardarse en este repositorio ni en archivos JavaScript del navegador.
+
+El registro profesional exige aceptar terminos y politica de privacidad. Esa aceptacion se guarda en Supabase cuando se ejecuta el SQL actualizado de moderacion.
 
 ## Documentacion
 

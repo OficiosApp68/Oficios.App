@@ -8,6 +8,7 @@
   const sessionNote = document.querySelector("[data-auth-session-note]");
   const message = document.querySelector("[data-form-message]");
   const submitButton = document.querySelector("[data-register-submit]");
+  const termsCheckbox = document.querySelector("[data-terms-acceptance]");
 
   function setMessage(text, type) {
     if (!message) {
@@ -108,6 +109,10 @@
   }
 
   function validateForm(profile, hasSession) {
+    if (!profile.termsAccepted) {
+      return "Para continuar, acepta los terminos y la politica de privacidad.";
+    }
+
     if (!hasSession) {
       return validateAccount(profile);
     }
@@ -144,6 +149,11 @@
       return;
     }
 
+    if (!termsCheckbox || !termsCheckbox.checked) {
+      setMessage("Para continuar con Google, acepta los terminos y la politica de privacidad.", "error");
+      return;
+    }
+
     googleButton.disabled = true;
     setMessage("Abriendo Google para continuar...", "");
 
@@ -170,6 +180,7 @@
       phone: getTrimmedValue(formData, "phone"),
       zone: getTrimmedValue(formData, "zone"),
       description: getTrimmedValue(formData, "description"),
+      termsAccepted: Boolean(termsCheckbox && termsCheckbox.checked),
       savedAt: new Date().toISOString()
     };
     const validationMessage = validateForm(profile, Boolean(currentSession));

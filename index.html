@@ -14,7 +14,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="css/styles.css?v=profile-contact-20260720a" />
+    <link rel="stylesheet" href="css/styles.css?v=legal-20260828a" />
   </head>
   <body>
     <header class="site-header">
@@ -126,6 +126,10 @@
         <p class="directory-status" data-directory-status role="status" aria-live="polite">
           Cargando profesionales registrados...
         </p>
+        <p class="directory-safety-note">
+          Los perfiles publicados pasan por revision. OFICIOS APP conecta a las partes; antes de contratar, acorda
+          detalles, precio, forma de pago y condiciones directamente con el profesional.
+        </p>
         <div class="directory-empty-state" data-directory-empty hidden>
           <p>No encontramos profesionales con esos criterios.</p>
           <button class="button secondary" type="button" data-clear-search>Limpiar filtros</button>
@@ -170,13 +174,17 @@
     <footer class="site-footer">
       <span class="brand-mark">OA</span>
       <p>OFICIOS APP - Plataforma preparada para crecer por etapas.</p>
+      <nav class="footer-links" aria-label="Informacion legal">
+        <a href="terminos.html">Terminos</a>
+        <a href="privacidad.html">Privacidad</a>
+      </nav>
       <small>Version de revision: ficha publica individual</small>
     </footer>
 
     <script src="js/data/catalog.js?v=smart-search-20260731a"></script>
     <script src="js/data/directory.js?v=real-profiles-only-20260821a"></script>
     <script src="js/config/supabase-config.js"></script>
-    <script src="js/services/supabase-service.js?v=pending-alert-20260827a"></script>
+    <script src="js/services/supabase-service.js?v=legal-20260828a"></script>
     <script src="js/services/auth-service.js?v=logout-page-20260822a"></script>
     <script src="js/services/directory-service.js"></script>
     <script src="js/services/search-service.js?v=smart-search-20260731a"></script>
