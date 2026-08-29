@@ -108,8 +108,8 @@
               ${description}
               ${renderTrades(profile)}
               <p class="profile-contact-note">
-                OFICIOS APP conecta a las partes. Antes de contratar, acorda detalles, precio, forma de pago y
-                condiciones directamente con el profesional.
+                OFICIOS APP conecta a las partes y no certifica identidad, experiencia ni calidad del servicio. Antes de
+                contratar, acorda detalles, precio, forma de pago y condiciones directamente con el profesional.
               </p>
               <div class="profile-contact-actions">
                 ${profile.canEditOwnProfile ? '<a class="button secondary" href="mi-perfil.html">Editar mi perfil</a>' : ""}
