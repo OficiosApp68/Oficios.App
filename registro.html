@@ -14,7 +14,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="css/styles.css?v=legal-20260828a" />
+    <link rel="stylesheet" href="css/styles.css?v=visual-20260829a" />
   </head>
   <body>
     <header class="site-header">
@@ -34,25 +34,45 @@
 
     <main class="form-page-main">
       <section class="form-page-shell" aria-labelledby="register-title">
-        <div class="form-intro">
-          <span class="eyebrow">Perfil de prueba</span>
-          <h1 id="register-title">Registrarme como profesional</h1>
-          <p>
-            Crea tu cuenta gratuita, confirma tu email y despues completa los datos para aparecer en el directorio.
-            La informacion que publiques debe ser real y actualizada.
-          </p>
-          <p class="register-info-note">
-            OFICIOS APP es un espacio para conectar personas con profesionales. No certifica identidad, experiencia,
-            precios, calidad del servicio ni trabajos realizados por terceros.
-          </p>
-          <p class="register-info-note secondary-note">
-            Si confirmas el correo desde el celular, podes completar tu perfil desde ese mismo dispositivo. Tambien
-            podes volver a la computadora e iniciar sesion con el mismo email y contrasena despues de confirmar.
-          </p>
-          <p class="register-info-note secondary-note">
-            Al registrarte declaras que los datos de tu perfil son responsabilidad tuya. OFICIOS APP no se hace
-            responsable por la informacion, servicios, precios, mensajes o acuerdos publicados por cada usuario.
-          </p>
+        <div class="form-intro register-intro">
+          <div class="register-intro-copy">
+            <span class="eyebrow">Perfil de prueba</span>
+            <h1 id="register-title">Registrarme como profesional</h1>
+            <p>
+              Crea tu cuenta gratuita, confirma tu email y despues completa los datos para aparecer en el directorio.
+              La informacion que publiques debe ser real y actualizada.
+            </p>
+          </div>
+
+          <div class="register-visual" aria-hidden="true">
+            <span class="visual-card visual-card-primary">Perfil</span>
+            <span class="visual-card visual-card-secondary">Email</span>
+            <span class="visual-card visual-card-accent">Directorio</span>
+          </div>
+
+          <div class="register-note-grid" aria-label="Informacion importante del registro">
+            <article class="register-info-note">
+              <span class="info-icon info-icon-platform" aria-hidden="true">OA</span>
+              <p>
+                OFICIOS APP conecta personas con profesionales. No certifica identidad, experiencia, precios, calidad
+                del servicio ni trabajos realizados por terceros.
+              </p>
+            </article>
+            <article class="register-info-note secondary-note">
+              <span class="info-icon info-icon-email" aria-hidden="true">@</span>
+              <p>
+                Si confirmas el correo desde el celular, podes completar tu perfil desde ese mismo dispositivo.
+                Tambien podes volver a la computadora e iniciar sesion con el mismo email y contrasena.
+              </p>
+            </article>
+            <article class="register-info-note responsibility-note">
+              <span class="info-icon info-icon-responsibility" aria-hidden="true">i</span>
+              <p>
+                Al registrarte declaras que los datos de tu perfil son responsabilidad tuya. OFICIOS APP no se hace
+                responsable por la informacion, servicios, precios, mensajes o acuerdos publicados por cada usuario.
+              </p>
+            </article>
+          </div>
         </div>
 
         <form class="professional-form" data-register-form novalidate>
