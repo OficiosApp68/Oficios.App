@@ -219,8 +219,8 @@ textarea {
   align-items: center;
   padding: 54px 0 34px;
   background:
-    linear-gradient(90deg, rgba(246, 248, 251, 0.98) 0%, rgba(246, 248, 251, 0.84) 48%, rgba(246, 248, 251, 0.68) 100%),
-    url("https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1800&q=80") center/cover;
+    linear-gradient(90deg, rgba(246, 248, 251, 0.98) 0%, rgba(246, 248, 251, 0.82) 45%, rgba(246, 248, 251, 0.38) 100%),
+    url("../images/home-hero-profesionales.png") center right / cover;
 }
 
 .hero-content,
@@ -1601,6 +1601,9 @@ cite {
   .hero-section {
     align-items: flex-start;
     padding-top: 34px;
+    background:
+      linear-gradient(180deg, rgba(246, 248, 251, 0.98) 0%, rgba(246, 248, 251, 0.9) 48%, rgba(246, 248, 251, 0.72) 100%),
+      url("../images/home-hero-profesionales.png") 62% center / cover;
   }
 
   .search-panel,
