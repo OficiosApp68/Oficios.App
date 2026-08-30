@@ -221,7 +221,10 @@
         userId,
       });
 
-      setMessage("Perfil enviado correctamente. Queda pendiente de revision antes de aparecer en el directorio.", "success");
+      setMessage(
+        "Perfil enviado correctamente. Queda pendiente de aprobacion antes de aparecer en el directorio. La revision puede demorar entre 24 y 48 horas.",
+        "success"
+      );
       form.reset();
       setAccountFieldsVisible(false);
       setProfileFieldsVisible(true);

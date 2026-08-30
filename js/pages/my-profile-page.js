@@ -76,7 +76,7 @@
     if (previewDetail) {
       previewDetail.textContent = profile
         ? `${profile.publicProfile.title} - ${profile.professional.serviceArea} - ${profile.moderationLabel}`
-        : "Los cambios guardados quedaran pendientes de revision.";
+        : "El perfil quedara pendiente de aprobacion. La revision puede demorar entre 24 y 48 horas.";
     }
 
     renderPhotoPreview(profile && profile.publicProfile.hasPhoto ? profile.publicProfile.photo : "");
@@ -230,8 +230,8 @@
     if (photoInput) photoInput.value = "";
     setMessage(
       isNewProfile
-        ? "Perfil creado. Queda pendiente de revision antes de aparecer en el directorio."
-        : "Cambios guardados. Tu perfil queda pendiente de revision antes de publicarse.",
+        ? "Perfil creado. Queda pendiente de aprobacion antes de aparecer en el directorio. La revision puede demorar entre 24 y 48 horas."
+        : "Cambios guardados. Tu perfil queda pendiente de aprobacion antes de publicarse. La revision puede demorar entre 24 y 48 horas.",
       "success"
     );
 
