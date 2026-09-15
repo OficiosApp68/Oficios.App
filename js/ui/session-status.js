@@ -3,6 +3,15 @@
 
   const app = window.OficiosApp;
 
+  function escapeHtml(value) {
+    return String(value || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
   function renderSignedOut(target) {
     target.innerHTML = `
       <a class="button ghost" href="login.html">Iniciar sesion</a>
@@ -21,14 +30,27 @@
     `;
   }
 
-  function renderSignedIn(target, session) {
-    const email = session && session.user ? session.user.email : "";
+  function renderSignedIn(target, session, isAdmin) {
+    const email = escapeHtml(session && session.user ? session.user.email : "");
 
     target.innerHTML = `
       <span class="session-label">Sesion iniciada como ${email}</span>
+      ${isAdmin ? '<a class="button secondary" href="admin-moderacion.html">Administrar</a>' : ""}
       <a class="button secondary" href="mi-perfil.html">Editar mi perfil</a>
       <a class="button ghost" href="cerrar-sesion.html">Cerrar sesion</a>
     `;
+  }
+
+  async function renderAuthenticated(target, session) {
+    renderSignedIn(target, session, false);
+
+    if (app.supabaseService && app.supabaseService.isCurrentUserAdmin) {
+      const isAdmin = await app.supabaseService.isCurrentUserAdmin();
+
+      if (isAdmin) {
+        renderSignedIn(target, session, true);
+      }
+    }
   }
 
   async function initSessionStatus() {
@@ -55,7 +77,7 @@
       }
 
       if (session) {
-        renderSignedIn(target, session);
+        await renderAuthenticated(target, session);
       } else {
         const authError = app.authService.getLastAuthError ? app.authService.getLastAuthError() : "";
         if (authError) {
@@ -65,9 +87,9 @@
         }
       }
 
-      await app.authService.onAuthStateChange((event, updatedSession) => {
+      await app.authService.onAuthStateChange(async (event, updatedSession) => {
         if (updatedSession) {
-          renderSignedIn(target, updatedSession);
+          await renderAuthenticated(target, updatedSession);
         } else {
           renderSignedOut(target);
         }

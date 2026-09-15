@@ -1607,7 +1607,6 @@ cite {
   }
 
   .search-panel,
-  .category-grid,
   .professionals-grid,
   .work-gallery,
   .reviews,
@@ -1619,6 +1618,26 @@ cite {
   .admin-row,
   .admin-sidebar {
     grid-template-columns: 1fr;
+  }
+
+  .category-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .category-card {
+    min-height: 128px;
+    padding: 14px;
+  }
+
+  .category-icon {
+    width: 46px;
+    height: 46px;
+  }
+
+  .category-icon svg {
+    width: 24px;
+    height: 24px;
   }
 
   .nav-actions {

@@ -1,6 +1,24 @@
 (function () {
   window.OficiosApp = window.OficiosApp || {};
 
+  function escapeHtml(value) {
+    return String(value || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  function getSafeImageUrl(value) {
+    try {
+      const url = new URL(String(value || ""), window.location.href);
+      return url.protocol === "https:" || url.origin === window.location.origin ? url.href : "";
+    } catch (error) {
+      return "";
+    }
+  }
+
   function getStatusClass(profile) {
     if (profile.moderationStatus === "pending") return "pending";
     if (profile.moderationStatus === "rejected") return "rejected";
@@ -8,11 +26,14 @@
   }
 
   function renderPhoto(profile, className, altText) {
-    if (!profile.publicProfile.hasPhoto) {
-      return `<div class="${className} photo-placeholder" role="img" aria-label="${altText}">OA</div>`;
+    const photoUrl = getSafeImageUrl(profile.publicProfile.photo);
+    const safeAltText = escapeHtml(altText);
+
+    if (!profile.publicProfile.hasPhoto || !photoUrl) {
+      return `<div class="${className} photo-placeholder" role="img" aria-label="${safeAltText}">OA</div>`;
     }
 
-    return `<img src="${profile.publicProfile.photo}" alt="${altText}" />`;
+    return `<img src="${escapeHtml(photoUrl)}" alt="${safeAltText}" />`;
   }
 
   function renderWhatsapp(profile) {
@@ -25,7 +46,7 @@
     const whatsappUrl = `${profile.publicProfile.whatsapp}${separator}text=${encodeURIComponent(message)}`;
 
     return `
-      <a class="button whatsapp" href="${whatsappUrl}" target="_blank" rel="noreferrer">
+      <a class="button whatsapp" href="${escapeHtml(whatsappUrl)}" target="_blank" rel="noreferrer">
         WhatsApp
       </a>
     `;
@@ -36,8 +57,8 @@
     const phoneHref = profile.user.phone.replace(/[^\d+]/g, "");
 
     return `
-      <a class="button secondary" href="tel:${phoneHref}" aria-label="Llamar a ${profile.user.displayName}">
-        ${profile.user.phone}
+      <a class="button secondary" href="tel:${escapeHtml(phoneHref)}" aria-label="Llamar a ${escapeHtml(profile.user.displayName)}">
+        ${escapeHtml(profile.user.phone)}
       </a>
     `;
   }
@@ -49,6 +70,8 @@
   window.OficiosApp.renderHelpers = {
     getStatusClass,
     getProfessionalUrl,
+    escapeHtml,
+    getSafeImageUrl,
     renderPhoto,
     renderPhone,
     renderWhatsapp,

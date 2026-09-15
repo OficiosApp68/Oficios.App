@@ -337,6 +337,17 @@
     return profiles.length;
   }
 
+  async function isCurrentUserAdmin() {
+    const client = await getClient();
+    const { data, error } = await client.rpc("is_app_admin");
+
+    if (error) {
+      return false;
+    }
+
+    return data === true;
+  }
+
   async function approveProfessionalProfile(id) {
     const client = await getClient();
     const { data, error } = await client.rpc("approve_professional_profile", {
@@ -372,6 +383,7 @@
     getPendingModerationCount,
     getProfessionalProfileById,
     getProfessionalProfiles,
+    isCurrentUserAdmin,
     rejectProfessionalProfile,
     updateCurrentUserProfile,
     uploadCurrentUserProfilePhoto,

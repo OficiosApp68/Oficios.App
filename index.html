@@ -14,7 +14,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="css/styles.css?v=legal-20260828a" />
+    <link rel="stylesheet" href="css/styles.css?v=launch-20260915a" />
   </head>
   <body>
     <header class="site-header">
@@ -32,7 +32,6 @@
           <a href="#categorias">Categorias</a>
           <a href="#profesionales">Profesionales</a>
           <a href="#ficha">Ficha</a>
-          <a href="admin-moderacion.html">Admin</a>
         </div>
         <div class="nav-actions" data-session-status>
           <a class="button ghost" href="login.html">Iniciar sesion</a>
@@ -87,22 +86,18 @@
           <aside class="hero-preview" aria-label="Resumen destacado">
             <div class="trust-card premium-glow">
               <div>
-                <span class="status premium">Premium</span>
-                <h2>Profesionales destacados</h2>
-                <p>Perfiles con fotos, zona de trabajo, calificaciones y contacto directo por WhatsApp.</p>
+                <span class="status free">Directorio abierto</span>
+                <h2>Servicios cerca tuyo</h2>
+                <p>Conoce que ofrece cada profesional, su zona de trabajo y como contactarlo.</p>
               </div>
               <div class="metric-row">
-                <span><strong>4.9</strong> promedio</span>
-                <span><strong>24 h</strong> respuesta</span>
+                <span><strong>Busca</strong> por oficio o zona</span>
+                <span><strong>Contacta</strong> por WhatsApp</span>
               </div>
             </div>
             <div class="quick-card">
-              <span class="avatar-stack">
-                <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=160&q=80" alt="Profesional destacado" />
-                <img src="https://images.unsplash.com/photo-1581092795360-fd1ca04f0952?auto=format&fit=crop&w=160&q=80" alt="Tecnica electricista" />
-                <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=160&q=80" alt="Equipo de trabajo" />
-              </span>
-              <p>Listo para crecer con nuevas funciones sin romper la estructura.</p>
+              <span class="brand-mark" aria-hidden="true">OA</span>
+              <p>Publica tu oficio, servicio o emprendimiento gratis y llega a mas personas.</p>
             </div>
           </aside>
         </div>
@@ -112,7 +107,7 @@
         <div class="section-heading">
           <span class="eyebrow">Explorar servicios</span>
           <h2>Categorias principales</h2>
-          <p>Tarjetas preparadas para sumar nuevos rubros a medida que la plataforma crezca.</p>
+          <p>Explora distintos rubros y encontra el servicio que necesitas.</p>
         </div>
         <div class="category-grid" data-category-grid></div>
       </section>
@@ -140,62 +135,36 @@
       <section class="section-block profile-section" id="ficha">
         <div class="section-heading">
           <span class="eyebrow">Ficha individual</span>
-          <h2>Pagina del profesional</h2>
-          <p>Modelo base para mostrar detalle, trabajos realizados, zona de cobertura y opiniones.</p>
+          <h2>Conoce cada perfil</h2>
+          <p>Consulta sus servicios, zona de trabajo y forma de contacto.</p>
         </div>
         <article class="profile-detail" data-profile-detail></article>
-      </section>
-
-      <section class="section-block admin-section" id="admin">
-        <div class="section-heading">
-          <span class="eyebrow">Panel administrador</span>
-          <h2>Gestion de profesionales</h2>
-          <p>Revisa perfiles nuevos antes de publicarlos en el directorio.</p>
-        </div>
-        <div class="admin-layout">
-          <aside class="admin-sidebar">
-            <a class="admin-link active" href="admin-moderacion.html">Revisar pendientes</a>
-            <a class="admin-link" href="admin-moderacion.html">Aprobar perfil</a>
-            <a class="admin-link" href="admin-moderacion.html">Rechazar perfil</a>
-            <a class="admin-link" href="admin-moderacion.html">Ver aprobados</a>
-            <a class="admin-link" href="admin-moderacion.html">Ver rechazados</a>
-          </aside>
-          <div class="admin-panel">
-            <div class="admin-toolbar">
-              <h3>Moderacion de perfiles</h3>
-              <a class="button primary" href="admin-moderacion.html">Abrir panel</a>
-            </div>
-            <div class="admin-table" role="table" aria-label="Tabla administradora simulada" data-admin-table></div>
-          </div>
-        </div>
       </section>
     </main>
 
     <footer class="site-footer">
       <span class="brand-mark">OA</span>
-      <p>OFICIOS APP - Plataforma preparada para crecer por etapas.</p>
+      <p>OFICIOS APP - Conectamos personas con profesionales, oficios y emprendimientos.</p>
       <nav class="footer-links" aria-label="Informacion legal">
         <a href="terminos.html">Terminos</a>
         <a href="privacidad.html">Privacidad</a>
       </nav>
-      <small>Version de revision: ficha publica individual</small>
     </footer>
 
     <script src="js/data/catalog.js?v=smart-search-20260731a"></script>
     <script src="js/data/directory.js?v=real-profiles-only-20260821a"></script>
     <script src="js/config/supabase-config.js"></script>
-    <script src="js/services/supabase-service.js?v=legal-20260828a"></script>
+    <script src="js/services/supabase-service.js?v=launch-20260915a"></script>
     <script src="js/services/auth-service.js?v=logout-page-20260822a"></script>
     <script src="js/services/directory-service.js"></script>
     <script src="js/services/search-service.js?v=smart-search-20260731a"></script>
-    <script src="js/renderers/render-helpers.js?v=moderation-20260827a"></script>
+    <script src="js/renderers/render-helpers.js?v=launch-20260915a"></script>
     <script src="js/renderers/category-renderer.js?v=category-actions-20260731a"></script>
-    <script src="js/renderers/professional-renderer.js?v=compact-cards-20260827a"></script>
-    <script src="js/renderers/profile-renderer.js"></script>
-    <script src="js/renderers/admin-renderer.js"></script>
+    <script src="js/renderers/professional-renderer.js?v=launch-20260915a"></script>
+    <script src="js/renderers/profile-renderer.js?v=launch-20260915a"></script>
     <script src="js/ui/navigation.js"></script>
-    <script src="js/ui/session-status.js?v=logout-page-20260822a"></script>
+    <script src="js/ui/session-status.js?v=launch-20260915a"></script>
     <script src="js/ui/admin-pending-alert.js?v=pending-alert-20260827a"></script>
-    <script src="js/app.js?v=real-profiles-only-20260821a"></script>
+    <script src="js/app.js?v=launch-20260915a"></script>
   </body>
 </html>

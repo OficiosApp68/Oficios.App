@@ -160,7 +160,6 @@
   initDirectorySearch();
   initCategorySearch();
   app.renderProfileDetail(app.directoryService.getFeaturedProfile(), document.querySelector("[data-profile-detail]"));
-  app.renderAdminTable(profiles, document.querySelector("[data-admin-table]"));
 
   if (!app.supabaseService) {
     updateDirectoryStatus("Directorio inicial cargado. Conexion online no disponible.", "error");
@@ -174,7 +173,6 @@
       updateFilterOptions(allProfiles);
       updateSearchSuggestions(allProfiles);
       app.renderProfileDetail(allProfiles[0], document.querySelector("[data-profile-detail]"));
-      app.renderAdminTable(allProfiles, document.querySelector("[data-admin-table]"));
       applySearch();
     })
     .catch(() => {
