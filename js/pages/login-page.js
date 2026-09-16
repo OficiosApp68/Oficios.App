@@ -4,6 +4,7 @@
   const googleButton = document.querySelector("[data-google-login]");
   const sessionPanel = document.querySelector("[data-login-session-panel]");
   const message = document.querySelector("[data-form-message]");
+  const captcha = app.createTurnstileCaptcha?.(form);
 
   function setMessage(text, type) {
     if (!message) return;
@@ -38,11 +39,17 @@
       return;
     }
 
+    const captchaToken = captcha?.enabled ? captcha.getToken() : "";
+    if (captcha?.enabled && !captchaToken) {
+      setMessage("Completa la verificacion para iniciar sesion.", "error");
+      return;
+    }
+
     submitButton.disabled = true;
     setMessage("Iniciando sesion...", "");
 
     try {
-      const data = await app.authService.signIn(email, password);
+      const data = await app.authService.signIn(email, password, captchaToken);
       const accountEmail = data.session && data.session.user ? data.session.user.email : email;
       setMessage(`Sesion iniciada como ${accountEmail}.`, "success");
       message.insertAdjacentHTML(
@@ -58,6 +65,7 @@
         "error"
       );
     } finally {
+      captcha?.reset();
       submitButton.disabled = false;
     }
   }

@@ -9,6 +9,7 @@
   const message = document.querySelector("[data-form-message]");
   const submitButton = document.querySelector("[data-register-submit]");
   const termsCheckbox = document.querySelector("[data-terms-acceptance]");
+  const captcha = app.createTurnstileCaptcha?.(form);
 
   function setMessage(text, type) {
     if (!message) {
@@ -139,6 +140,7 @@
     setProfileFieldsVisible(Boolean(session));
     setSubmitLabel(Boolean(session));
     setSessionNote(session);
+    captcha?.setVisible(!session);
 
     return session;
   }
@@ -190,6 +192,12 @@
       return;
     }
 
+    const captchaToken = !currentSession && captcha?.enabled ? captcha.getToken() : "";
+    if (!currentSession && captcha?.enabled && !captchaToken) {
+      setMessage("Completa la verificacion para crear tu cuenta.", "error");
+      return;
+    }
+
     activeSubmitButton.disabled = true;
     setMessage(currentSession ? "Guardando perfil..." : "Creando cuenta...", "");
 
@@ -197,7 +205,7 @@
       let session = currentSession;
 
       if (!session) {
-        const authData = await app.authService.signUp(profile.email, profile.password);
+        const authData = await app.authService.signUp(profile.email, profile.password, captchaToken);
         session = authData.session;
 
         if (!session) {
@@ -237,6 +245,7 @@
     } catch (error) {
       setMessage(currentSession ? "No pudimos guardar el perfil. Revisa la conexion e intentalo nuevamente." : "No pudimos crear la cuenta. Revisa el email e intentalo nuevamente.", "error");
     } finally {
+      if (!currentSession) captcha?.reset();
       activeSubmitButton.disabled = false;
     }
   }

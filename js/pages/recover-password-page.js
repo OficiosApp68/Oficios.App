@@ -2,6 +2,7 @@
   const app = window.OficiosApp || {};
   const form = document.querySelector("[data-recover-password-form]");
   const message = document.querySelector("[data-form-message]");
+  const captcha = app.createTurnstileCaptcha?.(form);
 
   function setMessage(text, type) {
     if (!message) return;
@@ -26,16 +27,23 @@
       return;
     }
 
+    const captchaToken = captcha?.enabled ? captcha.getToken() : "";
+    if (captcha?.enabled && !captchaToken) {
+      setMessage("Completa la verificacion para recibir el enlace.", "error");
+      return;
+    }
+
     submitButton.disabled = true;
     setMessage("Enviando enlace de recuperacion...", "");
 
     try {
-      await app.authService.resetPasswordForEmail(email);
+      await app.authService.resetPasswordForEmail(email, captchaToken);
       setMessage("Si el email existe, te enviamos un enlace para cambiar la contrasena.", "success");
       form.reset();
     } catch (error) {
       setMessage("No pudimos enviar el enlace. Revisa el email e intentalo nuevamente.", "error");
     } finally {
+      captcha?.reset();
       submitButton.disabled = false;
     }
   }

@@ -1248,9 +1248,19 @@ cite {
 }
 
 .form-field.full,
+.captcha-container,
 .form-actions,
 .form-message {
   grid-column: 1 / -1;
+}
+
+.captcha-container {
+  min-height: 65px;
+  color: var(--muted);
+}
+
+.captcha-container[hidden] {
+  display: none;
 }
 
 .form-field label {

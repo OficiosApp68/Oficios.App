@@ -122,13 +122,14 @@
     return authRedirectPromise;
   }
 
-  async function signUp(email, password) {
+  async function signUp(email, password, captchaToken) {
     const auth = await getAuth();
     const { data, error } = await auth.signUp({
       email,
       password,
       options: {
         emailRedirectTo: getAuthCallbackUrl("registro.html"),
+        ...(captchaToken ? { captchaToken } : {}),
       },
     });
 
@@ -139,9 +140,13 @@
     return data;
   }
 
-  async function signIn(email, password) {
+  async function signIn(email, password, captchaToken) {
     const auth = await getAuth();
-    const { data, error } = await auth.signInWithPassword({ email, password });
+    const { data, error } = await auth.signInWithPassword({
+      email,
+      password,
+      ...(captchaToken ? { options: { captchaToken } } : {}),
+    });
 
     if (error) {
       throw error;
@@ -176,10 +181,13 @@
     }
   }
 
-  async function resetPasswordForEmail(email) {
+  async function resetPasswordForEmail(email, captchaToken) {
     const auth = await getAuth();
     const redirectTo = getRedirectUrl("cambiar-password.html");
-    const { data, error } = await auth.resetPasswordForEmail(email, { redirectTo });
+    const { data, error } = await auth.resetPasswordForEmail(email, {
+      redirectTo,
+      ...(captchaToken ? { captchaToken } : {}),
+    });
 
     if (error) {
       throw error;

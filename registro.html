@@ -14,7 +14,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="css/styles.css?v=cards-20260829a" />
+    <link rel="stylesheet" href="css/styles.css?v=captcha-20260916a" />
   </head>
   <body>
     <header class="site-header">
@@ -212,6 +212,8 @@
             </label>
           </div>
 
+          <div class="captcha-container" data-turnstile hidden></div>
+
           <div class="form-actions">
             <button class="button primary large" type="submit" data-register-submit>Crear cuenta</button>
             <a class="button secondary large" href="index.html">Volver al inicio</a>
@@ -234,9 +236,10 @@
 
     <script src="js/config/supabase-config.js"></script>
     <script src="js/services/supabase-service.js?v=launch-20260915a"></script>
-    <script src="js/services/auth-service.js?v=logout-page-20260822a"></script>
+    <script src="js/services/auth-service.js?v=captcha-20260916a"></script>
     <script src="js/ui/session-status.js?v=launch-20260915a"></script>
-    <script src="js/pages/register-page.js?v=approval-time-20260830a"></script>
+    <script src="js/ui/turnstile-captcha.js?v=captcha-20260916a"></script>
+    <script src="js/pages/register-page.js?v=captcha-20260916a"></script>
   </body>
 </html>
 
