@@ -4,7 +4,21 @@
   const googleButton = document.querySelector("[data-google-login]");
   const sessionPanel = document.querySelector("[data-login-session-panel]");
   const message = document.querySelector("[data-form-message]");
+  const passwordInput = form?.querySelector("#login-password");
+  const passwordToggle = form?.querySelector("[data-password-toggle]");
   const captcha = app.createTurnstileCaptcha?.(form);
+
+  function togglePasswordVisibility() {
+    const isVisible = passwordInput.type === "password";
+    const label = isVisible ? "Ocultar contrasena" : "Mostrar contrasena";
+
+    passwordInput.type = isVisible ? "text" : "password";
+    passwordToggle.setAttribute("aria-label", label);
+    passwordToggle.title = label;
+    passwordToggle.querySelector("[data-icon-show]").hidden = isVisible;
+    passwordToggle.querySelector("[data-icon-hide]").hidden = !isVisible;
+    passwordInput.focus({ preventScroll: true });
+  }
 
   function setMessage(text, type) {
     if (!message) return;
@@ -131,6 +145,10 @@
 
   if (form) {
     form.addEventListener("submit", handleSubmit);
+  }
+
+  if (passwordInput && passwordToggle) {
+    passwordToggle.addEventListener("click", togglePasswordVisibility);
   }
 
   if (googleButton) {

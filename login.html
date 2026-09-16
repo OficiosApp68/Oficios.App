@@ -11,7 +11,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="css/styles.css?v=captcha-20260916a" />
+    <link rel="stylesheet" href="css/styles.css?v=password-visibility-20260916a" />
   </head>
   <body>
     <header class="site-header">
@@ -66,14 +66,35 @@
 
           <div class="form-field full">
             <label for="login-password">Contrasena</label>
-            <input
-              id="login-password"
-              name="password"
-              type="password"
-              autocomplete="current-password"
-              required
-              placeholder="Tu contrasena"
-            />
+            <div class="password-input">
+              <input
+                id="login-password"
+                name="password"
+                type="password"
+                autocomplete="current-password"
+                required
+                placeholder="Tu contrasena"
+              />
+              <button
+                class="password-visibility-toggle"
+                type="button"
+                data-password-toggle
+                aria-controls="login-password"
+                aria-label="Mostrar contrasena"
+                title="Mostrar contrasena"
+              >
+                <svg data-icon-show xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+                <svg data-icon-hide hidden xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49" />
+                  <path d="M14.084 14.158a3 3 0 0 1-4.242-4.242" />
+                  <path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143" />
+                  <path d="m2 2 20 20" />
+                </svg>
+              </button>
+            </div>
           </div>
 
           <div class="captcha-container" data-turnstile hidden></div>
@@ -106,7 +127,7 @@
     <script src="js/services/auth-service.js?v=captcha-20260916a"></script>
     <script src="js/ui/session-status.js?v=launch-20260915a"></script>
     <script src="js/ui/turnstile-captcha.js?v=captcha-20260916a"></script>
-    <script src="js/pages/login-page.js?v=captcha-20260916a"></script>
+    <script src="js/pages/login-page.js?v=password-visibility-20260916a"></script>
   </body>
 </html>
 
