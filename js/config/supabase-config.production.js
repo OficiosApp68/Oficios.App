@@ -4,6 +4,6 @@
   window.OficiosApp.supabaseConfig = {
     url: "https://azusfssqlgiiwoflseor.supabase.co",
     publishableKey: "sb_publishable_Si6xrGEGKjOqQ76jqRr1Gw_y6DBpBtc",
-    turnstileSiteKey: "",
+    turnstileSiteKey: "0x4AAAAAAE4wQsEx4ZqGKItH",
   };
 })();
