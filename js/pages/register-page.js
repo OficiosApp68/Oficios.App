@@ -140,6 +140,28 @@
     return validateProfile(profile);
   }
 
+  function getSignUpErrorMessage(error) {
+    const code = error?.code;
+    const messages = {
+      captcha_failed: "La verificacion no pudo validarse. Completala de nuevo e intenta otra vez.",
+      weak_password: "La contrasena no cumple los requisitos de seguridad. Proba con otra mas larga y dificil de adivinar.",
+      over_email_send_rate_limit: "Se enviaron demasiados correos a esta direccion. Espera un rato antes de intentar de nuevo.",
+      over_request_rate_limit: "Hubo demasiados intentos de registro. Espera unos minutos antes de volver a probar.",
+      email_address_not_authorized: "El servicio no puede enviar el correo de confirmacion a esta direccion. Hay que revisar la configuracion del email.",
+      email_address_invalid: "El servicio rechazo esta direccion de correo. Revisa que este escrita correctamente.",
+      email_provider_disabled: "El registro con email esta deshabilitado en este momento.",
+      signup_disabled: "La creacion de cuentas esta deshabilitada en este momento.",
+      email_exists: "No se pudo crear la cuenta. Si ya tenes una cuenta, inicia sesion o restablece tu contrasena.",
+      user_already_exists: "No se pudo crear la cuenta. Si ya tenes una cuenta, inicia sesion o restablece tu contrasena."
+    };
+
+    if (messages[code]) return messages[code];
+    if (error?.status === 429) return "Hubo demasiados intentos. Espera unos minutos antes de volver a probar.";
+    if (error?.status >= 500) return `El servicio no pudo completar el registro o enviar la confirmacion. Codigo: ${code || error.status}.`;
+    if (code) return `No pudimos crear la cuenta. Codigo: ${code}.`;
+    return "No pudimos crear la cuenta. Revisa la conexion e intentalo nuevamente.";
+  }
+
   async function getCurrentSession() {
     if (!app.authService) {
       return null;
@@ -262,7 +284,7 @@
         ' <a class="inline-link" href="index.html#profesionales">Volver al directorio</a>'
       );
     } catch (error) {
-      setMessage(currentSession ? "No pudimos guardar el perfil. Revisa la conexion e intentalo nuevamente." : "No pudimos crear la cuenta. Revisa el email e intentalo nuevamente.", "error");
+      setMessage(currentSession ? "No pudimos guardar el perfil. Revisa la conexion e intentalo nuevamente." : getSignUpErrorMessage(error), "error");
     } finally {
       if (!currentSession) captcha?.reset();
       activeSubmitButton.disabled = false;
