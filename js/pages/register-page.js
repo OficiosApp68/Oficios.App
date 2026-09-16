@@ -11,6 +11,25 @@
   const termsCheckbox = document.querySelector("[data-terms-acceptance]");
   const captcha = app.createTurnstileCaptcha?.(form);
 
+  function setupPasswordToggles() {
+    form.querySelectorAll("[data-password-toggle]").forEach((toggle) => {
+      const input = document.getElementById(toggle.getAttribute("aria-controls"));
+      if (!input) return;
+
+      toggle.addEventListener("click", () => {
+        const isVisible = input.type === "password";
+        const label = isVisible ? "Ocultar contrasena" : "Mostrar contrasena";
+
+        input.type = isVisible ? "text" : "password";
+        toggle.setAttribute("aria-label", label);
+        toggle.title = label;
+        toggle.querySelector("[data-icon-show]").hidden = isVisible;
+        toggle.querySelector("[data-icon-hide]").hidden = !isVisible;
+        input.focus({ preventScroll: true });
+      });
+    });
+  }
+
   function setMessage(text, type) {
     if (!message) {
       return;
@@ -251,6 +270,7 @@
   }
 
   if (form) {
+    setupPasswordToggles();
     form.addEventListener("submit", handleSubmit);
     refreshSessionState();
   }
