@@ -6,11 +6,15 @@ values ('profile-photos', 'profile-photos', true)
 on conflict (id) do update set public = true;
 
 drop policy if exists "Public can read profile photos" on storage.objects;
-create policy "Public can read profile photos"
+drop policy if exists "Authenticated users can read own profile photos" on storage.objects;
+create policy "Authenticated users can read own profile photos"
 on storage.objects
 for select
-to anon, authenticated
-using (bucket_id = 'profile-photos');
+to authenticated
+using (
+  bucket_id = 'profile-photos'
+  and (storage.foldername(name))[1] = auth.uid()::text
+);
 
 drop policy if exists "Authenticated users can upload own profile photos" on storage.objects;
 create policy "Authenticated users can upload own profile photos"
