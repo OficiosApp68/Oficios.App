@@ -39,3 +39,13 @@ with check (
   bucket_id = 'profile-photos'
   and (storage.foldername(name))[1] = auth.uid()::text
 );
+
+drop policy if exists "Authenticated users can delete own profile photos" on storage.objects;
+create policy "Authenticated users can delete own profile photos"
+on storage.objects
+for delete
+to authenticated
+using (
+  bucket_id = 'profile-photos'
+  and (storage.foldername(name))[1] = auth.uid()::text
+);

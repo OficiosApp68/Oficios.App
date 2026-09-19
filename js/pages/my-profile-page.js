@@ -3,6 +3,7 @@
   const form = document.querySelector("[data-my-profile-form]");
   const message = document.querySelector("[data-form-message]");
   const photoInput = document.querySelector("[data-profile-photo-input]");
+  const removePhotoButton = document.querySelector("[data-remove-profile-photo]");
   const photoPreview = document.querySelector("[data-profile-photo-preview]");
   const previewName = document.querySelector("[data-profile-preview-name]");
   const previewDetail = document.querySelector("[data-profile-preview-detail]");
@@ -80,6 +81,10 @@
     }
 
     renderPhotoPreview(profile && profile.publicProfile.hasPhoto ? profile.publicProfile.photo : "");
+
+    if (removePhotoButton) {
+      removePhotoButton.hidden = !(profile && profile.publicProfile.hasPhoto);
+    }
   }
 
   function prepareNewProfile() {
@@ -238,6 +243,33 @@
     return updatedProfile;
   }
 
+  async function removeProfilePhoto() {
+    if (!currentProfile || !currentProfile.publicProfile.hasPhoto) return;
+
+    const confirmed = window.confirm(
+      "¿Eliminar la foto de perfil? Se mostrará el logo provisorio y el perfil volverá a revisión."
+    );
+
+    if (!confirmed) return;
+
+    setSavingState(true);
+    setMessage("Eliminando foto...", "");
+
+    try {
+      currentProfile = await app.supabaseService.removeCurrentUserProfilePhoto(currentProfile.publicProfile.photo);
+      fillForm(currentProfile);
+      if (photoInput) photoInput.value = "";
+      setMessage(
+        "Foto eliminada. Tu perfil queda pendiente de aprobación antes de volver a publicarse.",
+        "success"
+      );
+    } catch (error) {
+      setMessage(getFriendlySaveError(error), "error");
+    } finally {
+      setSavingState(false);
+    }
+  }
+
   async function handleSubmit(event) {
     event.preventDefault();
     setSavingState(true);
@@ -263,6 +295,10 @@
 
   if (photoInput) {
     photoInput.addEventListener("change", previewSelectedPhoto);
+  }
+
+  if (removePhotoButton) {
+    removePhotoButton.addEventListener("click", removeProfilePhoto);
   }
 
   if (saveAndLogoutButton) {

@@ -319,6 +319,50 @@
     return data.publicUrl;
   }
 
+  function getOwnProfilePhotoPath(photoUrl, userId) {
+    const marker = "/storage/v1/object/public/profile-photos/";
+
+    try {
+      const path = decodeURIComponent(new URL(photoUrl).pathname.split(marker)[1] || "");
+      return path.startsWith(`${userId}/`) ? path : "";
+    } catch (_) {
+      return "";
+    }
+  }
+
+  async function removeCurrentUserProfilePhoto(photoUrl) {
+    const client = await getClient();
+    const { data: sessionData, error: sessionError } = await client.auth.getSession();
+
+    if (sessionError) {
+      throw sessionError;
+    }
+
+    const userId = sessionData.session && sessionData.session.user ? sessionData.session.user.id : "";
+
+    if (!userId) {
+      throw new Error("Necesitas iniciar sesion para eliminar tu foto.");
+    }
+
+    const filePath = getOwnProfilePhotoPath(photoUrl, userId);
+
+    if (filePath) {
+      const { error: storageError } = await client.storage.from("profile-photos").remove([filePath]);
+
+      if (storageError) {
+        throw storageError;
+      }
+    }
+
+    const { data, error } = await client.rpc("remove_current_professional_profile_photo");
+
+    if (error) {
+      throw error;
+    }
+
+    return data ? createProfileModel(data) : null;
+  }
+
   async function getModerationProfiles(status) {
     const client = await getClient();
     const { data, error } = await client.rpc("list_moderation_professional_profiles", {
@@ -385,6 +429,7 @@
     getProfessionalProfiles,
     isCurrentUserAdmin,
     rejectProfessionalProfile,
+    removeCurrentUserProfilePhoto,
     updateCurrentUserProfile,
     uploadCurrentUserProfilePhoto,
   };

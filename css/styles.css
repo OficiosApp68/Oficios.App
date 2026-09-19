@@ -1192,6 +1192,25 @@ cite {
   background-size: cover;
 }
 
+.profile-photo-field-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.profile-photo-field-actions input[type="file"] {
+  flex: 1;
+}
+
+.profile-photo-field-actions .button {
+  flex: 0 0 auto;
+  min-height: 46px;
+}
+
+.profile-photo-field-actions .button[hidden] {
+  display: none;
+}
+
 .professional-form {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1743,6 +1762,11 @@ cite {
   .form-intro,
   .professional-form {
     padding: 18px;
+  }
+
+  .profile-photo-field-actions {
+    align-items: stretch;
+    flex-direction: column;
   }
 
   .register-intro {

@@ -197,6 +197,44 @@ begin
 end;
 $$;
 
+create or replace function public.remove_current_professional_profile_photo()
+returns public.professional_profiles
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  updated_profile public.professional_profiles;
+begin
+  if auth.uid() is null then
+    raise exception 'Debes iniciar sesion para eliminar tu foto.';
+  end if;
+
+  update public.professional_profiles
+  set
+    photo_url = null,
+    is_active = true,
+    moderation_status = 'pending',
+    rejection_reason = null,
+    reviewed_at = null,
+    reviewed_by = null
+  where id = (
+    select id
+    from public.professional_profiles
+    where user_id = auth.uid()
+    order by created_at desc
+    limit 1
+  )
+  returning * into updated_profile;
+
+  if updated_profile.id is null then
+    raise exception 'No encontramos un perfil para editar.';
+  end if;
+
+  return updated_profile;
+end;
+$$;
+
 create or replace function public.list_moderation_professional_profiles(p_status text default 'pending')
 returns setof public.professional_profiles
 language plpgsql
@@ -302,6 +340,7 @@ grant select on public.professional_profiles to anon, authenticated;
 grant execute on function public.is_app_admin() to authenticated;
 grant execute on function public.create_professional_profile(text, text, text, text, text, boolean) to authenticated;
 grant execute on function public.update_current_professional_profile(text, text, text, text, text, text, boolean) to authenticated;
+grant execute on function public.remove_current_professional_profile_photo() to authenticated;
 grant execute on function public.list_moderation_professional_profiles(text) to authenticated;
 grant execute on function public.approve_professional_profile(uuid) to authenticated;
 grant execute on function public.reject_professional_profile(uuid) to authenticated;

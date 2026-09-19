@@ -11,7 +11,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="css/styles.css?v=legal-20260828a" />
+    <link rel="stylesheet" href="css/styles.css?v=profile-photo-remove-20260919a" />
   </head>
   <body>
     <header class="site-header">
@@ -56,8 +56,11 @@
 
           <div class="form-field full">
             <label for="profile-photo">Foto de perfil</label>
-            <input id="profile-photo" name="photo" type="file" accept="image/*" data-profile-photo-input />
-            <small class="field-help">Usá una foto clara. Si no cargás foto, se mantiene el logo provisorio.</small>
+            <div class="profile-photo-field-actions">
+              <input id="profile-photo" name="photo" type="file" accept="image/*" data-profile-photo-input />
+              <button class="button danger" type="button" data-remove-profile-photo hidden>Eliminar foto</button>
+            </div>
+            <small class="field-help">Usá una foto clara. Si eliminás la actual, se mostrará el logo provisorio.</small>
           </div>
 
           <div class="form-field">
@@ -117,9 +120,9 @@
     </footer>
 
     <script src="js/config/supabase-config.js"></script>
-    <script src="js/services/supabase-service.js?v=launch-20260915a"></script>
+    <script src="js/services/supabase-service.js?v=profile-photo-remove-20260919a"></script>
     <script src="js/services/auth-service.js?v=logout-page-20260822a"></script>
     <script src="js/ui/session-status.js?v=launch-20260915a"></script>
-    <script src="js/pages/my-profile-page.js?v=approval-time-20260830a"></script>
+    <script src="js/pages/my-profile-page.js?v=profile-photo-remove-20260919a"></script>
   </body>
 </html>
