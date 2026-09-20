@@ -32,6 +32,8 @@ La informacion esta separada en entidades para que en una etapa posterior pueda 
 
 Los perfiles creados o editados por profesionales quedan con `moderation_status = pending`. Esto permite revisar el contenido antes de mostrarlo publicamente y evita que un perfil aprobado pueda cambiarse despues sin pasar por una nueva revision.
 
+Cuando un perfil nuevo o una modificacion entra por primera vez en estado `pending`, un trigger asincrono llama a la Edge Function `profile-moderation-notification`. La funcion valida un secreto interno y envia un aviso administrativo mediante la API transaccional de Brevo. Las credenciales se guardan en Edge Function Secrets y Supabase Vault; nunca se publican en el frontend ni en GitHub.
+
 La pantalla `admin-moderacion.html` usa funciones seguras de Supabase para listar perfiles pendientes, aprobarlos o rechazarlos. La autorizacion de administradores se define en la tabla `app_admins`; no se usa ninguna clave privada en el navegador.
 
 `auth-service.js` encapsula registro, login, acceso con Google, cierre de sesion y recuperacion de contrasena. Las paginas visibles no llaman directamente a Supabase Auth.
