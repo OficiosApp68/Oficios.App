@@ -75,7 +75,7 @@
       <main class="profile-page-main">
         <section class="profile-not-found" aria-labelledby="not-found-title">
           <span class="brand-mark">OA</span>
-          <h1 id="not-found-title">No encontramos este profesional.</h1>
+          <h1 id="not-found-title">No encontramos este perfil.</h1>
           <p>El enlace puede estar incompleto o el perfil ya no estar disponible.</p>
           <a class="button primary" href="index.html#profesionales">Volver al directorio</a>
         </section>
@@ -115,8 +115,8 @@
               ${description}
               ${renderTrades(profile, helpers)}
               <p class="profile-contact-note">
-                OFICIOS APP conecta a las partes y no certifica identidad, experiencia ni calidad del servicio. Antes de
-                contratar, acorda detalles, precio, forma de pago y condiciones directamente con el profesional.
+                OFICIOS APP conecta a las partes y no certifica identidad, experiencia ni calidad del trabajo. Antes de
+                contratar, acorda detalles, precio, forma de pago y condiciones directamente con quien publica.
               </p>
               <div class="profile-contact-actions">
                 ${profile.canEditOwnProfile ? '<a class="button secondary" href="mi-perfil.html">Editar mi perfil</a>' : ""}
@@ -125,8 +125,8 @@
             </div>
           </section>
           <section class="profile-page-section" aria-labelledby="details-title">
-            <h2 id="details-title">Informacion profesional</h2>
-            ${renderDetailList(profile, helpers) || '<p class="empty-state">Informacion profesional pendiente de carga.</p>'}
+            <h2 id="details-title">Informacion del perfil</h2>
+            ${renderDetailList(profile, helpers) || '<p class="empty-state">Informacion pendiente de carga.</p>'}
           </section>
           ${renderSpecialties(profile, helpers)}
           ${renderGallery(profile, helpers)}

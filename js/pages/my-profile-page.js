@@ -71,7 +71,7 @@
 
   function renderPreview(profile) {
     if (previewName) {
-      previewName.textContent = profile ? profile.user.displayName : "Tu perfil profesional";
+      previewName.textContent = profile ? profile.user.displayName : "Tu perfil";
     }
 
     if (previewDetail) {

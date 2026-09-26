@@ -64,7 +64,7 @@
   }
 
   function createProfileModel(row) {
-    const name = normalizeText(row && row.name, "Profesional");
+    const name = normalizeText(row && row.name, "Perfil");
     const occupation = normalizeText(row && row.occupation, "Oficio pendiente");
     const phone = normalizeText(row && row.phone, "");
     const zone = normalizeText(row && row.zone, "Zona a confirmar");

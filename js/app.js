@@ -29,7 +29,7 @@
   }
 
   function getResultLabel(count) {
-    return count === 1 ? "1 profesional encontrado." : `${count} profesionales encontrados.`;
+    return count === 1 ? "1 perfil encontrado." : `${count} perfiles encontrados.`;
   }
 
   function fillSelect(select, options, defaultLabel) {
@@ -176,6 +176,6 @@
       applySearch();
     })
     .catch(() => {
-      updateDirectoryStatus("No pudimos cargar los profesionales registrados. Intenta actualizar la pagina.", "error");
+      updateDirectoryStatus("No pudimos cargar los perfiles registrados. Intenta actualizar la pagina.", "error");
     });
 })();

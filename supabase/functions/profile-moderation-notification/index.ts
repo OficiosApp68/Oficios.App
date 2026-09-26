@@ -89,7 +89,7 @@ async function handleNotification(request: Request) {
     return Response.json({ error: "Notification settings are incomplete" }, { status: 500 });
   }
 
-  const name = cleanHeaderText(profile.name, "Profesional sin nombre");
+  const name = cleanHeaderText(profile.name, "Perfil sin nombre");
   const occupation = cleanHeaderText(profile.occupation, "Oficio sin completar");
   const zone = cleanHeaderText(profile.zone, "Zona sin completar");
   const eventLabel = isNewProfile ? "Nuevo perfil" : "Perfil modificado";

@@ -23,7 +23,7 @@
   }
 
   function normalizeUser(user, professional) {
-    const fallbackName = professional && professional.id ? "Profesional pendiente" : "Profesional";
+    const fallbackName = professional && professional.id ? "Perfil pendiente" : "Perfil";
 
     return {
       id: user ? user.id : null,
@@ -82,7 +82,7 @@
       professionalId: professional.id,
       title: title || primaryTrade,
       summary: summary || "Descripcion pendiente de carga.",
-      longDescription: longDescription || "Descripcion profesional pendiente de carga.",
+      longDescription: longDescription || "Descripcion pendiente de carga.",
       specialties,
       rating: typeof (publicProfile && publicProfile.rating) === "number" ? publicProfile.rating : null,
       ratingLabel: typeof (publicProfile && publicProfile.rating) === "number" ? publicProfile.rating.toFixed(1) : "Sin calificacion",

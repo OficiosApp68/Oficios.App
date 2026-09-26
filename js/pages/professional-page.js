@@ -5,7 +5,7 @@
 
   function updatePageMeta(profileModel) {
     if (!profileModel) {
-      document.title = "Profesional no encontrado | OFICIOS APP";
+      document.title = "Perfil no encontrado | OFICIOS APP";
       return;
     }
 

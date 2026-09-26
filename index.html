@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>OFICIOS APP | Profesionales cerca tuyo</title>
+    <title>OFICIOS APP | Oficios y emprendimientos cerca tuyo</title>
     <meta
       name="description"
-      content="Encontr&aacute; profesionales, oficios y emprendedores cerca tuyo por categoria o palabra clave."
+      content="Encontr&aacute; oficios y emprendimientos cerca tuyo por categoria o palabra clave."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -30,7 +30,7 @@
         </button>
         <div class="nav-links" data-nav-links>
           <a href="#categorias">Categorias</a>
-          <a href="#profesionales">Profesionales</a>
+          <a href="#profesionales">Directorio</a>
           <a href="#ficha">Ficha</a>
         </div>
         <div class="nav-actions" data-session-status>
@@ -46,9 +46,9 @@
       <section class="hero-section" id="home">
         <div class="hero-content">
           <div class="hero-copy">
-            <span class="eyebrow">Servicios y emprendimientos locales</span>
+            <span class="eyebrow">Oficios y emprendimientos locales</span>
             <h1>OFICIOS APP</h1>
-            <p class="hero-lead">Encontr&aacute; profesionales, oficios y emprendedores cerca tuyo.</p>
+            <p class="hero-lead">Encontr&aacute; oficios y emprendimientos cerca tuyo.</p>
             <form class="search-panel" aria-label="Buscador principal" data-directory-search-form>
               <label for="directory-query">
                 <span>Que necesitas</span>
@@ -87,8 +87,8 @@
             <div class="trust-card premium-glow">
               <div>
                 <span class="status free">Directorio abierto</span>
-                <h2>Servicios cerca tuyo</h2>
-                <p>Conoce que ofrece cada profesional, su zona de trabajo y como contactarlo.</p>
+                <h2>Oficios y emprendimientos cerca tuyo</h2>
+                <p>Conoce que ofrece cada perfil, su zona de trabajo y como contactarlo.</p>
               </div>
               <div class="metric-row">
                 <span><strong>Busca</strong> por oficio o zona</span>
@@ -97,7 +97,7 @@
             </div>
             <div class="quick-card">
               <span class="brand-mark" aria-hidden="true">OA</span>
-              <p>Publica tu oficio, servicio o emprendimiento gratis y llega a mas personas.</p>
+              <p>Publica tu oficio o emprendimiento gratis y llega a mas personas.</p>
             </div>
           </aside>
         </div>
@@ -105,9 +105,9 @@
 
       <section class="section-block" id="categorias">
         <div class="section-heading">
-          <span class="eyebrow">Explorar servicios</span>
+          <span class="eyebrow">Explorar rubros</span>
           <h2>Categorias principales</h2>
-          <p>Explora distintos rubros y encontra el servicio que necesitas.</p>
+          <p>Explora distintos rubros y encontra lo que necesitas.</p>
         </div>
         <div class="category-grid" data-category-grid></div>
       </section>
@@ -115,18 +115,18 @@
       <section class="section-block tinted" id="profesionales">
         <div class="section-heading">
           <span class="eyebrow">Perfiles registrados</span>
-          <h2>Profesionales disponibles</h2>
-          <p>Listado publico con profesionales registrados en OFICIOS APP.</p>
+          <h2>Oficios y emprendimientos disponibles</h2>
+          <p>Listado publico de perfiles registrados en OFICIOS APP.</p>
         </div>
         <p class="directory-status" data-directory-status role="status" aria-live="polite">
-          Cargando profesionales registrados...
+          Cargando perfiles registrados...
         </p>
         <p class="directory-safety-note">
-          OFICIOS APP conecta a personas con profesionales, pero no certifica identidad, experiencia, precios ni calidad
-          del servicio. Antes de contratar, acorda detalles y condiciones directamente con el profesional.
+          OFICIOS APP conecta a personas con oficios y emprendimientos, pero no certifica identidad, experiencia, precios
+          ni calidad del trabajo. Antes de contratar, acorda detalles y condiciones directamente con quien publica.
         </p>
         <div class="directory-empty-state" data-directory-empty hidden>
-          <p>No encontramos profesionales con esos criterios.</p>
+          <p>No encontramos perfiles con esos criterios.</p>
           <button class="button secondary" type="button" data-clear-search>Limpiar filtros</button>
         </div>
         <div class="professionals-grid" data-professionals-grid></div>
@@ -136,7 +136,7 @@
         <div class="section-heading">
           <span class="eyebrow">Ficha individual</span>
           <h2>Conoce cada perfil</h2>
-          <p>Consulta sus servicios, zona de trabajo y forma de contacto.</p>
+          <p>Consulta lo que ofrece, su zona de trabajo y la forma de contacto.</p>
         </div>
         <article class="profile-detail" data-profile-detail></article>
       </section>
@@ -144,7 +144,7 @@
 
     <footer class="site-footer">
       <span class="brand-mark">OA</span>
-      <p>OFICIOS APP - Conectamos personas con profesionales, oficios y emprendimientos.</p>
+      <p>OFICIOS APP - Conectamos personas con oficios y emprendimientos.</p>
       <nav class="footer-links" aria-label="Informacion legal">
         <a href="terminos.html">Terminos</a>
         <a href="privacidad.html">Privacidad</a>
@@ -154,9 +154,9 @@
     <script src="js/data/catalog.js?v=smart-search-20260731a"></script>
     <script src="js/data/directory.js?v=real-profiles-only-20260821a"></script>
     <script src="js/config/supabase-config.js"></script>
-    <script src="js/services/supabase-service.js?v=launch-20260915a"></script>
+    <script src="js/services/supabase-service.js?v=oficios-20260925a"></script>
     <script src="js/services/auth-service.js?v=logout-page-20260822a"></script>
-    <script src="js/services/directory-service.js"></script>
+    <script src="js/services/directory-service.js?v=oficios-20260925a"></script>
     <script src="js/services/search-service.js?v=smart-search-20260731a"></script>
     <script src="js/renderers/render-helpers.js?v=launch-20260915a"></script>
     <script src="js/renderers/category-renderer.js?v=category-actions-20260731a"></script>
@@ -165,6 +165,6 @@
     <script src="js/ui/navigation.js"></script>
     <script src="js/ui/session-status.js?v=launch-20260915a"></script>
     <script src="js/ui/admin-pending-alert.js?v=pending-alert-20260827a"></script>
-    <script src="js/app.js?v=launch-20260915a"></script>
+    <script src="js/app.js?v=oficios-20260925a"></script>
   </body>
 </html>
