@@ -5,6 +5,12 @@
   const tableName = "professional_profiles";
   const supabaseJsUrl = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.53.0/+esm";
   const termsVersion = "2026-08-28-mvp";
+  const profilePhotoBucket = "profile-photos";
+  const allowedProfilePhotoTypes = ["image/jpeg", "image/png", "image/webp"];
+  const maxProfilePhotoInputBytes = 8 * 1024 * 1024;
+  const maxProfilePhotoOutputBytes = 5 * 1024 * 1024;
+  const maxProfilePhotoSourcePixels = 40_000_000;
+  const maxProfilePhotoDimension = 1600;
   let clientPromise = null;
 
   function normalizeText(value, fallback) {
@@ -193,12 +199,9 @@
 
   async function getProfessionalProfiles() {
     const client = await getClient();
-    const { data, error } = await client
-      .from(tableName)
-      .select("*")
-      .eq("is_active", true)
-      .eq("moderation_status", "approved")
-      .order("created_at", { ascending: false });
+    const { data, error } = await client.rpc("list_public_professional_profiles", {
+      p_profile_id: null,
+    });
 
     if (error) {
       throw error;
@@ -209,19 +212,15 @@
 
   async function getProfessionalProfileById(id) {
     const client = await getClient();
-    const { data, error } = await client
-      .from(tableName)
-      .select("*")
-      .eq("id", id)
-      .eq("is_active", true)
-      .eq("moderation_status", "approved")
-      .maybeSingle();
+    const { data, error } = await client.rpc("list_public_professional_profiles", {
+      p_profile_id: id,
+    });
 
     if (error) {
       throw error;
     }
 
-    return data ? createProfileModel(data) : null;
+    return Array.isArray(data) && data.length ? createProfileModel(data[0]) : null;
   }
 
   async function getCurrentUserProfile() {
@@ -286,8 +285,117 @@
     return data ? createProfileModel(data) : null;
   }
 
-  async function uploadCurrentUserProfilePhoto(file) {
-    const client = await getClient();
+  function validateProfilePhotoFile(file) {
+    if (!file || !allowedProfilePhotoTypes.includes(file.type)) {
+      return "Elegí una imagen JPG, PNG o WebP.";
+    }
+
+    if (file.size > maxProfilePhotoInputBytes) {
+      return "La foto puede pesar hasta 8 MB.";
+    }
+
+    return "";
+  }
+
+  async function hasValidImageSignature(file) {
+    const bytes = new Uint8Array(await file.slice(0, 12).arrayBuffer());
+    const isJpeg = bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff;
+    const isPng =
+      bytes[0] === 0x89 &&
+      bytes[1] === 0x50 &&
+      bytes[2] === 0x4e &&
+      bytes[3] === 0x47 &&
+      bytes[4] === 0x0d &&
+      bytes[5] === 0x0a &&
+      bytes[6] === 0x1a &&
+      bytes[7] === 0x0a;
+    const isWebp =
+      String.fromCharCode(...bytes.slice(0, 4)) === "RIFF" &&
+      String.fromCharCode(...bytes.slice(8, 12)) === "WEBP";
+
+    return isJpeg || isPng || isWebp;
+  }
+
+  function loadProfilePhotoImage(file) {
+    return new Promise((resolve, reject) => {
+      const objectUrl = URL.createObjectURL(file);
+      const image = new Image();
+
+      image.onload = () => {
+        URL.revokeObjectURL(objectUrl);
+        resolve(image);
+      };
+      image.onerror = () => {
+        URL.revokeObjectURL(objectUrl);
+        reject(new Error("No pudimos leer la imagen seleccionada."));
+      };
+      image.src = objectUrl;
+    });
+  }
+
+  function canvasToWebp(canvas) {
+    return new Promise((resolve, reject) => {
+      canvas.toBlob(
+        (blob) => {
+          if (!blob || blob.type !== "image/webp") {
+            reject(new Error("Tu navegador no pudo preparar la foto en un formato seguro."));
+            return;
+          }
+
+          resolve(blob);
+        },
+        "image/webp",
+        0.86
+      );
+    });
+  }
+
+  async function prepareProfilePhoto(file) {
+    const validationError = validateProfilePhotoFile(file);
+
+    if (validationError) {
+      throw new Error(validationError);
+    }
+
+    if (!(await hasValidImageSignature(file))) {
+      throw new Error("El archivo no contiene una imagen JPG, PNG o WebP valida.");
+    }
+
+    const image = await loadProfilePhotoImage(file);
+    const sourceWidth = image.naturalWidth;
+    const sourceHeight = image.naturalHeight;
+
+    if (!sourceWidth || !sourceHeight || sourceWidth * sourceHeight > maxProfilePhotoSourcePixels) {
+      throw new Error("La imagen tiene dimensiones demasiado grandes.");
+    }
+
+    const scale = Math.min(1, maxProfilePhotoDimension / Math.max(sourceWidth, sourceHeight));
+    const width = Math.max(1, Math.round(sourceWidth * scale));
+    const height = Math.max(1, Math.round(sourceHeight * scale));
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d", { alpha: true });
+
+    if (!context) {
+      throw new Error("No pudimos preparar la foto en este navegador.");
+    }
+
+    canvas.width = width;
+    canvas.height = height;
+    context.drawImage(image, 0, 0, width, height);
+
+    const blob = await canvasToWebp(canvas);
+
+    if (blob.size > maxProfilePhotoOutputBytes) {
+      throw new Error("La foto procesada supera el limite de 5 MB.");
+    }
+
+    return new File([blob], `profile-${Date.now()}.webp`, {
+      type: "image/webp",
+      lastModified: Date.now(),
+    });
+  }
+
+  async function getCurrentUserId(client, errorMessage) {
     const { data: sessionData, error: sessionError } = await client.auth.getSession();
 
     if (sessionError) {
@@ -297,25 +405,29 @@
     const userId = sessionData.session && sessionData.session.user ? sessionData.session.user.id : "";
 
     if (!userId) {
-      throw new Error("Necesitas iniciar sesion para subir una foto.");
+      throw new Error(errorMessage);
     }
 
-    if (!file || !file.type || !file.type.startsWith("image/")) {
-      throw new Error("Elegí una imagen valida.");
-    }
+    return userId;
+  }
 
-    const extension = file.name && file.name.includes(".") ? file.name.split(".").pop().toLowerCase() : "jpg";
-    const filePath = `${userId}/profile-${Date.now()}.${extension}`;
-    const { error } = await client.storage.from("profile-photos").upload(filePath, file, {
+  async function uploadCurrentUserProfilePhoto(file) {
+    const client = await getClient();
+    const userId = await getCurrentUserId(client, "Necesitas iniciar sesion para subir una foto.");
+    const preparedFile = await prepareProfilePhoto(file);
+
+    const filePath = `${userId}/${preparedFile.name}`;
+    const { error } = await client.storage.from(profilePhotoBucket).upload(filePath, preparedFile, {
       cacheControl: "3600",
-      upsert: true,
+      contentType: "image/webp",
+      upsert: false,
     });
 
     if (error) {
       throw error;
     }
 
-    const { data } = client.storage.from("profile-photos").getPublicUrl(filePath);
+    const { data } = client.storage.from(profilePhotoBucket).getPublicUrl(filePath);
     return data.publicUrl;
   }
 
@@ -330,34 +442,70 @@
     }
   }
 
-  async function removeCurrentUserProfilePhoto(photoUrl) {
+  async function getCurrentUserProfilePhotoPaths(client, userId) {
+    const { data, error } = await client.storage.from(profilePhotoBucket).list(userId, {
+      limit: 100,
+      sortBy: { column: "created_at", order: "desc" },
+    });
+
+    if (error) {
+      throw error;
+    }
+
+    return (data || []).filter((item) => item && item.name).map((item) => `${userId}/${item.name}`);
+  }
+
+  async function removeCurrentUserProfilePhotoFile(photoUrl) {
     const client = await getClient();
-    const { data: sessionData, error: sessionError } = await client.auth.getSession();
-
-    if (sessionError) {
-      throw sessionError;
-    }
-
-    const userId = sessionData.session && sessionData.session.user ? sessionData.session.user.id : "";
-
-    if (!userId) {
-      throw new Error("Necesitas iniciar sesion para eliminar tu foto.");
-    }
+    const userId = await getCurrentUserId(client, "Necesitas iniciar sesion para eliminar tu foto.");
 
     const filePath = getOwnProfilePhotoPath(photoUrl, userId);
 
     if (filePath) {
-      const { error: storageError } = await client.storage.from("profile-photos").remove([filePath]);
+      const { error: storageError } = await client.storage.from(profilePhotoBucket).remove([filePath]);
 
       if (storageError) {
         throw storageError;
       }
     }
+  }
+
+  async function removeSupersededCurrentUserProfilePhotos(currentPhotoUrl) {
+    const client = await getClient();
+    const userId = await getCurrentUserId(client, "Necesitas iniciar sesion para administrar tus fotos.");
+    const currentPath = getOwnProfilePhotoPath(currentPhotoUrl, userId);
+    const paths = await getCurrentUserProfilePhotoPaths(client, userId);
+    const obsoletePaths = paths.filter((path) => path !== currentPath);
+
+    if (!obsoletePaths.length) {
+      return;
+    }
+
+    const { error } = await client.storage.from(profilePhotoBucket).remove(obsoletePaths);
+
+    if (error) {
+      throw error;
+    }
+  }
+
+  async function removeCurrentUserProfilePhoto() {
+    const client = await getClient();
+    const userId = await getCurrentUserId(client, "Necesitas iniciar sesion para eliminar tu foto.");
 
     const { data, error } = await client.rpc("remove_current_professional_profile_photo");
 
     if (error) {
       throw error;
+    }
+
+    const paths = await getCurrentUserProfilePhotoPaths(client, userId);
+
+    if (paths.length) {
+      const { error: storageError } = await client.storage.from(profilePhotoBucket).remove(paths);
+
+      if (storageError) {
+        throw storageError;
+      }
     }
 
     return data ? createProfileModel(data) : null;
@@ -430,7 +578,11 @@
     isCurrentUserAdmin,
     rejectProfessionalProfile,
     removeCurrentUserProfilePhoto,
+    removeCurrentUserProfilePhotoFile,
+    removeSupersededCurrentUserProfilePhotos,
+    prepareProfilePhoto,
     updateCurrentUserProfile,
     uploadCurrentUserProfilePhoto,
+    validateProfilePhotoFile,
   };
 })();

@@ -235,6 +235,38 @@ begin
 end;
 $$;
 
+create or replace function public.list_public_professional_profiles(
+  p_profile_id uuid default null
+)
+returns table (
+  id uuid,
+  name text,
+  occupation text,
+  phone text,
+  zone text,
+  description text,
+  photo_url text
+)
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select
+    profile.id,
+    profile.name,
+    profile.occupation,
+    profile.phone,
+    profile.zone,
+    profile.description,
+    profile.photo_url
+  from public.professional_profiles as profile
+  where profile.is_active = true
+    and profile.moderation_status = 'approved'
+    and (p_profile_id is null or profile.id = p_profile_id)
+  order by profile.created_at desc;
+$$;
+
 create or replace function public.list_moderation_professional_profiles(p_status text default 'pending')
 returns setof public.professional_profiles
 language plpgsql
@@ -319,24 +351,26 @@ drop policy if exists "Authenticated users can update own professional profiles"
 drop policy if exists "Authenticated users can create professional profiles" on public.professional_profiles;
 drop policy if exists "Public can create test professional profiles" on public.professional_profiles;
 
-create policy "Public can read approved professional profiles"
-on public.professional_profiles
-for select
-to anon
-using (is_active = true and moderation_status = 'approved');
-
-create policy "Authenticated users can read approved or own professional profiles"
+create policy "Authenticated users can read own professional profiles"
 on public.professional_profiles
 for select
 to authenticated
-using (
-  (is_active = true and moderation_status = 'approved')
-  or user_id = auth.uid()
-  or public.is_app_admin()
-);
+using (user_id = auth.uid() or public.is_app_admin());
 
 grant usage on schema public to anon, authenticated;
-grant select on public.professional_profiles to anon, authenticated;
+revoke select on public.professional_profiles from anon;
+grant select on public.professional_profiles to authenticated;
+
+revoke all on function public.list_public_professional_profiles(uuid) from public, anon, authenticated;
+revoke all on function public.is_app_admin() from public, anon, authenticated;
+revoke all on function public.create_professional_profile(text, text, text, text, text, boolean) from public, anon, authenticated;
+revoke all on function public.update_current_professional_profile(text, text, text, text, text, text, boolean) from public, anon, authenticated;
+revoke all on function public.remove_current_professional_profile_photo() from public, anon, authenticated;
+revoke all on function public.list_moderation_professional_profiles(text) from public, anon, authenticated;
+revoke all on function public.approve_professional_profile(uuid) from public, anon, authenticated;
+revoke all on function public.reject_professional_profile(uuid) from public, anon, authenticated;
+
+grant execute on function public.list_public_professional_profiles(uuid) to anon, authenticated;
 grant execute on function public.is_app_admin() to authenticated;
 grant execute on function public.create_professional_profile(text, text, text, text, text, boolean) to authenticated;
 grant execute on function public.update_current_professional_profile(text, text, text, text, text, text, boolean) to authenticated;

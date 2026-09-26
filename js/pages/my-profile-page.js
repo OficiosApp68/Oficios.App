@@ -185,6 +185,15 @@
       return;
     }
 
+    const validationError = app.supabaseService.validateProfilePhotoFile(file);
+
+    if (validationError) {
+      photoInput.value = "";
+      renderPhotoPreview(currentProfile && currentProfile.publicProfile.hasPhoto ? currentProfile.publicProfile.photo : "");
+      setMessage(validationError, "error");
+      return;
+    }
+
     const reader = new FileReader();
     reader.onload = () => renderPhotoPreview(reader.result);
     reader.readAsDataURL(file);
@@ -209,6 +218,7 @@
 
     const file = photoInput && photoInput.files ? photoInput.files[0] : null;
     const isNewProfile = !currentProfile;
+    let photoCleanupWarning = false;
 
     setMessage(isNewProfile ? "Creando perfil..." : "Guardando cambios...", "");
     let updatedProfile = currentProfile
@@ -218,26 +228,50 @@
     currentProfile = updatedProfile;
 
     if (file) {
+      let uploadedPhotoUrl = "";
+
       try {
         setMessage("Datos guardados. Subiendo foto...", "");
-        profile.photoUrl = await app.supabaseService.uploadCurrentUserProfilePhoto(file);
-        updatedProfile = await app.supabaseService.updateCurrentUserProfile(profile);
+        uploadedPhotoUrl = await app.supabaseService.uploadCurrentUserProfilePhoto(file);
+        profile.photoUrl = uploadedPhotoUrl;
+
+        try {
+          updatedProfile = await app.supabaseService.updateCurrentUserProfile(profile);
+        } catch (updateError) {
+          await app.supabaseService.removeCurrentUserProfilePhotoFile(uploadedPhotoUrl).catch(() => {});
+          throw updateError;
+        }
+
         currentProfile = updatedProfile;
+
+        try {
+          await app.supabaseService.removeSupersededCurrentUserProfilePhotos(uploadedPhotoUrl);
+        } catch (_) {
+          photoCleanupWarning = true;
+        }
       } catch (photoError) {
         fillForm(currentProfile);
         if (photoInput) photoInput.value = "";
-        setMessage("Guardamos los datos del perfil, pero no pudimos guardar la foto. Podemos revisar esa configuracion despues.", "error");
+        setMessage(
+          photoError && photoError.message
+            ? photoError.message
+            : "Guardamos los datos del perfil, pero no pudimos guardar la foto.",
+          "error"
+        );
         return currentProfile;
       }
     }
 
     fillForm(updatedProfile);
     if (photoInput) photoInput.value = "";
+    const savedMessage = isNewProfile
+      ? "Perfil creado. Queda pendiente de aprobacion antes de aparecer en el directorio. La revision puede demorar entre 24 y 48 horas."
+      : "Cambios guardados. Tu perfil queda pendiente de aprobacion antes de publicarse. La revision puede demorar entre 24 y 48 horas.";
     setMessage(
-      isNewProfile
-        ? "Perfil creado. Queda pendiente de aprobacion antes de aparecer en el directorio. La revision puede demorar entre 24 y 48 horas."
-        : "Cambios guardados. Tu perfil queda pendiente de aprobacion antes de publicarse. La revision puede demorar entre 24 y 48 horas.",
-      "success"
+      photoCleanupWarning
+        ? `${savedMessage} La foto nueva quedó guardada, pero no pudimos limpiar un archivo anterior.`
+        : savedMessage,
+      photoCleanupWarning ? "error" : "success"
     );
 
     return updatedProfile;
@@ -256,7 +290,7 @@
     setMessage("Eliminando foto...", "");
 
     try {
-      currentProfile = await app.supabaseService.removeCurrentUserProfilePhoto(currentProfile.publicProfile.photo);
+      currentProfile = await app.supabaseService.removeCurrentUserProfilePhoto();
       fillForm(currentProfile);
       if (photoInput) photoInput.value = "";
       setMessage(

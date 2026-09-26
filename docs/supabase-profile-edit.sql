@@ -1,9 +1,12 @@
 alter table public.professional_profiles
 add column if not exists photo_url text;
 
-insert into storage.buckets (id, name, public)
-values ('profile-photos', 'profile-photos', true)
-on conflict (id) do update set public = true;
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values ('profile-photos', 'profile-photos', true, 5242880, array['image/webp']::text[])
+on conflict (id) do update set
+  public = true,
+  file_size_limit = excluded.file_size_limit,
+  allowed_mime_types = excluded.allowed_mime_types;
 
 drop policy if exists "Public can read profile photos" on storage.objects;
 drop policy if exists "Authenticated users can read own profile photos" on storage.objects;

@@ -64,6 +64,8 @@ begin
 end;
 $$;
 
+revoke all on function public.notify_profile_moderation_pending() from public, anon, authenticated;
+
 drop trigger if exists notify_profile_moderation_pending on public.professional_profiles;
 create trigger notify_profile_moderation_pending
 after insert or update of moderation_status
