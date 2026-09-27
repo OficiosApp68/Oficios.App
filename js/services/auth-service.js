@@ -2,8 +2,62 @@
   window.OficiosApp = window.OficiosApp || {};
 
   const app = window.OficiosApp;
+  const authOperationTimeoutMs = 12000;
+  const authTimeoutCode = "auth_operation_timeout";
   let authRedirectPromise = null;
   let lastAuthError = "";
+
+  function createAuthTimeoutError(message) {
+    const error = new Error(message || "La sesion tardo demasiado en responder.");
+    error.code = authTimeoutCode;
+    return error;
+  }
+
+  function withTimeout(promise, message) {
+    let timeoutId;
+    const timeout = new Promise((_, reject) => {
+      timeoutId = window.setTimeout(() => reject(createAuthTimeoutError(message)), authOperationTimeoutMs);
+    });
+
+    return Promise.race([Promise.resolve(promise), timeout]).finally(() => {
+      if (typeof window.clearTimeout === "function") {
+        window.clearTimeout(timeoutId);
+      }
+    });
+  }
+
+  function getSupabaseStoragePrefix() {
+    const config = app.supabaseConfig || {};
+    const match = String(config.url || "").match(/^https:\/\/([^.]+)\.supabase\.co/i);
+    return match ? `sb-${match[1]}` : "";
+  }
+
+  function clearStoredAuthSession() {
+    const prefix = getSupabaseStoragePrefix();
+    const storages = [window.localStorage, window.sessionStorage].filter(Boolean);
+
+    storages.forEach((storage) => {
+      Object.keys(storage).forEach((key) => {
+        if ((prefix && key.startsWith(prefix)) || key === "supabase.auth.token") {
+          storage.removeItem(key);
+        }
+      });
+    });
+  }
+
+  function hasAuthRedirectData() {
+    const params = new URLSearchParams(window.location.search);
+    const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ""));
+
+    return Boolean(
+      params.get("code") ||
+        params.get("error") ||
+        params.get("error_description") ||
+        hashParams.get("access_token") ||
+        hashParams.get("error") ||
+        hashParams.get("error_description")
+    );
+  }
 
   async function getAuth() {
     const client = await app.supabaseService.getClient();
@@ -123,15 +177,18 @@
   }
 
   async function signUp(email, password, captchaToken) {
-    const auth = await getAuth();
-    const { data, error } = await auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: getAuthCallbackUrl("registro.html"),
-        ...(captchaToken ? { captchaToken } : {}),
-      },
-    });
+    const auth = await withTimeout(getAuth(), "No pudimos conectar con el registro.");
+    const { data, error } = await withTimeout(
+      auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: getAuthCallbackUrl("registro.html"),
+          ...(captchaToken ? { captchaToken } : {}),
+        },
+      }),
+      "El registro tardo demasiado en responder."
+    );
 
     if (error) {
       throw error;
@@ -141,12 +198,15 @@
   }
 
   async function signIn(email, password, captchaToken) {
-    const auth = await getAuth();
-    const { data, error } = await auth.signInWithPassword({
-      email,
-      password,
-      ...(captchaToken ? { options: { captchaToken } } : {}),
-    });
+    const auth = await withTimeout(getAuth(), "No pudimos conectar con el inicio de sesion.");
+    const { data, error } = await withTimeout(
+      auth.signInWithPassword({
+        email,
+        password,
+        ...(captchaToken ? { options: { captchaToken } } : {}),
+      }),
+      "El inicio de sesion tardo demasiado en responder."
+    );
 
     if (error) {
       throw error;
@@ -156,14 +216,17 @@
   }
 
   async function signInWithGoogle(redirectPath) {
-    const auth = await getAuth();
+    const auth = await withTimeout(getAuth(), "No pudimos conectar con Google.");
 
-    const { data, error } = await auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        redirectTo: getAuthCallbackUrl(redirectPath || "index.html"),
-      },
-    });
+    const { data, error } = await withTimeout(
+      auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: getAuthCallbackUrl(redirectPath || "index.html"),
+        },
+      }),
+      "Google tardo demasiado en responder."
+    );
 
     if (error) {
       throw error;
@@ -173,8 +236,11 @@
   }
 
   async function signOut() {
-    const auth = await getAuth();
-    const { error } = await auth.signOut({ scope: "local" });
+    const auth = await withTimeout(getAuth(), "No pudimos conectar para cerrar la sesion.");
+    const { error } = await withTimeout(
+      auth.signOut({ scope: "local" }),
+      "El cierre de sesion tardo demasiado en responder."
+    );
 
     if (error) {
       throw error;
@@ -182,12 +248,15 @@
   }
 
   async function resetPasswordForEmail(email, captchaToken) {
-    const auth = await getAuth();
+    const auth = await withTimeout(getAuth(), "No pudimos conectar con la recuperacion de contrasena.");
     const redirectTo = getRedirectUrl("cambiar-password.html");
-    const { data, error } = await auth.resetPasswordForEmail(email, {
-      redirectTo,
-      ...(captchaToken ? { captchaToken } : {}),
-    });
+    const { data, error } = await withTimeout(
+      auth.resetPasswordForEmail(email, {
+        redirectTo,
+        ...(captchaToken ? { captchaToken } : {}),
+      }),
+      "La recuperacion de contrasena tardo demasiado en responder."
+    );
 
     if (error) {
       throw error;
@@ -197,8 +266,11 @@
   }
 
   async function updatePassword(password) {
-    const auth = await getAuth();
-    const { data, error } = await auth.updateUser({ password });
+    const auth = await withTimeout(getAuth(), "No pudimos conectar con el cambio de contrasena.");
+    const { data, error } = await withTimeout(
+      auth.updateUser({ password }),
+      "El cambio de contrasena tardo demasiado en responder."
+    );
 
     if (error) {
       throw error;
@@ -208,27 +280,50 @@
   }
 
   async function getSession() {
-    const auth = await getAuth();
+    const auth = await withTimeout(getAuth(), "No pudimos conectar con la sesion.");
     let redirectSession = null;
 
-    try {
-      redirectSession = await handleAuthRedirect(auth);
-    } catch (error) {
-      lastAuthError = error.message || "No pudimos completar el inicio con Google.";
-      redirectSession = null;
+    if (hasAuthRedirectData()) {
+      try {
+        redirectSession = await withTimeout(
+          handleAuthRedirect(auth),
+          "La confirmacion de la sesion tardo demasiado en responder."
+        );
+      } catch (error) {
+        lastAuthError = error.message || "No pudimos completar el inicio de sesion.";
+        return null;
+      }
     }
 
     if (redirectSession) {
       return redirectSession;
     }
 
-    const { data, error } = await auth.getSession();
+    let sessionResult;
+
+    try {
+      sessionResult = await withTimeout(
+        auth.getSession(),
+        "La sesion guardada quedo bloqueada. Volve a iniciar sesion."
+      );
+    } catch (error) {
+      if (error && error.code === authTimeoutCode) {
+        clearStoredAuthSession();
+        lastAuthError = error.message;
+        return null;
+      }
+
+      throw error;
+    }
+
+    const { data, error } = sessionResult;
 
     if (error) {
       throw error;
     }
 
     if (data.session) {
+      lastAuthError = "";
       return data.session;
     }
 
@@ -244,12 +339,13 @@
   }
 
   async function onAuthStateChange(callback) {
-    const auth = await getAuth();
+    const auth = await withTimeout(getAuth(), "No pudimos observar los cambios de sesion.");
     const { data } = auth.onAuthStateChange((event, session) => callback(event, session));
     return data.subscription;
   }
 
   app.authService = {
+    clearStoredAuthSession,
     getLastAuthError,
     getSession,
     handleAuthRedirect,

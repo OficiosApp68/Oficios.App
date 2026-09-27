@@ -44,22 +44,6 @@
     return next;
   }
 
-  async function waitForSession() {
-    let session = null;
-
-    for (let attempt = 0; attempt < 20; attempt += 1) {
-      session = await app.authService.getSession();
-
-      if (session) {
-        return session;
-      }
-
-      await new Promise((resolve) => setTimeout(resolve, 350));
-    }
-
-    return null;
-  }
-
   async function initAuthCallback() {
     if (!app.authService) {
       setMessage("No pudimos cargar la confirmacion de cuenta. Volve a intentar.", "error");
@@ -69,7 +53,7 @@
     try {
       setMessage("Estamos confirmando tu sesion...", "");
 
-      const session = await waitForSession();
+      const session = await app.authService.getSession();
 
       if (!session) {
         const authError = app.authService.getLastAuthError ? app.authService.getLastAuthError() : "";

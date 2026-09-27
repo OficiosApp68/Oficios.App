@@ -139,6 +139,10 @@
   function getFriendlySaveError(error) {
     const errorText = error && error.message ? error.message : "";
 
+    if (/401|jwt|token|sesion|session|auth/i.test(errorText)) {
+      return "Tu sesion vencio o dejo de responder. Los datos siguen en pantalla: reinicia el acceso y volve a guardar.";
+    }
+
     if (/profile-photos|storage|bucket|row-level security|storage\.objects|object/i.test(errorText)) {
       return "No pudimos guardar la foto. Falta revisar la configuracion de fotos en Supabase.";
     }

@@ -56,6 +56,8 @@ test("email auth forwards captcha tokens without changing Google login", async (
   const window = {
     location: { href: "https://example.com/registro.html", hostname: "example.com", port: "" },
     OficiosApp: { supabaseService: { getClient: async () => ({ auth }) } },
+    setTimeout,
+    clearTimeout,
   };
   runScript("js/services/auth-service.js", window, {});
   await window.OficiosApp.authService.signUp("a@example.com", "password", "signup-token");

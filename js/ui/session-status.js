@@ -26,7 +26,7 @@
   function renderAuthError(target, errorMessage) {
     target.innerHTML = `
       <span class="session-label session-error">${errorMessage}</span>
-      <a class="button ghost" href="login.html">Intentar de nuevo</a>
+      <a class="button ghost" href="cerrar-sesion.html">Reiniciar acceso</a>
     `;
   }
 
@@ -63,25 +63,14 @@
     renderChecking(target);
 
     try {
-      let session = await app.authService.getSession();
-
-      if (!session) {
-        for (let attempt = 0; attempt < 12; attempt += 1) {
-          await new Promise((resolve) => setTimeout(resolve, 250));
-          session = await app.authService.getSession();
-
-          if (session) {
-            break;
-          }
-        }
-      }
+      const session = await app.authService.getSession();
 
       if (session) {
         await renderAuthenticated(target, session);
       } else {
         const authError = app.authService.getLastAuthError ? app.authService.getLastAuthError() : "";
         if (authError) {
-          renderAuthError(target, "No pudimos completar Google.");
+          renderAuthError(target, "La sesion anterior no respondio.");
         } else {
           renderSignedOut(target);
         }
