@@ -11,7 +11,42 @@
   const maxProfilePhotoOutputBytes = 5 * 1024 * 1024;
   const maxProfilePhotoSourcePixels = 40_000_000;
   const maxProfilePhotoDimension = 1600;
+  const serviceRequestTimeoutMs = 15000;
+  const serviceTimeoutCode = "service_request_timeout";
   let clientPromise = null;
+
+  function createServiceTimeoutError(message) {
+    const error = new Error(message || "La operacion tardo demasiado en responder.");
+    error.code = serviceTimeoutCode;
+    return error;
+  }
+
+  function withRequestTimeout(request, message) {
+    const controller = typeof AbortController === "function" ? new AbortController() : null;
+    const operation = controller && request && typeof request.abortSignal === "function"
+      ? request.abortSignal(controller.signal)
+      : request;
+    let timeoutId;
+    const timeout = new Promise((_, reject) => {
+      timeoutId = window.setTimeout(() => {
+        if (controller) controller.abort();
+        reject(createServiceTimeoutError(message));
+      }, serviceRequestTimeoutMs);
+    });
+
+    return Promise.race([Promise.resolve(operation), timeout]).finally(() => {
+      if (typeof window.clearTimeout === "function") {
+        window.clearTimeout(timeoutId);
+      }
+    });
+  }
+
+  async function getSessionData(client, message) {
+    return withRequestTimeout(
+      client.auth.getSession(),
+      message || "La sesion tardo demasiado en responder. Reinicia el acceso e intenta nuevamente."
+    );
+  }
 
   function normalizeText(value, fallback) {
     return typeof value === "string" && value.trim() ? value.trim() : fallback;
@@ -188,7 +223,10 @@
       p_terms_accepted: profile.termsAccepted === true,
     };
 
-    const { data, error } = await client.rpc("create_professional_profile", payload);
+    const { data, error } = await withRequestTimeout(
+      client.rpc("create_professional_profile", payload),
+      "No recibimos confirmacion de la creacion del perfil. Recarga Mi perfil antes de volver a intentarlo."
+    );
 
     if (error) {
       throw error;
@@ -199,9 +237,12 @@
 
   async function getProfessionalProfiles() {
     const client = await getClient();
-    const { data, error } = await client.rpc("list_public_professional_profiles", {
-      p_profile_id: null,
-    });
+    const { data, error } = await withRequestTimeout(
+      client.rpc("list_public_professional_profiles", {
+        p_profile_id: null,
+      }),
+      "El directorio tardo demasiado en responder."
+    );
 
     if (error) {
       throw error;
@@ -212,9 +253,12 @@
 
   async function getProfessionalProfileById(id) {
     const client = await getClient();
-    const { data, error } = await client.rpc("list_public_professional_profiles", {
-      p_profile_id: id,
-    });
+    const { data, error } = await withRequestTimeout(
+      client.rpc("list_public_professional_profiles", {
+        p_profile_id: id,
+      }),
+      "La ficha tardo demasiado en responder."
+    );
 
     if (error) {
       throw error;
@@ -225,7 +269,10 @@
 
   async function getCurrentUserProfile() {
     const client = await getClient();
-    const { data: sessionData, error: sessionError } = await client.auth.getSession();
+    const { data: sessionData, error: sessionError } = await getSessionData(
+      client,
+      "La sesion tardo demasiado en responder. Reinicia el acceso antes de cargar tu perfil."
+    );
 
     if (sessionError) {
       throw sessionError;
@@ -237,13 +284,16 @@
       return null;
     }
 
-    const { data, error } = await client
-      .from(tableName)
-      .select("*")
-      .eq("user_id", userId)
-      .order("created_at", { ascending: false })
-      .limit(1)
-      .maybeSingle();
+    const { data, error } = await withRequestTimeout(
+      client
+        .from(tableName)
+        .select("*")
+        .eq("user_id", userId)
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .maybeSingle(),
+      "Tu perfil tardo demasiado en responder."
+    );
 
     if (error) {
       throw error;
@@ -254,7 +304,10 @@
 
   async function updateCurrentUserProfile(profile) {
     const client = await getClient();
-    const { data: sessionData, error: sessionError } = await client.auth.getSession();
+    const { data: sessionData, error: sessionError } = await getSessionData(
+      client,
+      "La sesion tardo demasiado en responder. Reinicia el acceso antes de guardar nuevamente."
+    );
 
     if (sessionError) {
       throw sessionError;
@@ -276,7 +329,10 @@
       p_terms_accepted: profile.termsAccepted === true,
     };
 
-    const { data, error } = await client.rpc("update_current_professional_profile", payload);
+    const { data, error } = await withRequestTimeout(
+      client.rpc("update_current_professional_profile", payload),
+      "No recibimos confirmacion del guardado. Recarga Mi perfil antes de volver a intentarlo."
+    );
 
     if (error) {
       throw error;
@@ -396,7 +452,10 @@
   }
 
   async function getCurrentUserId(client, errorMessage) {
-    const { data: sessionData, error: sessionError } = await client.auth.getSession();
+    const { data: sessionData, error: sessionError } = await getSessionData(
+      client,
+      "La sesion tardo demasiado en responder. Reinicia el acceso antes de continuar."
+    );
 
     if (sessionError) {
       throw sessionError;
@@ -417,11 +476,14 @@
     const preparedFile = await prepareProfilePhoto(file);
 
     const filePath = `${userId}/${preparedFile.name}`;
-    const { error } = await client.storage.from(profilePhotoBucket).upload(filePath, preparedFile, {
-      cacheControl: "3600",
-      contentType: "image/webp",
-      upsert: false,
-    });
+    const { error } = await withRequestTimeout(
+      client.storage.from(profilePhotoBucket).upload(filePath, preparedFile, {
+        cacheControl: "3600",
+        contentType: "image/webp",
+        upsert: false,
+      }),
+      "La foto tardo demasiado en subir. Recarga Mi perfil antes de volver a intentarlo."
+    );
 
     if (error) {
       throw error;
@@ -443,10 +505,13 @@
   }
 
   async function getCurrentUserProfilePhotoPaths(client, userId) {
-    const { data, error } = await client.storage.from(profilePhotoBucket).list(userId, {
-      limit: 100,
-      sortBy: { column: "created_at", order: "desc" },
-    });
+    const { data, error } = await withRequestTimeout(
+      client.storage.from(profilePhotoBucket).list(userId, {
+        limit: 100,
+        sortBy: { column: "created_at", order: "desc" },
+      }),
+      "La lista de fotos tardo demasiado en responder."
+    );
 
     if (error) {
       throw error;
@@ -462,7 +527,10 @@
     const filePath = getOwnProfilePhotoPath(photoUrl, userId);
 
     if (filePath) {
-      const { error: storageError } = await client.storage.from(profilePhotoBucket).remove([filePath]);
+      const { error: storageError } = await withRequestTimeout(
+        client.storage.from(profilePhotoBucket).remove([filePath]),
+        "La eliminacion de la foto tardo demasiado en responder."
+      );
 
       if (storageError) {
         throw storageError;
@@ -481,7 +549,10 @@
       return;
     }
 
-    const { error } = await client.storage.from(profilePhotoBucket).remove(obsoletePaths);
+    const { error } = await withRequestTimeout(
+      client.storage.from(profilePhotoBucket).remove(obsoletePaths),
+      "La limpieza de fotos anteriores tardo demasiado en responder."
+    );
 
     if (error) {
       throw error;
@@ -492,7 +563,10 @@
     const client = await getClient();
     const userId = await getCurrentUserId(client, "Necesitas iniciar sesion para eliminar tu foto.");
 
-    const { data, error } = await client.rpc("remove_current_professional_profile_photo");
+    const { data, error } = await withRequestTimeout(
+      client.rpc("remove_current_professional_profile_photo"),
+      "No recibimos confirmacion de la eliminacion de la foto. Recarga Mi perfil antes de volver a intentarlo."
+    );
 
     if (error) {
       throw error;
@@ -501,7 +575,10 @@
     const paths = await getCurrentUserProfilePhotoPaths(client, userId);
 
     if (paths.length) {
-      const { error: storageError } = await client.storage.from(profilePhotoBucket).remove(paths);
+      const { error: storageError } = await withRequestTimeout(
+        client.storage.from(profilePhotoBucket).remove(paths),
+        "La eliminacion de los archivos de foto tardo demasiado en responder."
+      );
 
       if (storageError) {
         throw storageError;
@@ -513,9 +590,12 @@
 
   async function getModerationProfiles(status) {
     const client = await getClient();
-    const { data, error } = await client.rpc("list_moderation_professional_profiles", {
-      p_status: normalizeText(status, "pending"),
-    });
+    const { data, error } = await withRequestTimeout(
+      client.rpc("list_moderation_professional_profiles", {
+        p_status: normalizeText(status, "pending"),
+      }),
+      "La moderacion tardo demasiado en responder."
+    );
 
     if (error) {
       throw error;
@@ -531,7 +611,10 @@
 
   async function isCurrentUserAdmin() {
     const client = await getClient();
-    const { data, error } = await client.rpc("is_app_admin");
+    const { data, error } = await withRequestTimeout(
+      client.rpc("is_app_admin"),
+      "La comprobacion de administrador tardo demasiado en responder."
+    );
 
     if (error) {
       return false;
@@ -542,9 +625,12 @@
 
   async function approveProfessionalProfile(id) {
     const client = await getClient();
-    const { data, error } = await client.rpc("approve_professional_profile", {
-      p_profile_id: id,
-    });
+    const { data, error } = await withRequestTimeout(
+      client.rpc("approve_professional_profile", {
+        p_profile_id: id,
+      }),
+      "No recibimos confirmacion de la aprobacion. Actualiza la lista antes de volver a intentarlo."
+    );
 
     if (error) {
       throw error;
@@ -555,9 +641,12 @@
 
   async function rejectProfessionalProfile(id) {
     const client = await getClient();
-    const { data, error } = await client.rpc("reject_professional_profile", {
-      p_profile_id: id,
-    });
+    const { data, error } = await withRequestTimeout(
+      client.rpc("reject_professional_profile", {
+        p_profile_id: id,
+      }),
+      "No recibimos confirmacion del rechazo. Actualiza la lista antes de volver a intentarlo."
+    );
 
     if (error) {
       throw error;

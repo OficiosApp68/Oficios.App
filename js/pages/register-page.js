@@ -162,6 +162,18 @@
     return "No pudimos crear la cuenta. Revisa la conexion e intentalo nuevamente.";
   }
 
+  function getProfileSaveErrorMessage(error) {
+    if (error?.code === "service_request_timeout" && error.message) {
+      return error.message;
+    }
+
+    if (/401|jwt|token|sesion|session|auth/i.test(error?.message || "")) {
+      return "Tu sesion vencio o dejo de responder. Reinicia el acceso y completa el perfil nuevamente.";
+    }
+
+    return "No pudimos guardar el perfil. Revisa la conexion e intentalo nuevamente.";
+  }
+
   async function getCurrentSession() {
     if (!app.authService) {
       return null;
@@ -284,7 +296,7 @@
         ' <a class="inline-link" href="index.html#profesionales">Volver al directorio</a>'
       );
     } catch (error) {
-      setMessage(currentSession ? "No pudimos guardar el perfil. Revisa la conexion e intentalo nuevamente." : getSignUpErrorMessage(error), "error");
+      setMessage(currentSession ? getProfileSaveErrorMessage(error) : getSignUpErrorMessage(error), "error");
     } finally {
       if (!currentSession) captcha?.reset();
       activeSubmitButton.disabled = false;

@@ -143,6 +143,11 @@
 
   async function updateProfile(profileId, action) {
     const isApproval = action === "approve";
+    const card = list && list.querySelector(`[data-profile-id="${profileId}"]`);
+    const actionButtons = card ? Array.from(card.querySelectorAll("[data-moderation-action]")) : [];
+    actionButtons.forEach((button) => {
+      button.disabled = true;
+    });
     setMessage(isApproval ? "Aprobando perfil..." : "Rechazando perfil...", "");
 
     try {
@@ -155,7 +160,16 @@
       setMessage(isApproval ? "Perfil aprobado. Ya puede aparecer en el directorio." : "Perfil rechazado. No aparecera publico.", "success");
       await loadProfiles();
     } catch (error) {
-      setMessage("No pudimos actualizar el perfil. Revisa permisos o intenta nuevamente.", "error");
+      setMessage(
+        error?.code === "service_request_timeout" && error.message
+          ? error.message
+          : "No pudimos actualizar el perfil. Revisa permisos o intenta nuevamente.",
+        "error"
+      );
+    } finally {
+      actionButtons.forEach((button) => {
+        button.disabled = false;
+      });
     }
   }
 
