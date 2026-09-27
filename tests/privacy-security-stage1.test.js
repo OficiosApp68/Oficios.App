@@ -70,3 +70,10 @@ test("preflight and rollback scripts exist and do not delete current data", () =
   assert.doesNotMatch(migration, /delete\s+from\s+storage\.objects/i);
 });
 
+test("public profiles keep phone numbers behind the WhatsApp action", () => {
+  const detailRenderer = read("js/renderers/professional-detail-renderer.js");
+  const helpers = read("js/renderers/render-helpers.js");
+
+  assert.doesNotMatch(detailRenderer, /\["Telefono",\s*profile\.user\.phone\]/);
+  assert.match(helpers, /Contactar por WhatsApp/);
+});

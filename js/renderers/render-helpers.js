@@ -47,7 +47,7 @@
 
     return `
       <a class="button whatsapp" href="${escapeHtml(whatsappUrl)}" target="_blank" rel="noreferrer">
-        WhatsApp
+        Contactar por WhatsApp
       </a>
     `;
   }

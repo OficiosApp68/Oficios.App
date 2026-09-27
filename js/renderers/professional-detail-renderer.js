@@ -7,7 +7,6 @@
       profile.professional.hasCoverage ? ["Cobertura", profile.professional.coverage] : null,
       profile.professional.hasExperience ? ["Experiencia", profile.professional.experience] : null,
       profile.professional.hasWorkingHours ? ["Horarios", profile.professional.workingHours] : null,
-      profile.canContactByPhone ? ["Telefono", profile.user.phone] : null,
     ].filter(Boolean);
 
     if (!items.length) return "";
