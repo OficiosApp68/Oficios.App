@@ -887,6 +887,100 @@ cite {
   line-height: 1.65;
 }
 
+.professional-form.help-content {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 24px;
+}
+
+.help-page .form-intro h1 {
+  max-width: 760px;
+  font-size: 3.5rem;
+}
+
+.help-section-heading h2,
+.help-contact h2 {
+  margin: 0 0 8px;
+  font-size: 1.25rem;
+}
+
+.help-section-heading p,
+.help-contact p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.faq-list {
+  display: grid;
+  gap: 10px;
+}
+
+.faq-item {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.faq-item summary {
+  position: relative;
+  padding: 18px 52px 18px 18px;
+  color: var(--text);
+  cursor: pointer;
+  font-weight: 800;
+  line-height: 1.4;
+  list-style: none;
+}
+
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item summary::after {
+  content: "+";
+  position: absolute;
+  top: 50%;
+  right: 18px;
+  color: var(--primary);
+  font-size: 1.5rem;
+  line-height: 1;
+  transform: translateY(-50%);
+}
+
+.faq-item[open] summary::after {
+  content: "\2212";
+}
+
+.faq-item summary:focus-visible {
+  outline: 3px solid rgba(15, 118, 110, 0.25);
+  outline-offset: -3px;
+}
+
+.faq-answer {
+  padding: 0 18px 18px;
+  border-top: 1px solid var(--line);
+}
+
+.faq-answer p {
+  margin: 16px 0 0;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.help-contact {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+}
+
+.help-contact .button {
+  flex: 0 0 auto;
+}
+
 .profile-page-main {
   width: min(1180px, calc(100% - 32px));
   margin: 0 auto;
@@ -1785,6 +1879,19 @@ cite {
 
   .form-intro h1 {
     font-size: clamp(2.1rem, 13vw, 3.4rem);
+  }
+
+  .help-page .form-intro h1 {
+    font-size: 2.5rem;
+  }
+
+  .help-contact {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .help-contact .button {
+    width: 100%;
   }
 
   .moderation-card {
