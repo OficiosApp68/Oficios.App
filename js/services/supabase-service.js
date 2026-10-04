@@ -114,6 +114,9 @@
     const moderationStatus = normalizeText(row && row.moderation_status, "approved");
     const termsAcceptedAt = normalizeText(row && row.terms_accepted_at, "");
     const privacyAcceptedAt = normalizeText(row && row.privacy_accepted_at, "");
+    const reviewCount = Number(row && row.review_count) || 0;
+    const ratingValue = Number(row && row.rating);
+    const hasRating = reviewCount > 0 && Number.isFinite(ratingValue);
     const moderationLabels = {
       approved: "Aprobado",
       pending: "Pendiente",
@@ -154,8 +157,9 @@
         summary: description,
         longDescription: description,
         specialties: [occupation],
-        rating: null,
-        ratingLabel: "Sin calificacion",
+        rating: hasRating ? ratingValue : null,
+        ratingLabel: hasRating ? ratingValue.toFixed(1) : "Sin calificacion",
+        reviewCount,
         whatsapp: buildWhatsappUrl(phone),
         photo: photoUrl || "assets/profile-placeholder.svg",
         hasPhoto: Boolean(photoUrl),
@@ -166,7 +170,7 @@
         hasSummary: Boolean(description),
         hasLongDescription: Boolean(description),
         hasSpecialties: Boolean(occupation),
-        hasRating: false,
+        hasRating,
       },
       primaryTrade: occupation,
       trades: [occupation],
@@ -265,6 +269,70 @@
     }
 
     return Array.isArray(data) && data.length ? createProfileModel(data[0]) : null;
+  }
+
+  function createReviewModel(row) {
+    return {
+      id: normalizeText(row && row.id, ""),
+      profileId: normalizeText(row && row.profile_id, ""),
+      profileName: normalizeText(row && row.profile_name, "Perfil"),
+      profileOccupation: normalizeText(row && row.profile_occupation, "Oficio o emprendimiento"),
+      reviewerName: normalizeText(row && row.reviewer_name, "Evaluador"),
+      rating: Number(row && row.rating) || 0,
+      status: normalizeText(row && row.status, "approved"),
+      createdAt: normalizeText(row && row.created_at, ""),
+      reviewedAt: normalizeText(row && row.reviewed_at, ""),
+    };
+  }
+
+  function createReviewerAccountModel(row) {
+    if (!row) return null;
+    return {
+      userId: normalizeText(row.user_id, ""),
+      displayName: normalizeText(row.display_name, ""),
+      status: normalizeText(row.status, "pending"),
+      createdAt: normalizeText(row.created_at, ""),
+      reviewedAt: normalizeText(row.reviewed_at, ""),
+    };
+  }
+
+  async function getCurrentReviewerAccount() {
+    const client = await getClient();
+    const { data, error } = await withRequestTimeout(
+      client.rpc("get_current_reviewer_account"),
+      "La cuenta de evaluador tardo demasiado en responder."
+    );
+
+    if (error) throw error;
+    return Array.isArray(data) && data.length ? createReviewerAccountModel(data[0]) : null;
+  }
+
+  async function registerReviewerAccount(displayName, termsAccepted) {
+    const client = await getClient();
+    const { data, error } = await withRequestTimeout(
+      client.rpc("register_reviewer_account", {
+        p_display_name: displayName,
+        p_terms_accepted: termsAccepted === true,
+      }),
+      "No recibimos confirmacion del registro. Espera un momento antes de volver a intentarlo."
+    );
+
+    if (error) throw error;
+    return data;
+  }
+
+  async function submitProfileReview(review) {
+    const client = await getClient();
+    const { data, error } = await withRequestTimeout(
+      client.rpc("submit_profile_review", {
+        p_profile_id: review.profileId,
+        p_rating: review.rating,
+      }),
+      "No recibimos confirmacion del envio. Espera un momento antes de volver a intentarlo."
+    );
+
+    if (error) throw error;
+    return data;
   }
 
   async function getCurrentUserProfile() {
@@ -609,6 +677,76 @@
     return profiles.length;
   }
 
+  async function getModerationReviews(status) {
+    const client = await getClient();
+    const { data, error } = await withRequestTimeout(
+      client.rpc("list_moderation_profile_reviews", {
+        p_status: normalizeText(status, "pending"),
+      }),
+      "Las valoraciones pendientes tardaron demasiado en responder."
+    );
+
+    if (error) throw error;
+    return Array.isArray(data) ? data.map(createReviewModel) : [];
+  }
+
+  async function getModerationReviewerAccounts(status) {
+    const client = await getClient();
+    const { data, error } = await withRequestTimeout(
+      client.rpc("list_moderation_reviewer_accounts", {
+        p_status: normalizeText(status, "pending"),
+      }),
+      "Las cuentas de evaluadores tardaron demasiado en responder."
+    );
+
+    if (error) throw error;
+    return Array.isArray(data) ? data.map(createReviewerAccountModel) : [];
+  }
+
+  async function approveReviewerAccount(userId) {
+    const client = await getClient();
+    const { data, error } = await withRequestTimeout(
+      client.rpc("approve_reviewer_account", { p_user_id: userId }),
+      "No recibimos confirmacion de la aprobacion. Actualiza la lista antes de repetirla."
+    );
+
+    if (error) throw error;
+    return data;
+  }
+
+  async function rejectReviewerAccount(userId) {
+    const client = await getClient();
+    const { data, error } = await withRequestTimeout(
+      client.rpc("reject_reviewer_account", { p_user_id: userId }),
+      "No recibimos confirmacion del rechazo. Actualiza la lista antes de repetirlo."
+    );
+
+    if (error) throw error;
+    return data;
+  }
+
+  async function approveProfileReview(id) {
+    const client = await getClient();
+    const { data, error } = await withRequestTimeout(
+      client.rpc("approve_profile_review", { p_review_id: id }),
+      "No recibimos confirmacion de la aprobacion. Actualiza la lista antes de repetirla."
+    );
+
+    if (error) throw error;
+    return data;
+  }
+
+  async function rejectProfileReview(id) {
+    const client = await getClient();
+    const { data, error } = await withRequestTimeout(
+      client.rpc("reject_profile_review", { p_review_id: id }),
+      "No recibimos confirmacion del rechazo. Actualiza la lista antes de repetirlo."
+    );
+
+    if (error) throw error;
+    return data;
+  }
+
   async function isCurrentUserAdmin() {
     const client = await getClient();
     const { data, error } = await withRequestTimeout(
@@ -656,20 +794,29 @@
   }
 
   app.supabaseService = {
+    approveProfileReview,
+    approveReviewerAccount,
     approveProfessionalProfile,
     createProfessionalProfile,
     getClient,
     getCurrentUserProfile,
+    getCurrentReviewerAccount,
     getModerationProfiles,
+    getModerationReviewerAccounts,
+    getModerationReviews,
     getPendingModerationCount,
     getProfessionalProfileById,
     getProfessionalProfiles,
     isCurrentUserAdmin,
     rejectProfessionalProfile,
+    rejectReviewerAccount,
+    rejectProfileReview,
+    registerReviewerAccount,
     removeCurrentUserProfilePhoto,
     removeCurrentUserProfilePhotoFile,
     removeSupersededCurrentUserProfilePhotos,
     prepareProfilePhoto,
+    submitProfileReview,
     updateCurrentUserProfile,
     uploadCurrentUserProfilePhoto,
     validateProfilePhotoFile,

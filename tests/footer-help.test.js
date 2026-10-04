@@ -5,10 +5,12 @@ const { join } = require("node:path");
 
 const pages = [
   "admin-moderacion.html",
+  "admin-valoraciones.html",
   "auth-callback.html",
   "ayuda.html",
   "cambiar-password.html",
   "cerrar-sesion.html",
+  "registro-valoracion.html",
   "index.html",
   "login.html",
   "mi-perfil.html",
@@ -33,7 +35,7 @@ test("every page footer links to the help center", () => {
 test("help center answers common questions and keeps email as a fallback", () => {
   const html = readFileSync(join(__dirname, "../ayuda.html"), "utf8");
 
-  assert.equal((html.match(/<details class="faq-item">/g) || []).length, 10);
+  assert.equal((html.match(/<details class="faq-item">/g) || []).length, 11);
   assert.match(html, /registro/i);
   assert.match(html, /moderacion/i);
   assert.match(html, /contrasena/i);

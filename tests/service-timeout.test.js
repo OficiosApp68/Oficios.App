@@ -72,15 +72,17 @@ test("all profile pages request the new service version", () => {
     "cambiar-password.html",
     "index.html",
     "admin-moderacion.html",
+    "admin-valoraciones.html",
     "login.html",
     "mi-perfil.html",
     "recuperar-password.html",
     "profesional.html",
+    "registro-valoracion.html",
     "registro.html",
   ];
 
   pages.forEach((page) => {
     const html = readFileSync(join(__dirname, "..", page), "utf8");
-    assert.match(html, /supabase-service\.js\?v=operation-timeout-20260927a/);
+    assert.match(html, /supabase-service\.js\?v=ratings-20261003a/);
   });
 });

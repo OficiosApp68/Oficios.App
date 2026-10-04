@@ -66,7 +66,46 @@
   function renderRating(profile) {
     if (!profile.publicProfile.hasRating) return "";
 
-    return `<div class="rating" aria-label="Calificacion">${window.OficiosApp.renderHelpers.escapeHtml(profile.publicProfile.ratingLabel)} / 5</div>`;
+    const reviewCount = Number(profile.publicProfile.reviewCount) || 0;
+    const opinionLabel = reviewCount === 1 ? "1 opinion" : `${reviewCount} opiniones`;
+    return `
+      <div class="profile-rating-summary" aria-label="Calificacion">
+        <span class="rating-stars" aria-hidden="true">&#9733;</span>
+        <strong>${window.OficiosApp.renderHelpers.escapeHtml(profile.publicProfile.ratingLabel)} / 5</strong>
+        <span>${window.OficiosApp.renderHelpers.escapeHtml(opinionLabel)}</span>
+      </div>
+    `;
+  }
+
+  function renderReviewForm(profile, helpers) {
+    if (profile.canEditOwnProfile) {
+      return `
+        <section class="profile-page-section profile-reputation-note" aria-labelledby="reputation-title">
+          <span class="eyebrow">Tu reputacion</span>
+          <h2 id="reputation-title">Cada experiencia cuenta</h2>
+          <p>
+            Una atencion clara, un presupuesto responsable y un buen trabajo pueden convertirse en valoraciones que
+            ayuden a otras personas a elegirte. Cada puntaje se revisa antes de incorporarse al promedio.
+          </p>
+        </section>
+      `;
+    }
+
+    return `
+      <section class="profile-page-section review-invitation" id="calificar" aria-labelledby="review-form-title">
+        <div class="review-invitation-copy">
+          <span class="eyebrow">Compartir una experiencia</span>
+          <h2 id="review-form-title">¿Contrataste a ${helpers.escapeHtml(profile.user.displayName)}?</h2>
+          <p>
+            Podes dejar de 1 a 5 estrellas. Para cuidar la confiabilidad, necesitas una cuenta confirmada y aprobada.
+            Tu nombre y tu email no se publican junto con la valoracion.
+          </p>
+        </div>
+        <div class="review-access-panel" data-review-access>
+          <p class="form-message" role="status" aria-live="polite">Comprobando tu cuenta...</p>
+        </div>
+      </section>
+    `;
   }
 
   function renderMissingState(target) {
@@ -129,6 +168,7 @@
           </section>
           ${renderSpecialties(profile, helpers)}
           ${renderGallery(profile, helpers)}
+          ${renderReviewForm(profile, helpers)}
         </article>
       </main>
     `;

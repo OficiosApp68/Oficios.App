@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Moderacion de valoraciones | OFICIOS APP</title>
+    <meta name="description" content="Panel para revisar valoraciones antes de publicarlas en OFICIOS APP." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/styles.css?v=ratings-20261003a" />
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav-shell" aria-label="Navegacion principal">
+        <a class="brand" href="index.html#home" aria-label="OFICIOS APP inicio">
+          <span class="brand-mark">OA</span>
+          <span class="brand-name">OFICIOS APP</span>
+        </a>
+        <div class="nav-links profile-nav-actions">
+          <a href="index.html#profesionales">Directorio</a>
+          <a href="admin-moderacion.html">Perfiles</a>
+          <a href="admin-valoraciones.html" aria-current="page">Valoraciones</a>
+        </div>
+        <div class="nav-actions profile-nav-actions" data-session-status>
+          <a class="button ghost" href="login.html">Iniciar sesion</a>
+        </div>
+      </nav>
+    </header>
+
+    <main class="form-page-main">
+      <section class="form-page-shell" aria-labelledby="review-moderation-title">
+        <div class="form-intro">
+          <span class="eyebrow">Panel administrador</span>
+          <h1 id="review-moderation-title">Revisar valoraciones</h1>
+          <p>
+            Primero aproba la cuenta del evaluador. Despues, cada puntaje enviado queda pendiente hasta que lo revises.
+            En el directorio se publica solamente el promedio de estrellas.
+          </p>
+        </div>
+
+        <section class="professional-form moderation-panel" aria-label="Cuentas de evaluadores">
+          <h2>Cuentas para valorar</h2>
+          <p class="moderation-helper">Estas cuentas tienen el correo confirmado, no crean un perfil publico y no muestran datos personales en el directorio.</p>
+          <div class="form-field">
+            <label for="reviewer-account-status">Ver cuentas</label>
+            <select id="reviewer-account-status" data-reviewer-account-status>
+              <option value="pending">Pendientes</option>
+              <option value="approved">Aprobadas</option>
+              <option value="rejected">Rechazadas</option>
+            </select>
+          </div>
+          <div class="form-actions moderation-actions">
+            <button class="button secondary" type="button" data-refresh-reviewer-accounts>Actualizar cuentas</button>
+          </div>
+          <p class="form-message" data-reviewer-account-moderation-message role="status" aria-live="polite">Cargando cuentas...</p>
+        </section>
+
+        <section class="moderation-list" data-reviewer-account-list aria-label="Cuentas de evaluadores para revisar"></section>
+
+        <section class="professional-form moderation-panel" aria-label="Filtros de valoraciones">
+          <h2>Puntajes enviados</h2>
+          <p class="moderation-helper">Las valoraciones aprobadas forman el promedio publico del perfil.</p>
+          <div class="form-field">
+            <label for="review-moderation-status">Ver valoraciones</label>
+            <select id="review-moderation-status" data-review-moderation-status>
+              <option value="pending">Pendientes</option>
+              <option value="approved">Aprobadas</option>
+              <option value="rejected">Rechazadas</option>
+            </select>
+          </div>
+          <div class="form-actions moderation-actions">
+            <button class="button secondary" type="button" data-refresh-reviews>Actualizar</button>
+          </div>
+          <p class="form-message" data-review-moderation-message role="status" aria-live="polite">
+            Cargando valoraciones...
+          </p>
+        </section>
+
+        <section class="moderation-list" data-review-moderation-list aria-label="Valoraciones para revisar"></section>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span class="brand-mark">OA</span>
+      <p>OFICIOS APP - Moderacion de valoraciones verificadas.</p>
+      <nav class="footer-links" aria-label="Informacion y ayuda">
+        <a href="terminos.html">Terminos</a>
+        <a href="privacidad.html">Privacidad</a>
+        <a href="ayuda.html">Ayuda</a>
+      </nav>
+    </footer>
+
+    <script src="js/config/supabase-config.js"></script>
+    <script src="js/services/supabase-service.js?v=ratings-20261003a"></script>
+    <script src="js/services/auth-service.js?v=auth-recovery-20260927a"></script>
+    <script src="js/ui/session-status.js?v=auth-recovery-20260927a"></script>
+    <script src="js/pages/admin-reviews-page.js?v=ratings-20261003a"></script>
+  </body>
+</html>

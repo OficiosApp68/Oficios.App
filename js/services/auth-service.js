@@ -176,14 +176,16 @@
     return authRedirectPromise;
   }
 
-  async function signUp(email, password, captchaToken) {
+  async function signUp(email, password, captchaToken, registrationOptions) {
+    const options = registrationOptions || {};
     const auth = await withTimeout(getAuth(), "No pudimos conectar con el registro.");
     const { data, error } = await withTimeout(
       auth.signUp({
         email,
         password,
         options: {
-          emailRedirectTo: getAuthCallbackUrl("registro.html"),
+          emailRedirectTo: getAuthCallbackUrl(options.redirectPath || "registro.html"),
+          ...(options.data ? { data: options.data } : {}),
           ...(captchaToken ? { captchaToken } : {}),
         },
       }),

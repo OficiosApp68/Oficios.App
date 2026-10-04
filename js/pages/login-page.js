@@ -8,6 +8,12 @@
   const passwordToggle = form?.querySelector("[data-password-toggle]");
   const captcha = app.createTurnstileCaptcha?.(form);
 
+  function getNextPath() {
+    const next = new URLSearchParams(window.location.search).get("next") || "index.html";
+    const allowedPath = /^(?:index|profesional|registro-valoracion)\.html(?:[?#][A-Za-z0-9%=&._#-]+)?$/;
+    return allowedPath.test(next) ? next : "index.html";
+  }
+
   function togglePasswordVisibility() {
     const isVisible = passwordInput.type === "password";
     const label = isVisible ? "Ocultar contrasena" : "Mostrar contrasena";
@@ -68,8 +74,9 @@
       setMessage(`Sesion iniciada como ${accountEmail}.`, "success");
       message.insertAdjacentHTML(
         "beforeend",
-        ' <a class="inline-link" href="mi-perfil.html">Completar o editar mi perfil</a> · <a class="inline-link" href="index.html">Volver al inicio</a>'
+        ` <a class="inline-link" href="${getNextPath()}">Continuar</a> · <a class="inline-link" href="mi-perfil.html">Completar o editar mi perfil</a>`
       );
+      window.setTimeout(() => { window.location.href = getNextPath(); }, 700);
     } catch (error) {
       const errorText = error && error.message ? error.message : "";
       setMessage(
@@ -94,7 +101,7 @@
     setMessage("Abriendo Google para iniciar sesion...", "");
 
     try {
-      await app.authService.signInWithGoogle("index.html");
+      await app.authService.signInWithGoogle(getNextPath());
     } catch (error) {
       googleButton.disabled = false;
       setMessage("No pudimos abrir el inicio con Google. Revisa la configuracion e intentalo nuevamente.", "error");
@@ -119,6 +126,7 @@
       <strong>Ya tenes sesion iniciada</strong>
       <span>Estas entrando como ${email}.</span>
       <div class="form-actions">
+        <a class="button primary large" href="${getNextPath()}">Continuar</a>
         <a class="button primary large" href="mi-perfil.html">Completar / editar mi perfil</a>
         <a class="button primary large" href="index.html">Volver al inicio</a>
         <a class="button ghost large" href="cerrar-sesion.html">Cerrar sesion</a>

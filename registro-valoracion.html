@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registrarme para valorar | OFICIOS APP</title>
+    <meta name="description" content="Crea una cuenta privada para valorar oficios y emprendimientos en OFICIOS APP." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/styles.css?v=reviewer-accounts-20261003a" />
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav-shell" aria-label="Navegacion principal">
+        <a class="brand" href="index.html" aria-label="OFICIOS APP inicio">
+          <span class="brand-mark">OA</span>
+          <span class="brand-name">OFICIOS APP</span>
+        </a>
+        <div class="nav-actions profile-nav-actions">
+          <a class="button ghost" data-reviewer-return href="index.html#profesionales">Volver al perfil</a>
+        </div>
+      </nav>
+    </header>
+
+    <main class="form-page-main">
+      <section class="form-page-shell" aria-labelledby="reviewer-register-title">
+        <div class="form-intro">
+          <span class="eyebrow">Cuenta para valorar</span>
+          <h1 id="reviewer-register-title">Registrarte es simple</h1>
+          <p>
+            Confirma tu correo y envia este registro. Cuando la administracion lo apruebe, vas a poder valorar con
+            estrellas los oficios o emprendimientos que hayas contratado.
+          </p>
+          <p class="register-info-note">
+            Esta cuenta no crea un perfil publico. Tu nombre y tu correo se mantienen privados; en el directorio solo se
+            muestra el promedio de estrellas aprobado.
+          </p>
+        </div>
+
+        <form class="professional-form auth-form" data-reviewer-account-form novalidate>
+          <div class="auth-provider-actions" data-reviewer-google-section>
+            <button class="button google large" type="button" data-google-reviewer-register>
+              Continuar con Google
+            </button>
+          </div>
+
+          <div class="auth-divider" data-reviewer-auth-divider aria-hidden="true">
+            <span>o crea tu cuenta con email</span>
+          </div>
+
+          <div class="form-field full">
+            <label for="reviewer-name">Tu nombre</label>
+            <input id="reviewer-name" name="displayName" type="text" minlength="2" maxlength="80" autocomplete="name" required />
+            <small>Se usa solamente para identificar tu registro en la administracion.</small>
+          </div>
+
+          <div data-reviewer-account-fields>
+            <div class="form-field full">
+              <label for="reviewer-email">Email</label>
+              <input id="reviewer-email" name="email" type="email" maxlength="254" autocomplete="email" required />
+            </div>
+
+            <div class="form-field full">
+              <label for="reviewer-password">Contrasena</label>
+              <div class="password-input">
+                <input id="reviewer-password" name="password" type="password" minlength="6" autocomplete="new-password" required />
+                <button class="password-visibility-toggle" type="button" data-password-toggle aria-controls="reviewer-password" aria-label="Mostrar contrasena" title="Mostrar contrasena">
+                  <svg data-icon-show xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>
+                  <svg data-icon-hide hidden xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m3 3 18 18"/><path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"/><path d="M9.9 4.2A10.8 10.8 0 0 1 12 4c6 0 9 8 9 8a14.7 14.7 0 0 1-2.1 3.2"/><path d="M6.6 6.6C4.2 8.2 3 12 3 12s3 8 9 8a9.7 9.7 0 0 0 3-.5"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="form-field full">
+              <label for="reviewer-password-confirmation">Repetir contrasena</label>
+              <div class="password-input">
+                <input id="reviewer-password-confirmation" name="passwordConfirmation" type="password" minlength="6" autocomplete="new-password" required />
+                <button class="password-visibility-toggle" type="button" data-password-toggle aria-controls="reviewer-password-confirmation" aria-label="Mostrar contrasena" title="Mostrar contrasena">
+                  <svg data-icon-show xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>
+                  <svg data-icon-hide hidden xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m3 3 18 18"/><path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"/><path d="M9.9 4.2A10.8 10.8 0 0 1 12 4c6 0 9 8 9 8a14.7 14.7 0 0 1-2.1 3.2"/><path d="M6.6 6.6C4.2 8.2 3 12 3 12s3 8 9 8a9.7 9.7 0 0 0 3-.5"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <label class="review-confirmation">
+            <input name="termsAcceptance" type="checkbox" data-reviewer-terms required />
+            <span>
+              Acepto los <a class="inline-link" href="terminos.html" target="_blank" rel="noopener noreferrer">Terminos y Condiciones</a>
+              y la <a class="inline-link" href="privacidad.html" target="_blank" rel="noopener noreferrer">Politica de Privacidad</a>.
+            </span>
+          </label>
+
+          <div class="captcha-container" data-turnstile hidden></div>
+          <p class="form-message" data-reviewer-account-message role="status" aria-live="polite"></p>
+
+          <div class="form-actions">
+            <button class="button primary large" type="submit" data-reviewer-account-submit>Crear cuenta</button>
+            <a class="button secondary large" data-reviewer-return href="index.html#profesionales">Volver al perfil</a>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span class="brand-mark">OA</span>
+      <p>OFICIOS APP - Valoraciones verificadas y moderadas.</p>
+      <nav class="footer-links" aria-label="Informacion y ayuda">
+        <a href="terminos.html">Terminos</a>
+        <a href="privacidad.html">Privacidad</a>
+        <a href="ayuda.html">Ayuda</a>
+      </nav>
+    </footer>
+
+    <script src="js/config/supabase-config.js"></script>
+    <script src="js/services/supabase-service.js?v=ratings-20261003a"></script>
+    <script src="js/services/auth-service.js?v=reviewer-accounts-20261003a"></script>
+    <script src="js/ui/turnstile-captcha.js?v=captcha-20260916a"></script>
+    <script src="js/pages/reviewer-register-page.js?v=reviewer-accounts-20261003a"></script>
+  </body>
+</html>
