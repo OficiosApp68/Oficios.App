@@ -4,6 +4,8 @@
 
 begin;
 
+drop trigger if exists notify_reviewer_moderation_pending on public.reviewer_accounts;
+
 revoke all on function public.register_reviewer_account(text, boolean) from public, anon, authenticated;
 revoke all on function public.get_current_reviewer_account() from public, anon, authenticated;
 revoke all on function public.list_moderation_reviewer_accounts(text) from public, anon, authenticated;
