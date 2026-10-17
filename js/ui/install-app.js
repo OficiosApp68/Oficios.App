@@ -1,9 +1,10 @@
 (function () {
   let installEvent;
+  let installationAccepted = false;
   const button = document.createElement("button");
   button.type = "button";
   button.className = "button secondary";
-  button.textContent = "Instalar app";
+  button.textContent = "Como instalar";
   button.hidden = true;
   button.style.display = "none";
   const style = document.createElement("link");
@@ -23,7 +24,9 @@
   button.style.display = "";
   const standalone = window.matchMedia("(display-mode: standalone)");
   function updateVisibility() {
-    banner.hidden = standalone.matches || Boolean(navigator.standalone);
+    banner.hidden = installationAccepted || standalone.matches || Boolean(navigator.standalone);
+    button.textContent = installEvent ? "Instalar app" : "Como instalar";
+    button.setAttribute("aria-haspopup", installEvent ? "false" : "dialog");
   }
   updateVisibility();
   standalone.addEventListener("change", updateVisibility);
@@ -37,11 +40,12 @@
     : embedded
       ? "Abri el menu de este navegador y elegi Abrir en Chrome. En Chrome, toca los tres puntos y elegi Instalar aplicacion o Agregar a pantalla principal."
       : "En Chrome, abri el menu de los tres puntos y elegi Instalar Oficios App o Agregar a pantalla principal. En la computadora tambien podes usar el icono de instalacion de la barra de direcciones.";
-  dialog.innerHTML = `<h2 id="app-install-title">Instalar Oficios App</h2><p>${instructions}</p><form method="dialog"><button class="app-install-action" type="submit">Entendido</button></form>`;
+  dialog.innerHTML = `<h2 id="app-install-title">Como instalar Oficios App</h2><p>${instructions}</p><form method="dialog"><button class="app-install-action" type="submit">Cerrar instrucciones</button></form>`;
   document.body.append(dialog);
   window.addEventListener("beforeinstallprompt", (event) => {
     event.preventDefault();
     installEvent = event;
+    if (dialog.open) dialog.close();
     updateVisibility();
   });
   button.addEventListener("click", async () => {
@@ -55,16 +59,18 @@
     try {
       await promptEvent.prompt();
       const choice = await promptEvent.userChoice;
-      if (choice.outcome === "accepted") banner.hidden = true;
+      if (choice.outcome === "accepted") installationAccepted = true;
     } catch (_) {
       dialog.showModal();
     } finally {
       button.disabled = false;
+      updateVisibility();
     }
   });
   window.addEventListener("appinstalled", () => {
     installEvent = null;
-    banner.hidden = true;
+    installationAccepted = true;
+    updateVisibility();
     if (dialog.open) dialog.close();
   });
   if ("serviceWorker" in navigator) {
