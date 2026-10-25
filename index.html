@@ -15,6 +15,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="css/styles.css?v=ratings-20261003a" />
+    <link rel="stylesheet" href="css/presentation-video.css?v=20261024a" />
     <link rel="manifest" href="manifest.webmanifest" />
     <meta name="theme-color" content="#0f766e" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -54,6 +55,11 @@
             <span class="eyebrow">Oficios y emprendimientos locales</span>
             <h1>OFICIOS APP</h1>
             <p class="hero-lead">Encontr&aacute; oficios y emprendimientos cerca tuyo.</p>
+            <button class="presentation-trigger" type="button" data-open-presentation aria-haspopup="dialog">
+              <img src="images/presentation-poster.jpg" width="48" height="56" alt="" />
+              <span class="presentation-play" aria-hidden="true">&#9654;</span>
+              <span><strong>Conoc&eacute; Oficios App</strong><small>Mir&aacute; el video de presentaci&oacute;n</small></span>
+            </button>
             <form class="search-panel" aria-label="Buscador principal" data-directory-search-form>
               <label for="directory-query">
                 <span>Que necesitas</span>
@@ -146,6 +152,19 @@
         <article class="profile-detail" data-profile-detail></article>
       </section>
     </main>
+
+    <dialog class="presentation-dialog" aria-labelledby="presentation-title" data-presentation-dialog>
+      <div class="presentation-dialog-header">
+        <h2 id="presentation-title">Conoc&eacute; Oficios App</h2>
+        <button type="button" class="presentation-close" aria-label="Cerrar video" data-close-presentation>&times;</button>
+      </div>
+      <video controls playsinline preload="none" poster="images/presentation-poster.jpg" data-presentation-video>
+        <source data-src="video-oficial/Oficios-App-lanzamiento.mp4" type="video/mp4" />
+        Tu navegador no permite reproducir este video.
+      </video>
+      <p class="presentation-error" role="status" data-presentation-error hidden>No pudimos reproducir el video. <a href="video-oficial/Oficios-App-lanzamiento.mp4">Abrir video</a></p>
+    </dialog>
+    <script src="js/ui/presentation-video.js?v=20261024a" defer></script>
 
     <footer class="site-footer">
       <span class="brand-mark">OA</span>

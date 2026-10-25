@@ -1,0 +1,15 @@
+.presentation-trigger { display: flex; align-items: center; gap: 12px; max-width: 100%; padding: 0 16px 0 0; margin: 0 0 22px; border: 1px solid #b4d6d1; border-radius: 8px; background: #fff; color: #115e59; text-align: left; cursor: pointer; overflow: hidden; }
+.presentation-trigger img { width: 48px; height: 56px; object-fit: cover; object-position: center 32%; flex-shrink: 0; }
+.presentation-trigger strong { display: block; font-size: 15px; line-height: 1.4; }
+.presentation-trigger small { display: block; color: #627084; font-size: 12px; line-height: 1.5; }
+.presentation-play { color: #0f766e; font-size: 15px; }
+.presentation-trigger:hover { background: #edf8f6; border-color: #0f766e; }
+.presentation-trigger:focus-visible, .presentation-close:focus-visible { outline: 3px solid #f59e0b; outline-offset: 3px; }
+.presentation-dialog { padding: 0; border: 0; border-radius: 8px; width: min(410px, calc(100% - 24px)); max-height: calc(100dvh - 24px); overflow: auto; background: #fff; color: #1b2430; }
+.presentation-dialog::backdrop { background: rgba(0,0,0,.7); }
+.presentation-dialog-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; gap: 12px; }
+.presentation-dialog h2 { font-size: 17px; margin: 0; }
+.presentation-close { width: 44px; height: 44px; flex-shrink: 0; border: 0; background: transparent; color: #1b2430; font-size: 30px; cursor: pointer; }
+.presentation-dialog video { display: block; width: 100%; height: min(640px, calc(100dvh - 100px)); object-fit: contain; background: #111; }
+.presentation-error { padding: 12px; font-size: 14px; }
+.presentation-error a { text-decoration: underline; }
