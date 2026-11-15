@@ -2,6 +2,7 @@
   const app = window.OficiosApp;
   const root = document.querySelector("[data-directory-ads]");
   if (!root) return;
+  const placeholder = root.querySelector("[data-ad-placeholder]");
 
   const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const normalize = (value) => String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim().toLowerCase();
@@ -40,8 +41,10 @@
     touchStart = null;
     displayed = ads;
     root.replaceChildren();
-    root.hidden = !ads.length;
-    if (!ads.length) return;
+    if (!ads.length) {
+      if (placeholder) root.append(placeholder.content.cloneNode(true));
+      return;
+    }
     index = 0;
     paused = motion.matches;
     root.append(element("strong", "Publicidad"));
