@@ -2,6 +2,7 @@
   window.OficiosApp = window.OficiosApp || {};
 
   const searchSynonyms = {
+    turismo: ["viaje", "viajes", "turistico", "turisticos"],
     canillita: ["diario", "diarios", "revista", "revistas", "periodico", "periodicos"],
     diario: ["diarios", "canillita", "revista", "revistas"],
     diarios: ["diario", "canillita", "revista", "revistas"],

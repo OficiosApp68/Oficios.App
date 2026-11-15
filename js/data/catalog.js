@@ -40,6 +40,7 @@
     { id: "mascotas", name: "Mascotas", icon: "paw", query: "mascota" },
     { id: "mudanzas", name: "Mudanzas", icon: "truck", query: "mudanza" },
     { id: "fletes", name: "Fletes", icon: "truck", query: "flete" },
+    { id: "turismo", name: "Turismo", icon: "map", query: "turismo" },
     { id: "refrigeracion", name: "Refrigeracion", icon: "snow", query: "refrigeracion" },
     { id: "aires-acondicionados", name: "Aires acondicionados", icon: "snow", query: "aire" },
     { id: "seguridad-camaras", name: "Seguridad y camaras", icon: "camera", query: "camara" },

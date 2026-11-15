@@ -2,6 +2,7 @@
   window.OficiosApp = window.OficiosApp || {};
 
   const iconPaths = {
+    map: '<path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3zM9 3v15M15 6v15"></path>',
     activity: '<path d="M4 12h4l2-5 4 10 2-5h4"></path>',
     bolt: '<path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"></path>',
     book: '<path d="M5 4h7a4 4 0 0 1 4 4v12H9a4 4 0 0 0-4-4V4Z"></path><path d="M16 8h3v12"></path>',

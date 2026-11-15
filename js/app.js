@@ -83,7 +83,7 @@
     const state = getSearchState();
     const results = app.searchService ? app.searchService.searchProfessionals(allProfiles, state) : allProfiles;
     renderDirectory(results);
-    app.updateDirectoryAds?.(state);
+    app.updateDirectoryAds?.(state, allProfiles);
   }
 
   function showDirectoryResults() {

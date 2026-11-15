@@ -28,15 +28,20 @@
     return node;
   }
 
-  app.updateDirectoryAds = function ({ query, occupation }) {
+  app.updateDirectoryAds = function ({ query, occupation }, profiles = []) {
     const rubro = normalize(occupation || query);
     const now = Date.now();
     const ads = (app.directoryAds || []).filter((ad) =>
       ad.active && ad.label && ad.rubros?.some((name) => normalize(name) === rubro) &&
       (!ad.startsAt || Date.parse(ad.startsAt) <= now) &&
       (!ad.endsAt || Date.parse(ad.endsAt) > now) &&
-      safeUrl(ad.image, true) && safeUrl(ad.url));
-    if (ads.length === displayed.length && ads.every((ad, i) => ad === displayed[i])) return;
+      safeUrl(ad.image, true)).map((ad) => {
+      const contact = ad.contactProfileId && profiles.find((profile) => profile.id === ad.contactProfileId);
+      return { ...ad, destination: safeUrl(ad.contactProfileId ? contact?.publicProfile?.whatsapp : ad.url) };
+    }).filter((ad) => ad.destination);
+    if (ads.length === displayed.length && ads.every((ad, i) =>
+      ad.image === displayed[i].image && ad.mobileImage === displayed[i].mobileImage &&
+      ad.destination === displayed[i].destination && ad.label === displayed[i].label)) return;
     clearInterval(timer);
     touchStart = null;
     displayed = ads;
@@ -50,13 +55,21 @@
     root.append(element("strong", "Publicidad"));
     const banner = element("a");
     banner.className = "directory-ad-banner";
+    const picture = element("picture");
+    const mobile = element("source");
+    mobile.media = "(max-width: 640px)";
     const image = element("img");
-    banner.append(image);
+    picture.append(mobile, image);
+    banner.append(picture);
     root.append(banner);
 
     function show() {
       const ad = ads[index];
-      banner.href = safeUrl(ad.url);
+      banner.href = ad.destination;
+      banner.classList.toggle("has-mobile-image", Boolean(ad.mobileImage));
+      const mobileUrl = safeUrl(ad.mobileImage, true);
+      if (mobileUrl) mobile.srcset = mobileUrl;
+      else mobile.removeAttribute("srcset");
       image.alt = ad.label;
       image.src = safeUrl(ad.image, true);
     }
