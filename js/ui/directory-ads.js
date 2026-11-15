@@ -61,7 +61,9 @@
       }
       index = 0;
       paused = motion.matches;
-      root.append(element("strong", "Publicidad"));
+      const label = element("strong", "Espacio de publicidad");
+      label.className = "directory-ad-label";
+      root.append(label);
       const banner = element("a");
       banner.className = "directory-ad-banner";
       const picture = element("picture");

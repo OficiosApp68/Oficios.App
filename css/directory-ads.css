@@ -1,6 +1,14 @@
 [data-directory-ads] { margin: 0 0 20px; color: var(--muted); font-size: .875rem; }
 [data-home-ads] { color: var(--muted); font-size: .875rem; }
 [data-home-ads][hidden] { display: none; }
+.directory-ad-label {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 4px;
+  background: #e5ff53;
+  color: #213014;
+  font-weight: 800;
+}
 .directory-ad-placeholder {
   display: grid;
   place-items: center;
@@ -23,4 +31,5 @@
 .directory-ad-controls { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
 .directory-ad-controls button { min-height: 44px; padding: 6px 12px; background: var(--surface); color: var(--primary-dark); border: 1px solid var(--line); border-radius: 6px; cursor: pointer; }
 .directory-ad-controls span { min-width: 40px; text-align: center; }
+.directory-ad-controls button:nth-of-type(2) { background: var(--primary); border-color: var(--primary); color: #fff; }
 .directory-ad-controls :focus-visible, .directory-ad-banner:focus-visible { outline: 3px solid var(--primary); outline-offset: 2px; }

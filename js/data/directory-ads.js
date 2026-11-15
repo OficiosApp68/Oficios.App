@@ -8,4 +8,12 @@ window.OficiosApp.directoryAds = [{
   contactProfileId: "3c1b3d2d-aede-4f89-a45e-35cd0e7b56e5",
   featuredOnHome: true,
   active: true,
+}, {
+  rubros: ["Turismo", "Agentes de Viajes", "MyE Turismo"],
+  label: "MyE Turismo. Un dia para disfrutar. Full day, dias de campo y alquiler de micros. Consulta por WhatsApp.",
+  image: "images/ads/mye-dia-de-campo.webp",
+  mobileImage: "images/ads/mye-dia-de-campo-mobile.webp",
+  contactProfileId: "3c1b3d2d-aede-4f89-a45e-35cd0e7b56e5",
+  featuredOnHome: true,
+  active: true,
 }];
