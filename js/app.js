@@ -80,8 +80,10 @@
   }
 
   function applySearch() {
-    const results = app.searchService ? app.searchService.searchProfessionals(allProfiles, getSearchState()) : allProfiles;
+    const state = getSearchState();
+    const results = app.searchService ? app.searchService.searchProfessionals(allProfiles, state) : allProfiles;
     renderDirectory(results);
+    app.updateDirectoryAds?.(state);
   }
 
   function showDirectoryResults() {

@@ -16,6 +16,7 @@
     />
     <link rel="stylesheet" href="css/styles.css?v=ratings-20261003a" />
     <link rel="stylesheet" href="css/presentation-video.css?v=20261024a" />
+    <link rel="stylesheet" href="css/directory-ads.css?v=1" />
     <link rel="manifest" href="manifest.webmanifest" />
     <meta name="theme-color" content="#0f766e" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -55,6 +56,7 @@
             <span class="eyebrow">Oficios y emprendimientos locales</span>
             <h1>OFICIOS APP</h1>
             <p class="hero-lead">Encontr&aacute; oficios y emprendimientos cerca tuyo.</p>
+            <p><strong>Cobertura actual:</strong> Ciudad de Buenos Aires (CABA) y Gran Buenos Aires (GBA).</p>
             <button class="presentation-trigger" type="button" data-open-presentation aria-haspopup="dialog">
               <img src="images/presentation-poster.jpg" width="48" height="56" alt="" />
               <span class="presentation-play" aria-hidden="true">&#9654;</span>
@@ -129,6 +131,7 @@
           <h2>Oficios y emprendimientos disponibles</h2>
           <p>Listado publico de perfiles registrados en OFICIOS APP.</p>
         </div>
+        <section data-directory-ads hidden aria-label="Publicidad del rubro"></section>
         <p class="directory-status" data-directory-status role="status" aria-live="polite">
           Cargando perfiles registrados...
         </p>
@@ -190,7 +193,9 @@
     <script src="js/ui/navigation.js"></script>
     <script src="js/ui/session-status.js?v=auth-recovery-20260927a"></script>
     <script src="js/ui/admin-pending-alert.js?v=pending-alert-20260827a"></script>
-    <script src="js/app.js?v=oficios-20260925a"></script>
+    <script src="js/data/directory-ads.js?v=1"></script>
+    <script src="js/ui/directory-ads.js?v=1"></script>
+    <script src="js/app.js?v=directory-ads-1"></script>
     <script src="js/ui/install-app.js?v=20261017b" defer></script>
   </body>
 </html>
