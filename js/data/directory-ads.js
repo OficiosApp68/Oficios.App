@@ -6,5 +6,6 @@ window.OficiosApp.directoryAds = [{
   image: "images/ads/mye-turismo.png",
   mobileImage: "images/ads/mye-turismo-mobile.png",
   contactProfileId: "3c1b3d2d-aede-4f89-a45e-35cd0e7b56e5",
+  featuredOnHome: true,
   active: true,
 }];

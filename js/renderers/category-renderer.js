@@ -49,7 +49,9 @@
   window.OficiosApp.renderCategories = function (categories, target) {
     if (!target) return;
 
-    target.innerHTML = categories
+    const collator = new Intl.Collator("es-AR", { sensitivity: "base" });
+    target.innerHTML = [...categories]
+      .sort((a, b) => collator.compare(a.name, b.name))
       .map(
         (category) => `
           <button class="category-card" type="button" data-category-id="${category.id}" data-category-query="${category.query || category.name}">

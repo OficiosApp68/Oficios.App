@@ -1,4 +1,6 @@
 [data-directory-ads] { margin: 0 0 20px; color: var(--muted); font-size: .875rem; }
+[data-home-ads] { color: var(--muted); font-size: .875rem; }
+[data-home-ads][hidden] { display: none; }
 .directory-ad-placeholder {
   display: grid;
   place-items: center;

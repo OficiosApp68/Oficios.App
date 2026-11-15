@@ -10,6 +10,7 @@
   const searchLocation = document.querySelector("[data-search-location]");
   const searchSuggestions = document.querySelector("[data-search-suggestions]");
   const categoryGrid = document.querySelector("[data-category-grid]");
+  const profileCollator = new Intl.Collator("es-AR", { sensitivity: "base" });
   let allProfiles = profiles;
   let searchDebounce = null;
 
@@ -69,8 +70,12 @@
     });
   }
 
+  function sortProfiles(nextProfiles) {
+    return [...nextProfiles].sort((a, b) => profileCollator.compare(a.user.displayName, b.user.displayName));
+  }
+
   function renderDirectory(nextProfiles) {
-    app.renderProfessionals(nextProfiles, professionalsGrid);
+    app.renderProfessionals(sortProfiles(nextProfiles), professionalsGrid);
 
     if (directoryEmptyState) {
       directoryEmptyState.hidden = nextProfiles.length > 0;
@@ -158,7 +163,8 @@
   app.renderCategories(app.categories, document.querySelector("[data-category-grid]"));
   updateFilterOptions(allProfiles);
   updateSearchSuggestions(allProfiles);
-  app.renderProfessionals(allProfiles, professionalsGrid);
+  app.renderProfessionals(sortProfiles(allProfiles), professionalsGrid);
+  app.updateDirectoryAds?.(getSearchState(), allProfiles);
   initDirectorySearch();
   initCategorySearch();
   app.renderProfileDetail(app.directoryService.getFeaturedProfile(), document.querySelector("[data-profile-detail]"));
